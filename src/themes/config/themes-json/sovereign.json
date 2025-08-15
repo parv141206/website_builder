@@ -1,0 +1,36 @@
+{
+  "name": "",
+  "colors": {
+    "background": {
+      "primary": "#FCFAF5",
+      "secondary": "#F5EAD6",
+      "tertiary": "#EFE3C7",
+      "quaternary": "#E8D9B9",
+      "quinary": "#E0CEAB"
+    },
+    "text": {
+      "heading": "#2A1D1F",
+      "subheading": "#4E3A3D",
+      "body": "#4E3A3D",
+      "muted": "#8A7968",
+      "onPrimary": "#FCFAF5",
+      "onSecondary": "#FCFAF5",
+      "onBackground": "#2A1D1F",
+      "inverse": "#FCFAF5"
+    },
+    "primary": "#722f37",
+    "secondary": "#3A506B",
+    "roles": {
+      "success": "#4F6F52",
+      "danger": "#9A3B3B",
+      "warning": "#EFDFBB",
+      "info": "#3A506B"
+    },
+    "border": "#EFE3C7",
+    "shadow": "rgba(42, 29, 31, 0.1)"
+  },
+  "fonts": {
+    "heading": "Lora, serif",
+    "body": "Inter, sans-serif"
+  }
+}

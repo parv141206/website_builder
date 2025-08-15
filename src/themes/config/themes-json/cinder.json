@@ -1,0 +1,36 @@
+{
+  "name": "cinder",
+  "colors": {
+    "background": {
+      "primary": "#dfe8e6",
+      "secondary": "#e6ebea",
+      "tertiary": "#dce4e2",
+      "quaternary": "#d1d9d7",
+      "quinary": "#c5cfcd"
+    },
+    "text": {
+      "heading": "#1a202c",
+      "subheading": "#2d3748",
+      "body": "#2d3748",
+      "muted": "#718096",
+      "onPrimary": "#ffffff",
+      "onSecondary": "#ffffff",
+      "onBackground": "#1a202c",
+      "inverse": "#dfe8e6"
+    },
+    "primary": "#a0430a",
+    "secondary": "#4a5568",
+    "roles": {
+      "success": "#38a169",
+      "danger": "#c53030",
+      "warning": "#a0430a",
+      "info": "#4a5568"
+    },
+    "border": "#d1d9d7",
+    "shadow": "rgba(26, 32, 44, 0.1)"
+  },
+  "fonts": {
+    "heading": "Archivo, sans-serif",
+    "body": "Work Sans, sans-serif"
+  }
+}

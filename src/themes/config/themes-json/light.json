@@ -1,0 +1,36 @@
+{
+  "name": "light",
+  "colors": {
+    "background": {
+      "primary": "#ffffff",
+      "secondary": "#f9f9f9",
+      "tertiary": "#f1f1f1",
+      "quaternary": "#eaeaea",
+      "quinary": "#e0e0e0"
+    },
+    "text": {
+      "heading": "#111111",
+      "subheading": "#333333",
+      "body": "#444444",
+      "muted": "#777777",
+      "onPrimary": "#ffffff",
+      "onSecondary": "#111111",
+      "onBackground": "#111111",
+      "inverse": "#ffffff"
+    },
+    "primary": "#0070f3",
+    "secondary": "#f0f0f0",
+    "roles": {
+      "success": "#22c55e",
+      "danger": "#ef4444",
+      "warning": "#facc15",
+      "info": "#3b82f6"
+    },
+    "border": "#dddddd",
+    "shadow": "rgba(0, 0, 0, 0.1)"
+  },
+  "fonts": {
+    "heading": "Poppins, sans-serif",
+    "body": "Roboto, sans-serif"
+  }
+}

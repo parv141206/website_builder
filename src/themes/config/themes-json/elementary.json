@@ -1,0 +1,36 @@
+{
+  "name": "elementary",
+  "colors": {
+    "background": {
+      "primary": "#ffffff",
+      "secondary": "#f1ffc8",
+      "tertiary": "#D1FAE5",
+      "quaternary": "#F3F4F6",
+      "quinary": "#E5E7EB"
+    },
+    "text": {
+      "heading": "#000000",
+      "subheading": "#1F2937",
+      "body": "#111827",
+      "muted": "#9CA3AF",
+      "onPrimary": "#000000",
+      "onSecondary": "#1F2937",
+      "onBackground": "#111827",
+      "inverse": "#ffffff"
+    },
+    "primary": "#C7D2FE",
+    "secondary": "#f1ffc8",
+    "roles": {
+      "success": "#A7F3D0",
+      "danger": "#FCA5A5",
+      "warning": "#FEF3C7",
+      "info": "#C7D2FE"
+    },
+    "border": "#D1D5DB",
+    "shadow": "rgba(0, 0, 0, 0.08)"
+  },
+  "fonts": {
+    "heading": "Playfair Display, serif",
+    "body": "Inter, sans-serif"
+  }
+}
