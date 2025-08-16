@@ -1,6 +1,7 @@
 "use client";
 import React, { useMemo, useRef, useState, type JSX } from "react";
 import { useNode } from "@craftjs/core";
+import { useTheme } from "~/themes";
 
 export type TextAlign =
   | "left"
@@ -9,14 +10,12 @@ export type TextAlign =
   | "justify"
   | "start"
   | "end";
-
 export type TextTransform = "none" | "uppercase" | "lowercase" | "capitalize";
-
 export type TextProps = {
   text: string;
   as?: keyof JSX.ElementType;
   color?: string;
-  fontSize?: string; // e.g., "16px", "1rem"
+  fontSize?: string;
   fontWeight?: number | "normal" | "bold" | "lighter" | "bolder";
   fontFamily?: string;
   lineHeight?: string;
@@ -26,24 +25,16 @@ export type TextProps = {
   italic?: boolean;
   underline?: boolean;
   strike?: boolean;
-
-  // spacing
   margin?: string;
   padding?: string;
-
-  // width/height
   width?: string;
   height?: string;
-
-  // bg/border/shadow
   background?: string;
   borderColor?: string;
   borderWidth?: string;
   borderStyle?: "none" | "solid" | "dashed" | "dotted" | "double";
   borderRadius?: string;
   boxShadow?: string;
-
-  // display
   display?: string;
 };
 
@@ -51,7 +42,7 @@ export const Text: React.FC<TextProps> & {
   craft?: any;
 } = ({
   text,
-  as: Tag = "div",
+  as: Tag = "p",
   color,
   fontSize,
   fontWeight,
@@ -63,20 +54,16 @@ export const Text: React.FC<TextProps> & {
   italic,
   underline,
   strike,
-
   margin,
   padding,
-
   width,
   height,
-
   background,
   borderColor,
   borderWidth,
   borderStyle = "none",
   borderRadius,
   boxShadow,
-
   display,
 }) => {
   const {
@@ -87,15 +74,20 @@ export const Text: React.FC<TextProps> & {
     selected: node.events.selected,
   }));
 
+  const theme = useTheme();
   const ref = useRef<HTMLElement | null>(null);
   const [editing, setEditing] = useState(false);
 
   const style: React.CSSProperties = useMemo(
     () => ({
-      color,
+      // Use the prop if it exists, otherwise fall back to the theme value.
+      color: color || theme.colors.text.body,
+      fontFamily: fontFamily || theme.fonts.body,
+      background: background || "transparent",
+
+      // Other props
       fontSize,
       fontWeight,
-      fontFamily,
       lineHeight,
       letterSpacing,
       textAlign,
@@ -108,25 +100,23 @@ export const Text: React.FC<TextProps> & {
         ]
           .filter(Boolean)
           .join(" ") || undefined,
-
       margin,
       padding,
-
       width,
       height,
-
-      background,
       borderColor,
       borderWidth,
       borderStyle,
       borderRadius,
       boxShadow,
       display,
+      // Editor-specific styles
       outline: selected && !editing ? "2px dashed #4c8bf5" : undefined,
       outlineOffset: "2px",
       cursor: "text",
     }),
     [
+      theme, // Add theme to dependency array
       color,
       fontSize,
       fontWeight,
@@ -198,12 +188,13 @@ Text.craft = {
   props: {
     text: "Double-click to edit me",
     as: "p",
-    color: "var(--color-text-body)",
     fontSize: "16px",
     fontWeight: 400,
-    fontFamily: "var(--font-body)",
     lineHeight: "1.5",
     textAlign: "left",
+    // ⭐ THE FIX: `color` and `fontFamily` are REMOVED from here. ⭐
+    // By leaving them `undefined`, we ensure the component's internal
+    // logic correctly falls back to the theme on initial render.
   } satisfies TextProps,
   rules: {
     canDrag: () => true,

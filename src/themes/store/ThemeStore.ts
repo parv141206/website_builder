@@ -93,7 +93,7 @@ export const useThemeStore = create<ThemeStore>()(
   subscribeWithSelector<ThemeStore>((set, get) => {
     const initial: ThemeStore = {
       themes: defaultThemes,
-      currentTheme: "light",
+      currentTheme: "artisan",
       radius: "16px",
       horizontalSpacing: "0px",
       verticalSpacing: "0px",

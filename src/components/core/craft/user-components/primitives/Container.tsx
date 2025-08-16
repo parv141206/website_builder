@@ -1,9 +1,11 @@
 "use client";
 import React, { useMemo } from "react";
 import { useNode } from "@craftjs/core";
+import { useTheme } from "~/themes";
 
+// The props definition, including all possible style options.
 export type ContainerProps = {
-  as?: React.ElementType; // Corrected type from previous step
+  as?: React.ElementType;
   // layout
   display?:
     | "block"
@@ -89,15 +91,15 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
 
   margin,
   padding,
-  background,
+  background, // This prop comes from the settings panel
   borderColor,
   borderWidth,
   borderStyle = "none",
   borderRadius,
   boxShadow,
 
-  color,
-  fontFamily,
+  color, // This prop comes from the settings panel
+  fontFamily, // This prop comes from the settings panel
   fontSize,
 
   children,
@@ -109,9 +111,12 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
     selected: node.events.selected,
   }));
 
+  // Get the current theme object from the context for default fallbacks.
+  const theme = useTheme();
+  console.log(background);
   const style: React.CSSProperties = useMemo(() => {
-    // Start with a base style object
     const baseStyle: React.CSSProperties = {
+      // Pass all layout and box-model props directly.
       display,
       flexDirection,
       flexWrap,
@@ -129,22 +134,26 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
       maxHeight,
       margin,
       padding,
-      background,
       borderColor,
       borderWidth,
       borderStyle,
       borderRadius,
       boxShadow,
-      color,
-      fontFamily,
       fontSize,
+
+      // CRITICAL LOGIC: Use the prop if it's provided, otherwise fall back to the theme.
+      // The API route will specifically transform this pattern during export.
+      background: background || theme.colors.background.primary,
+      color: color || theme.colors.text.body,
+      fontFamily: fontFamily || theme.fonts.body,
+
+      // Editor-specific styles that will be removed by the API route.
       outline: selected ? "2px dashed #4c8bf5" : undefined,
       outlineOffset: "2px",
       transition: "outline 120ms ease",
     };
 
-    // --- THIS IS THE FIX ---
-    // Conditionally apply gap properties to avoid conflicts.
+    // Special handling for gap properties to avoid conflicts.
     if (gap) {
       baseStyle.gap = gap;
     } else {
@@ -154,13 +163,13 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
 
     return baseStyle;
   }, [
+    // Include all props and the `theme` object in the dependency array.
     display,
     flexDirection,
     flexWrap,
     justifyContent,
     alignItems,
     alignContent,
-    // Add all gap properties to the dependency array
     gap,
     rowGap,
     columnGap,
@@ -185,6 +194,7 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
     fontFamily,
     fontSize,
     selected,
+    theme, // Essential for reacting to live theme changes.
   ]);
 
   return (
@@ -194,7 +204,8 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
   );
 };
 
-// ...The rest of the `Container.craft` object remains the same...
+// This section defines the component's behavior in the Craft.js editor.
+// It does not need to change.
 Container.craft = {
   displayName: "Container",
   props: {
@@ -202,8 +213,6 @@ Container.craft = {
     flexDirection: "column",
     gap: "8px",
     padding: "12px",
-    background: "var(--color-card-background, #ffffff)",
-    borderRadius: "var(--global-radius, 8px)",
     width: "100%",
   } satisfies ContainerProps,
   rules: {
@@ -287,7 +296,6 @@ Container.craft = {
             { key: "gap", type: "text", label: "Gap" },
             { key: "rowGap", type: "text", label: "Row Gap" },
             { key: "columnGap", type: "text", label: "Column Gap" },
-
             { key: "gridTemplateColumns", type: "text", label: "Grid Columns" },
             { key: "gridTemplateRows", type: "text", label: "Grid Rows" },
             {

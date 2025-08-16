@@ -1,0 +1,36 @@
+{
+  "name": "artisan",
+  "colors": {
+    "background": {
+      "primary": "#eee5da",
+      "secondary": "#e9e4d9",
+      "tertiary": "#e4dfd6",
+      "quaternary": "#dcd5cc",
+      "quinary": "#d1c9bf"
+    },
+    "text": {
+      "heading": "#262424",
+      "subheading": "#3a3838",
+      "body": "#3a3838",
+      "muted": "#837e7e",
+      "onPrimary": "#eee5da",
+      "onSecondary": "#eee5da",
+      "onBackground": "#262424",
+      "inverse": "#262424"
+    },
+    "primary": "#262424",
+    "secondary": "#504c4c",
+    "roles": {
+      "success": "#579368",
+      "danger": "#c8644f",
+      "warning": "#c8a979",
+      "info": "#504c4c"
+    },
+    "border": "#dcd5cc",
+    "shadow": "rgba(38, 36, 36, 0.1)"
+  },
+  "fonts": {
+    "heading": "Outfit, sans-serif",
+    "body": "Inter, sans-serif"
+  }
+}
