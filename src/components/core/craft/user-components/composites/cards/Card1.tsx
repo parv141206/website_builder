@@ -22,14 +22,10 @@ export type Card1Props = {
 export const Card1: React.FC<Card1Props> & {
   craft?: any;
 } = ({ title, description, containerProps, titleProps, descriptionProps }) => {
-  // We get the connectors directly from useNode.
   const {
     connectors: { connect, drag },
   } = useNode();
 
-  // ⭐ THE FIX IS HERE ⭐
-  // We return a real `div` that can be connected to the editor.
-  // The `ref` prop provided by `connect` and `drag` will attach to this div.
   return (
     <div ref={(ref) => connect(drag(ref as HTMLDivElement))}>
       <Element
@@ -69,19 +65,13 @@ Card1.craft = {
   props: {
     title: "Card Title",
     description: "This is the card description. Edit it here.",
-    // animationIn: "fadeIn",
-    // animationHover: "lift",
-    // animationDuration: 0.5,
     containerProps: {},
     titleProps: {},
     descriptionProps: {},
   },
   rules: {
-    // This rule now works because the component has a draggable handle.
     canDrag: () => true,
   },
-  // The isCanvas rule is now on the inner <Element>, not the Card1 itself.
-  // isCanvas: true, // This should be removed from here.
 
   related: {
     settingsSchema: {
@@ -93,10 +83,6 @@ Card1.craft = {
             { key: "description", type: "textarea", label: "Description" },
           ],
         },
-        // We can add the style groups back here, which we know works.
-        // { label: "Container Styles", key: "containerProps", type: "group", fields: [...] },
-        // { label: "Title Styles", key: "titleProps", type: "group", fields: [...] },
-        // { label: "Description Styles", key: "descriptionProps", type: "group", fields: [...] },
       ],
     },
   },

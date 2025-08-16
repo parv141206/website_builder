@@ -1,8 +1,6 @@
 "use client";
 import { useEditor } from "@craftjs/core";
-// ⭐ 1. Import `memo` and `useCallback` from React
-import React, { memo, useCallback } from "react";
-// Import all necessary icons
+import React, { memo, useCallback, useState, useEffect } from "react";
 import {
   ArrowDown,
   ArrowLeft,
@@ -26,12 +24,125 @@ import {
   Italic,
   Underline,
   Strikethrough,
+  Search,
 } from "lucide-react";
-// Assuming the CustomColorPicker is also memoized as per the previous step
 import { CustomColorPicker } from "./CustomColorPicker";
 
 // ==================================================================================
-// SECTION 1: CUSTOM FIELD COMPONENTS (MEMOIZED)
+// SECTION 1: GOOGLE FONTS DATA
+// ==================================================================================
+import { POPULAR_GOOGLE_FONTS } from "~/themes";
+
+const loadGoogleFont = (fontName: string) => {
+  const fontUrl = `https://fonts.googleapis.com/css2?family=${fontName.replace(/ /g, "+")}:wght@300;400;500;600;700&display=swap`;
+
+  if (document.querySelector(`link[href="${fontUrl}"]`)) {
+    return;
+  }
+
+  const link = document.createElement("link");
+  link.href = fontUrl;
+  link.rel = "stylesheet";
+  document.head.appendChild(link);
+};
+
+// ==================================================================================
+// SECTION 2: FONT PICKER COMPONENT
+// ==================================================================================
+
+const FontPicker = memo(
+  ({
+    value,
+    onChange,
+  }: {
+    value: string;
+    onChange: (font: string) => void;
+  }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const filteredFonts = POPULAR_GOOGLE_FONTS.filter((font) =>
+      font.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+
+    const handleFontSelect = (fontName: string) => {
+      loadGoogleFont(fontName);
+      onChange(fontName);
+      setIsOpen(false);
+    };
+    useEffect(() => {
+      POPULAR_GOOGLE_FONTS.forEach((font) => loadGoogleFont(font.name));
+    }, []);
+    useEffect(() => {
+      if (value && POPULAR_GOOGLE_FONTS.some((font) => font.name === value)) {
+        loadGoogleFont(value);
+      }
+    }, [value]);
+
+    return (
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => setIsOpen(!isOpen)}
+          className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-left text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          style={{ fontFamily: value || "inherit" }}
+        >
+          <span>{value || "Select font..."}</span>
+          <ArrowDown
+            className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
+          />
+        </button>
+
+        {isOpen && (
+          <div className="absolute z-50 mt-1 max-h-64 w-full overflow-hidden rounded-md border border-gray-300 bg-white shadow-lg">
+            <div className="border-b border-gray-200 p-2">
+              <div className="relative">
+                <Search className="absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search fonts..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full rounded border border-gray-300 py-1 pr-3 pl-8 text-sm focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="max-h-48 overflow-y-auto">
+              {filteredFonts.map((font) => (
+                <button
+                  key={font.name}
+                  onClick={() => handleFontSelect(font.name)}
+                  className={`w-full border-b border-gray-100 px-3 py-2 text-left text-sm last:border-b-0 hover:bg-blue-50 ${
+                    value === font.name ? "bg-blue-100 text-blue-700" : ""
+                  }`}
+                  style={{ fontFamily: font.name }}
+                >
+                  <div>
+                    <div className="font-medium">{font.name}</div>
+                    <div className="text-xs text-gray-500 capitalize">
+                      {font.category}
+                    </div>
+                  </div>
+                </button>
+              ))}
+
+              {filteredFonts.length === 0 && (
+                <div className="px-3 py-4 text-center text-sm text-gray-500">
+                  No fonts found matching "{searchTerm}"
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  },
+);
+FontPicker.displayName = "FontPicker";
+
+// ==================================================================================
+// SECTION 3: CUSTOM FIELD COMPONENTS (MEMOIZED)
 // ==================================================================================
 
 type ButtonGroupOption = {
@@ -40,7 +151,6 @@ type ButtonGroupOption = {
   icon: React.ElementType;
 };
 
-// ⭐ 2. Wrap the component definition in `React.memo`
 const ButtonGroup = memo(
   ({
     options,
@@ -70,7 +180,7 @@ const ButtonGroup = memo(
     </div>
   ),
 );
-ButtonGroup.displayName = "ButtonGroup"; // For easier debugging
+ButtonGroup.displayName = "ButtonGroup";
 
 const IconToggleButton = memo(
   ({
@@ -98,7 +208,7 @@ const IconToggleButton = memo(
 IconToggleButton.displayName = "IconToggleButton";
 
 // ==================================================================================
-// SECTION 2: THE INTELLIGENT UI MAPS (FIXED)
+// SECTION 4: THE INTELLIGENT UI MAPS (ENHANCED)
 // ==================================================================================
 
 const CUSTOM_UI_MAP: Record<string, React.FC<any>> = {
@@ -184,6 +294,12 @@ const CUSTOM_UI_MAP: Record<string, React.FC<any>> = {
       ]}
     />
   ),
+  fontFamily: ({ value, onChange, field }) => (
+    <FontPicker
+      value={value}
+      onChange={(newValue) => onChange(field.key, newValue)}
+    />
+  ),
 };
 
 const TOGGLE_ICON_MAP: Record<string, React.ElementType> = {
@@ -194,7 +310,7 @@ const TOGGLE_ICON_MAP: Record<string, React.ElementType> = {
 };
 
 // ==================================================================================
-// SECTION 3: THE MAIN SETTINGS PANEL (MEMOIZED)
+// SECTION 5: THE MAIN SETTINGS PANEL (MEMOIZED)
 // ==================================================================================
 
 export const SettingsPanel = () => {
@@ -216,7 +332,6 @@ export const SettingsPanel = () => {
     };
   });
 
-  // ⭐ 3. Wrap the state-setting function in `useCallback`
   const setProp = useCallback(
     (key: string, value: any) => {
       if (selected) {
@@ -237,7 +352,6 @@ export const SettingsPanel = () => {
           "w-full px-2 py-1 text-sm bg-gray-100 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500",
       };
 
-      // ⭐ FIX: Pass the field and onChange function correctly
       const CustomComponent = CUSTOM_UI_MAP[key];
       if (CustomComponent) {
         return (

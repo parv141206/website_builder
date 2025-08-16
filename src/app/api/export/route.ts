@@ -3,6 +3,7 @@ import path from "path";
 import { NextRequest, NextResponse } from "next/server";
 import { parse } from "@babel/parser";
 import * as t from "@babel/types";
+import { POPULAR_GOOGLE_FONTS } from "~/themes";
 
 const traverse = require("@babel/traverse").default;
 const generate = require("@babel/generator").default;
@@ -32,18 +33,18 @@ function generateCssVariables(theme: any): string {
   return `:root {\n  ${variables.join("\n  ")}\n}`;
 }
 
-function getGoogleFontsUrl(theme: any): string {
-  if (!theme.fonts || !theme.fonts.heading || !theme.fonts.body) return "";
-  const headingFont = theme.fonts.heading.replace(/ /g, "+");
-  const bodyFont = theme.fonts.body.replace(/ /g, "+");
-  const fonts = new Set([headingFont, bodyFont]);
-  return `https://fonts.googleapis.com/css2?${Array.from(fonts)
-    .map((f) => `family=${f}:wght@400;700`)
-    .join("&")}&display=swap`;
+function generateAllGoogleFontsUrl(): string {
+  const fontParams = POPULAR_GOOGLE_FONTS.map((font) => {
+    const weights = font.variants.join(";");
+    return `family=${font.name.replace(/ /g, "+")}:wght@${weights}`;
+  });
+
+  return `https://fonts.googleapis.com/css2?${fontParams.join("&")}&display=swap`;
 }
 
-function generateLayoutCode(seo: any, theme: any): string {
-  const googleFontsUrl = getGoogleFontsUrl(theme);
+function generateLayoutCode(seo: any): string {
+  const googleFontsUrl = generateAllGoogleFontsUrl();
+
   return `
 import type { Metadata } from "next";
 import "./globals.css";
@@ -239,7 +240,7 @@ function convertToPureComponent(inputPath: string, outputPath: string) {
         componentName = path.node.id.name;
       }
     },
-    TSTypeAliasDeclaration(path) {
+    TSTypeAliasDeclaration(path: { node: { id: { name: string } } }) {
       if (path.node.id.name.endsWith("Props")) {
         propsType = path.node.id.name;
       }
@@ -645,10 +646,7 @@ export async function POST(req: NextRequest) {
       if (!fs.existsSync(p)) fs.mkdirSync(p, { recursive: true });
     });
 
-    fs.writeFileSync(
-      path.join(appPath, "layout.tsx"),
-      generateLayoutCode(seo, activeTheme),
-    );
+    fs.writeFileSync(path.join(appPath, "layout.tsx"), generateLayoutCode(seo));
     fs.writeFileSync(
       path.join(appPath, "globals.css"),
       generateCssVariables(activeTheme),

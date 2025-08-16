@@ -192,9 +192,6 @@ Text.craft = {
     fontWeight: 400,
     lineHeight: "1.5",
     textAlign: "left",
-    // ⭐ THE FIX: `color` and `fontFamily` are REMOVED from here. ⭐
-    // By leaving them `undefined`, we ensure the component's internal
-    // logic correctly falls back to the theme on initial render.
   } satisfies TextProps,
   rules: {
     canDrag: () => true,

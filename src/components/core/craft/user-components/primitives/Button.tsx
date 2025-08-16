@@ -6,8 +6,6 @@ import { useTheme } from "~/themes";
 import { Container, type ContainerProps } from "./Container";
 import { Text, type TextProps } from "./Text";
 
-// ⭐ PROPS DEFINITION
-// It combines Container and Text props for full control.
 export type ButtonProps = {
   text: string;
   containerProps?: Partial<ContainerProps>;
@@ -25,26 +23,18 @@ export const Button: React.FC<ButtonProps> & { craft?: any } = ({
   const theme = useTheme();
 
   return (
-    // We use an <Element> of a Container, but set `isCanvas={false}`
-    // so users can't drop other components inside the button.
     <Element
       is={Container}
       id="button-container"
-      // This ref makes the entire button draggable as one unit.
       ref={(ref: HTMLDivElement) => connect(drag(ref))}
-      // Default styles that use the theme
       as="button"
       padding="12px 24px"
       background={theme.colors.primary}
       color={theme.colors.text.onPrimary || "#ffffff"}
       borderRadius="8px"
-      // User overrides are spread last
       {...containerProps}
-      // Ensure it's not a canvas
       isCanvas={false}
     >
-      {/* The text inside is also an Element, so its props can be edited.
-          But we can choose not to expose them in the settings if we want. */}
       <Element
         is={Text}
         id="button-text"
@@ -58,7 +48,6 @@ export const Button: React.FC<ButtonProps> & { craft?: any } = ({
   );
 };
 
-// ⭐ CRAFT.JS CONFIGURATION
 Button.craft = {
   displayName: "Button",
   props: {
@@ -68,7 +57,6 @@ Button.craft = {
   } satisfies ButtonProps,
   rules: {
     canDrag: () => true,
-    // We explicitly say nothing can be moved into a button.
     canMoveIn: () => false,
   },
   related: {
@@ -78,7 +66,6 @@ Button.craft = {
           label: "Content",
           fields: [{ key: "text", type: "text", label: "Button Text" }],
         },
-        // We use the "props tunneling" pattern we perfected for Card1.
         {
           label: "Button Styles",
           key: "containerProps",

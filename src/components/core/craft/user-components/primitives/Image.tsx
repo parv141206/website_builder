@@ -3,7 +3,6 @@
 import React, { useMemo } from "react";
 import { useNode } from "@craftjs/core";
 
-// ⭐ PROPS DEFINITION
 export type ImageProps = {
   src: string;
   alt: string;
@@ -69,7 +68,6 @@ export const Image: React.FC<ImageProps> & { craft?: any } = ({
   );
 };
 
-// ⭐ CRAFT.JS CONFIGURATION
 Image.craft = {
   displayName: "Image",
   props: {
