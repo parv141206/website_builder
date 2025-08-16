@@ -14,7 +14,7 @@ export const ThemeProvider = ({ children }: Props) => {
   const theme = themes[currentTheme];
 
   useEffect(() => {
-    applyThemeToDOM(theme!, radius, horizontalSpacing, verticalSpacing);
+    // applyThemeToDOM(theme!, radius, horizontalSpacing, verticalSpacing);
   }, [theme, radius, horizontalSpacing, verticalSpacing]);
 
   return (
@@ -29,11 +29,13 @@ export const ThemeProvider = ({ children }: Props) => {
     >
       <ClientOnly>
         <div
-          style={{
-            backgroundColor: theme!.colors.background.primary,
-            color: theme!.colors.text.body,
-            fontFamily: theme!.fonts.body,
-          }}
+          style={
+            {
+              // backgroundColor: theme!.colors.background.primary,
+              // color: theme!.colors.text.body,
+              // fontFamily: theme!.fonts.body,
+            }
+          }
           className="min-h-screen transition-all duration-300"
         >
           {children}

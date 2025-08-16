@@ -35,11 +35,11 @@ export const DefaultLayerHeader = () => {
       style={{
         paddingLeft: `${depth * 20}px`,
       }}
-      className={`mx-3 flex cursor-pointer items-center rounded-md px-3 py-1 text-sm transition-colors ${selected ? "bg-blue-600 text-white" : "hover:bg-gray-200"} `}
+      className={`me-3 flex cursor-pointer items-center rounded-md px-3 py-1 text-sm transition-colors ${selected ? "bg-emerald-200 text-black" : "hover:bg-gray-200"} `}
     >
       {/* Hide/Show Button with React Icons */}
       <button
-        className={`mr-2 flex items-center justify-center transition-opacity ${selected ? "text-white" : "text-gray-500"} `}
+        className={`mr-2 flex items-center justify-center transition-opacity ${selected ? "text-gray-500" : "text-gray-500"} `}
         onClick={() => actions.setHidden(id, !hidden)}
       >
         {/* --- 2. Conditionally render FiEye or FiEyeOff --- */}

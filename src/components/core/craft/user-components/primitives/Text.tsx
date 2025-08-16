@@ -227,17 +227,28 @@ Text.craft = {
               key: "textAlign",
               type: "select",
               label: "Text Align",
-              options: ["left", "center", "right", "justify", "start", "end"],
             },
             {
               key: "textTransform",
               type: "select",
               label: "Transform",
-              options: ["none", "uppercase", "lowercase", "capitalize"],
             },
-            { key: "italic", type: "boolean", label: "Italic" },
-            { key: "underline", type: "boolean", label: "Underline" },
-            { key: "strike", type: "boolean", label: "Strike" },
+
+            {
+              key: "fontStyleToggles",
+              type: "custom-toggle-group",
+              label: "Style",
+              children: [
+                {
+                  key: "fontWeight",
+                  label: "Bold",
+                  valueMap: { on: "bold", off: "normal" },
+                },
+                { key: "italic", label: "Italic" },
+                { key: "underline", label: "Underline" },
+                { key: "strike", label: "Strikethrough" },
+              ],
+            },
           ],
         },
         {
