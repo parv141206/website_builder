@@ -26,13 +26,41 @@
       "components": [
         {
           "name": "Text",
+          "preview": { "is": "Text", "props": { "text": "New Text" } }
+        },
+        {
+          "name": "Link",
           "preview": {
-            "is": "Text",
+            "is": "Link",
+            "props": { "text": "Clickable Link", "href": "#" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Media",
+      "icon": "Image",
+      "components": [
+        {
+          "name": "Image",
+          "preview": {
+            "is": "Image",
             "props": {
-              "text": "New Text",
-              "fontSize": "16px"
+              "src": "https://images.unsplash.com/photo-1554629947-334ff61d85dc",
+              "alt": "Mountain landscape",
+              "height": "120px"
             }
           }
+        }
+      ]
+    },
+    {
+      "name": "Actions",
+      "icon": "Joystick",
+      "components": [
+        {
+          "name": "Button",
+          "preview": { "is": "Button", "props": { "text": "Click Me" } }
         }
       ]
     },
@@ -46,7 +74,7 @@
             "is": "Card1",
             "props": {
               "title": "Card Title",
-              "description": "A short, descriptive subtitle."
+              "description": "A short subtitle."
             }
           }
         }

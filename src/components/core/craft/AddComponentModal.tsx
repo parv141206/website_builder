@@ -3,28 +3,33 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { useEditor, Element } from "@craftjs/core";
 import { motion, AnimatePresence } from "motion/react";
-import { Search, X, LayoutTemplate, Type, Contact } from "lucide-react";
+import {
+  Search,
+  X,
+  LayoutTemplate,
+  Type,
+  Contact,
+  Image,
+  Joystick,
+} from "lucide-react";
 import libraryData from "../craft/user-components/component-library.json";
 
-// Component imports
-import { Container } from "./user-components/primitives/Container";
-import { Text } from "./user-components/primitives/Text";
-import { Card1 } from "./user-components/composites/cards/Card1";
 import { SafePreview } from "./withPreview";
+import { COMPONENT_RESOLVER } from "./user-components/componentResolver";
 
 // ==================================================================================
 // COMPONENT MAP & ICON MAP
 // ==================================================================================
 
 const COMPONENT_MAP: Record<string, React.ElementType> = {
-  Container,
-  Text,
-  Card1,
+  ...COMPONENT_RESOLVER,
 };
 
 const ICON_MAP: Record<string, React.ElementType> = {
   LayoutTemplate,
   Type,
+  Image,
+  Joystick,
   Contact,
 };
 

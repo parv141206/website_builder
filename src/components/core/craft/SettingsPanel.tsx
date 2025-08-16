@@ -98,13 +98,14 @@ const IconToggleButton = memo(
 IconToggleButton.displayName = "IconToggleButton";
 
 // ==================================================================================
-// SECTION 2: THE INTELLIGENT UI MAPS (UNCHANGED)
+// SECTION 2: THE INTELLIGENT UI MAPS (FIXED)
 // ==================================================================================
 
 const CUSTOM_UI_MAP: Record<string, React.FC<any>> = {
-  flexDirection: (props) => (
+  flexDirection: ({ value, onChange, field }) => (
     <ButtonGroup
-      {...props}
+      value={value}
+      onChange={(newValue) => onChange(field.key, newValue)}
       options={[
         { value: "row", label: "Row", icon: ArrowRight },
         { value: "column", label: "Column", icon: ArrowDown },
@@ -113,9 +114,10 @@ const CUSTOM_UI_MAP: Record<string, React.FC<any>> = {
       ]}
     />
   ),
-  justifyContent: (props) => (
+  justifyContent: ({ value, onChange, field }) => (
     <ButtonGroup
-      {...props}
+      value={value}
+      onChange={(newValue) => onChange(field.key, newValue)}
       options={[
         {
           value: "flex-start",
@@ -135,9 +137,10 @@ const CUSTOM_UI_MAP: Record<string, React.FC<any>> = {
       ]}
     />
   ),
-  alignItems: (props) => (
+  alignItems: ({ value, onChange, field }) => (
     <ButtonGroup
-      {...props}
+      value={value}
+      onChange={(newValue) => onChange(field.key, newValue)}
       options={[
         {
           value: "flex-start",
@@ -157,9 +160,10 @@ const CUSTOM_UI_MAP: Record<string, React.FC<any>> = {
       ]}
     />
   ),
-  textAlign: (props) => (
+  textAlign: ({ value, onChange, field }) => (
     <ButtonGroup
-      {...props}
+      value={value}
+      onChange={(newValue) => onChange(field.key, newValue)}
       options={[
         { value: "left", label: "Align Left", icon: AlignLeft },
         { value: "center", label: "Align Center", icon: AlignCenter },
@@ -168,9 +172,10 @@ const CUSTOM_UI_MAP: Record<string, React.FC<any>> = {
       ]}
     />
   ),
-  textTransform: (props) => (
+  textTransform: ({ value, onChange, field }) => (
     <ButtonGroup
-      {...props}
+      value={value}
+      onChange={(newValue) => onChange(field.key, newValue)}
       options={[
         { value: "none", label: "None", icon: Pilcrow },
         { value: "capitalize", label: "Capitalize", icon: CaseSensitive },
@@ -232,9 +237,12 @@ export const SettingsPanel = () => {
           "w-full px-2 py-1 text-sm bg-gray-100 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500",
       };
 
+      // ⭐ FIX: Pass the field and onChange function correctly
       const CustomComponent = CUSTOM_UI_MAP[key];
       if (CustomComponent) {
-        return <CustomComponent value={value} onChange={setProp} />;
+        return (
+          <CustomComponent value={value} onChange={setProp} field={field} />
+        );
       }
 
       if (type === "custom-toggle-group") {

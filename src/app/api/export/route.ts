@@ -173,7 +173,7 @@ function generatePageCode(
   const rootNode = nodes["ROOT"];
   const rootProps = serializeProps(rootNode.props, "ROOT");
   const rootChildrenJsx = generateNodeJsx("ROOT", nodes);
-  const primitives = ["Container", "Text"];
+  const primitives = ["Container", "Text", "Image", "Button", "Link"];
   const imports = usedComponents
     .filter((name) => primitives.includes(name))
     .map((name) => `import { ${name} } from "./components/${name}";`)
@@ -674,7 +674,7 @@ export async function POST(req: NextRequest) {
     );
 
     const primitivesToExport = usedComponents.filter((name) =>
-      ["Container", "Text"].includes(name),
+      ["Container", "Text", "Image", "Button", "Link"].includes(name),
     );
 
     const baseDir = path.join(

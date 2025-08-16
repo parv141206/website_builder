@@ -3,25 +3,7 @@
 import React, { useMemo } from "react";
 import { Editor, Frame, Element } from "@craftjs/core";
 
-// Component imports - add all your components here
-import { Container } from "./user-components/primitives/Container";
-import { Text } from "./user-components/primitives/Text";
-import { Card1 } from "./user-components/composites/cards/Card1";
-
-// ==================================================================================
-// COMPONENT RESOLVER
-// ==================================================================================
-
-const COMPONENT_RESOLVER = {
-  Container,
-  Text,
-  Card1,
-  // Add more components as needed
-};
-
-// ==================================================================================
-// MINI CRAFTJS PREVIEW
-// ==================================================================================
+import { COMPONENT_RESOLVER } from "./user-components/componentResolver";
 
 type MiniCraftPreviewProps = {
   componentConfig: {

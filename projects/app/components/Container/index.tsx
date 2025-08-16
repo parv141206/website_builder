@@ -107,16 +107,10 @@ export const Container: React.FC<ContainerProps> = ({
       borderRadius,
       boxShadow,
       fontSize,
-      // CRITICAL LOGIC: Use the prop if it's provided, otherwise fall back to the theme.
-      // The API route will specifically transform this pattern during export.
       background: background || theme.colors.background.primary,
       color: color || theme.colors.text.body,
       fontFamily: fontFamily || theme.fonts.body
-
-      // Editor-specific styles that will be removed by the API route.
     };
-
-    // Special handling for gap properties to avoid conflicts.
     if (gap) {
       baseStyle.gap = gap;
     } else {
@@ -124,14 +118,8 @@ export const Container: React.FC<ContainerProps> = ({
       baseStyle.columnGap = columnGap;
     }
     return baseStyle;
-  }, [
-  // Include all props and the `theme` object in the dependency array.
-  display, flexDirection, flexWrap, justifyContent, alignItems, alignContent, gap, rowGap, columnGap, gridTemplateColumns, gridTemplateRows, gridAutoFlow, width, height, minWidth, minHeight, maxWidth, maxHeight, margin, padding, background, borderColor, borderWidth, borderStyle, borderRadius, boxShadow, color, fontFamily, fontSize, theme // Essential for reacting to live theme changes.
-  ]);
+  }, [display, flexDirection, flexWrap, justifyContent, alignItems, alignContent, gap, rowGap, columnGap, gridTemplateColumns, gridTemplateRows, gridAutoFlow, width, height, minWidth, minHeight, maxWidth, maxHeight, margin, padding, background, borderColor, borderWidth, borderStyle, borderRadius, boxShadow, color, fontFamily, fontSize, theme]);
   return <Tag style={style}>
       {children}
     </Tag>;
 };
-
-// This section defines the component's behavior in the Craft.js editor.
-// It does not need to change.
