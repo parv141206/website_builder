@@ -6,12 +6,30 @@ import React, { useMemo } from "react";
 export type ContainerProps = {
   as?: React.ElementType;
   // layout
-  display?: "block" | "flex" | "grid" | "inline-block" | "inline-flex" | "inline-grid";
+  display?:
+    | "block"
+    | "flex"
+    | "grid"
+    | "inline-block"
+    | "inline-flex"
+    | "inline-grid";
   flexDirection?: "row" | "column" | "row-reverse" | "column-reverse";
   flexWrap?: "nowrap" | "wrap" | "wrap-reverse";
-  justifyContent?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around" | "space-evenly";
+  justifyContent?:
+    | "flex-start"
+    | "center"
+    | "flex-end"
+    | "space-between"
+    | "space-around"
+    | "space-evenly";
   alignItems?: "stretch" | "flex-start" | "center" | "flex-end" | "baseline";
-  alignContent?: "stretch" | "flex-start" | "center" | "flex-end" | "space-between" | "space-around";
+  alignContent?:
+    | "stretch"
+    | "flex-start"
+    | "center"
+    | "flex-end"
+    | "space-between"
+    | "space-around";
   gap?: string;
   rowGap?: string;
   columnGap?: string;
@@ -79,44 +97,37 @@ export const Container: React.FC<ContainerProps> = ({
   fontFamily,
   // This prop comes from the settings panel
   fontSize,
-  children
+  children,
 }) => {
-  const style: React.CSSProperties = useMemo(() => {
-    const baseStyle: React.CSSProperties = {
-      // Pass all layout and box-model props directly.
-      display,
-      flexDirection,
-      flexWrap,
-      justifyContent,
-      alignItems,
-      alignContent,
-      gridTemplateColumns,
-      gridTemplateRows,
-      gridAutoFlow,
-      width,
-      height,
-      minWidth,
-      minHeight,
-      maxWidth,
-      maxHeight,
-      margin,
-      padding,
-      borderColor,
-      borderWidth,
-      borderStyle,
-      borderRadius,
-      boxShadow,
-      fontSize,
-      // CRITICAL LOGIC: Use the prop if it's provided, otherwise fall back to the theme.
-      // The API route will specifically transform this pattern during export.
+  const style = React.useMemo(() => {
+    const baseStyle = {
+      display: display,
+      flexDirection: flexDirection,
+      flexWrap: flexWrap,
+      justifyContent: justifyContent,
+      alignItems: alignItems,
+      alignContent: alignContent,
+      gridTemplateColumns: gridTemplateColumns,
+      gridTemplateRows: gridTemplateRows,
+      gridAutoFlow: gridAutoFlow,
+      width: width,
+      height: height,
+      minWidth: minWidth,
+      minHeight: minHeight,
+      maxWidth: maxWidth,
+      maxHeight: maxHeight,
+      margin: margin,
+      padding: padding,
+      borderColor: borderColor,
+      borderWidth: borderWidth,
+      borderStyle: borderStyle,
+      borderRadius: borderRadius,
+      boxShadow: boxShadow,
+      fontSize: fontSize,
       background: background || theme.colors.background.primary,
       color: color || theme.colors.text.body,
-      fontFamily: fontFamily || theme.fonts.body
-
-      // Editor-specific styles that will be removed by the API route.
+      fontFamily: fontFamily || theme.fonts.body,
     };
-
-    // Special handling for gap properties to avoid conflicts.
     if (gap) {
       baseStyle.gap = gap;
     } else {
@@ -125,12 +136,38 @@ export const Container: React.FC<ContainerProps> = ({
     }
     return baseStyle;
   }, [
-  // Include all props and the `theme` object in the dependency array.
-  display, flexDirection, flexWrap, justifyContent, alignItems, alignContent, gap, rowGap, columnGap, gridTemplateColumns, gridTemplateRows, gridAutoFlow, width, height, minWidth, minHeight, maxWidth, maxHeight, margin, padding, background, borderColor, borderWidth, borderStyle, borderRadius, boxShadow, color, fontFamily, fontSize, theme // Essential for reacting to live theme changes.
+    theme,
+    display,
+    flexDirection,
+    flexWrap,
+    justifyContent,
+    alignItems,
+    alignContent,
+    gap,
+    rowGap,
+    columnGap,
+    gridTemplateColumns,
+    gridTemplateRows,
+    gridAutoFlow,
+    width,
+    height,
+    minWidth,
+    minHeight,
+    maxWidth,
+    maxHeight,
+    margin,
+    padding,
+    background,
+    borderColor,
+    borderWidth,
+    borderStyle,
+    borderRadius,
+    boxShadow,
+    color,
+    fontFamily,
+    fontSize,
   ]);
-  return <Tag style={style}>
-      {children}
-    </Tag>;
+  return <Tag style={style}>{children}</Tag>;
 };
 
 // This section defines the component's behavior in the Craft.js editor.

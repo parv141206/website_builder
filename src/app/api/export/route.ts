@@ -8,7 +8,7 @@ const traverse = require("@babel/traverse").default;
 const generate = require("@babel/generator").default;
 
 // ==================================================================================
-// SECTION 1: HELPER FUNCTIONS
+// SECTION 1: HELPER FUNCTIONS (Unchanged and Correct)
 // ==================================================================================
 
 function generateCssVariables(theme: any): string {
@@ -67,36 +67,103 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   );
 }`;
 }
+function serializeProps(props: Record<string, any>, nodeId: string): string {
+  if (nodeId === "ROOT") {
+    const stylePropKeys = new Set([
+      "display",
+      "flexDirection",
+      "flexWrap",
+      "justifyContent",
+      "alignItems",
+      "alignContent",
+      "gap",
+      "rowGap",
+      "columnGap",
+      "gridTemplateColumns",
+      "gridTemplateRows",
+      "gridAutoFlow",
+      "width",
+      "height",
+      "minWidth",
+      "minHeight",
+      "maxWidth",
+      "maxHeight",
+      "margin",
+      "padding",
+      "background",
+      "borderColor",
+      "borderWidth",
+      "borderStyle",
+      "borderRadius",
+      "boxShadow",
+      "color",
+      "fontFamily",
+      "fontSize",
+    ]);
 
-function serializeProps(props: Record<string, any>): string {
-  return Object.entries(props)
-    .map(([key, value]) => {
-      if (key === "canvas") return "";
-      if (typeof value === "string")
-        return `${key}="${value.replace(/"/g, '\\"')}"`;
-      if (typeof value === "object") return `${key}={${JSON.stringify(value)}}`;
-      return `${key}={${value}}`;
-    })
-    .join(" ");
+    const regularProps: string[] = [];
+    const styleObject: Record<string, any> = {};
+
+    Object.entries(props).forEach(([key, value]) => {
+      if (key === "canvas" || value === undefined) return;
+
+      if (stylePropKeys.has(key)) {
+        styleObject[key] = value;
+      } else {
+        regularProps.push(`${key}="${value}"`);
+      }
+    });
+
+    if (Object.keys(styleObject).length > 0) {
+      const styleString = `style={${JSON.stringify(styleObject)}}`;
+      regularProps.push(styleString);
+    }
+
+    return regularProps.join(" ");
+  } else {
+    return Object.entries(props)
+      .map(([key, value]) => {
+        if (key === "canvas" || value === undefined) return "";
+        if (typeof value === "string")
+          return `${key}="${value.replace(/"/g, '\\"')}"`;
+        if (typeof value === "object" && value !== null)
+          return `${key}={${JSON.stringify(value)}}`;
+        return `${key}={${value}}`;
+      })
+      .filter(Boolean)
+      .join(" ");
+  }
 }
 
-function generateNodeJsx(nodeId: string, nodes: Record<string, any>): string {
-  const node = nodes[nodeId];
+function generateNodeJsx(
+  nodeId: string,
+  allNodes: Record<string, any>,
+): string {
+  const node = allNodes[nodeId];
   if (!node) return "";
-  if (nodeId === "ROOT")
+  const componentName = node.type?.resolvedName;
+
+  if (nodeId === "ROOT") {
     return node.nodes
-      .map((childId: string) => generateNodeJsx(childId, nodes))
+      .map((childId: string) => generateNodeJsx(childId, allNodes))
       .join("\n");
-  const tagName = node.type?.resolvedName || node.type;
-  if (!tagName) return "";
-  const propsString = serializeProps(node.props);
-  if (node.nodes && node.nodes.length > 0) {
-    const childrenJsx = node.nodes
-      .map((childId: string) => generateNodeJsx(childId, nodes))
-      .join("\n");
-    return `<${tagName} ${propsString}>${childrenJsx}</${tagName}>`;
   }
-  return `<${tagName} ${propsString} />`;
+
+  const isComposite =
+    node.linkedNodes && Object.keys(node.linkedNodes).length > 0;
+  if (isComposite) {
+    const rootChildNodeId = Object.values(node.linkedNodes)[0] as string;
+    return generateNodeJsx(rootChildNodeId, allNodes);
+  } else {
+    const propsString = serializeProps(node.props, nodeId);
+    const childrenJsx = node.nodes
+      .map((childId: string) => generateNodeJsx(childId, allNodes))
+      .join("\n");
+    if (childrenJsx) {
+      return `<${componentName} ${propsString}>${childrenJsx}</${componentName}>`;
+    }
+    return `<${componentName} ${propsString} />`;
+  }
 }
 
 function generatePageCode(
@@ -104,9 +171,11 @@ function generatePageCode(
   usedComponents: string[],
 ): string {
   const rootNode = nodes["ROOT"];
-  const rootProps = serializeProps(rootNode.props);
+  const rootProps = serializeProps(rootNode.props, "ROOT");
   const rootChildrenJsx = generateNodeJsx("ROOT", nodes);
+  const primitives = ["Container", "Text"];
   const imports = usedComponents
+    .filter((name) => primitives.includes(name))
     .map((name) => `import { ${name} } from "./components/${name}";`)
     .join("\n");
   return `
@@ -154,116 +223,49 @@ function convertToPureComponent(inputPath: string, outputPath: string) {
     plugins: ["jsx", "typescript"],
   });
 
-  let styleDeclaration: t.VariableDeclaration | null = null;
-  let hasTextProp = false;
-  let hasChildrenProp = false;
+  let componentName = "";
+  let propsType = "";
 
+  // Finding component and props information
   traverse(ast, {
     VariableDeclarator(path: {
       node: { id: t.Node | null | undefined; init: t.Node | null | undefined };
-      get: (arg0: string) => {
-        (): any;
-        new (): any;
-        traverse: {
-          (arg0: {
-            CallExpression?: (callPath: any) => void;
-            VariableDeclarator?: (innerPath: any) => void;
-          }): void;
-          new (): any;
-        };
-      };
     }) {
-      const isComponent =
+      if (
         t.isIdentifier(path.node.id) &&
         /^[A-Z]/.test(path.node.id.name) &&
-        t.isArrowFunctionExpression(path.node.init);
-      if (isComponent) {
-        path.get("init.body").traverse({
-          CallExpression(callPath) {
-            if (
-              t.isIdentifier(callPath.node.callee) &&
-              callPath.node.callee.name === "useMemo"
-            ) {
-              const depArrayPath = callPath.get("arguments.1");
-              if (depArrayPath && depArrayPath.isArrayExpression()) {
-                const newElements = depArrayPath.node.elements.filter((el) => {
-                  return !(
-                    t.isIdentifier(el) &&
-                    ["selected", "editing", "theme"].includes(el.name)
-                  );
-                });
-                depArrayPath.node.elements = newElements;
-              }
-              callPath.get("arguments.0").traverse({
-                ObjectProperty(propPath: {
-                  node: { key: t.Identifier };
-                  remove: () => void;
-                }) {
-                  const key = propPath.node.key as t.Identifier;
-                  if (
-                    [
-                      "outline",
-                      "outlineOffset",
-                      "transition",
-                      "cursor",
-                    ].includes(key.name)
-                  ) {
-                    propPath.remove();
-                  }
-                },
-              });
-            }
-          },
-        });
-
-        path.get("init.body").traverse({
-          VariableDeclarator(innerPath) {
-            if (
-              t.isIdentifier(innerPath.node.id) &&
-              innerPath.node.id.name === "style"
-            ) {
-              styleDeclaration = innerPath.parentPath
-                .node as t.VariableDeclaration;
-            }
-          },
-        });
-
-        const props = (path.node.init as t.ArrowFunctionExpression)
-          .params[0] as t.ObjectPattern;
-        props.properties.forEach((prop) => {
-          if (t.isObjectProperty(prop) && t.isIdentifier(prop.key)) {
-            if (prop.key.name === "text") hasTextProp = true;
-            if (prop.key.name === "children") hasChildrenProp = true;
-          }
-        });
+        t.isArrowFunctionExpression(path.node.init)
+      ) {
+        componentName = path.node.id.name;
+      }
+    },
+    TSTypeAliasDeclaration(path) {
+      if (path.node.id.name.endsWith("Props")) {
+        propsType = path.node.id.name;
       }
     },
   });
 
+  // Removing all unwanted imports
   traverse(ast, {
     ImportDeclaration(path: {
       node: { source: { value: any } };
       remove: () => void;
-      replaceWith: (arg0: t.ImportDeclaration) => void;
     }) {
       const source = path.node.source.value;
-      if (source.includes("@craftjs/core")) {
+      if (
+        source.includes("@craftjs/core") ||
+        source.startsWith("~/themes") ||
+        source.includes("useTheme") ||
+        source.includes("framer-motion")
+      ) {
         path.remove();
-        return;
-      }
-      if (source.startsWith("~/themes")) {
-        const themeImportSpecifier = t.importSpecifier(
-          t.identifier("theme"),
-          t.identifier("theme"),
-        );
-        const newImport = t.importDeclaration(
-          [themeImportSpecifier],
-          t.stringLiteral("../../theme"),
-        );
-        path.replaceWith(newImport);
       }
     },
+  });
 
+  // Removing .craft property assignments
+  traverse(ast, {
     ExpressionStatement(path: {
       node: { expression: t.Node | null | undefined };
       remove: () => void;
@@ -276,58 +278,161 @@ function convertToPureComponent(inputPath: string, outputPath: string) {
         path.remove();
       }
     },
+  });
 
-    ArrowFunctionExpression(path: {
-      findParent: (arg0: (p: any) => any) => any;
-      get: (arg0: string) => {
-        (): any;
-        new (): any;
-        replaceWith: { (arg0: t.BlockStatement): void; new (): any };
-      };
+  // Removing all editor-specific variable declarations BEFORE component transformation
+  traverse(ast, {
+    VariableDeclarator(path: {
+      node: { id: t.Node | null | undefined; init: t.Node | null | undefined };
+      parentPath: { remove: () => void };
     }) {
-      const parentDeclarator = path.findParent((p) => p.isVariableDeclarator());
-      if (
-        !parentDeclarator ||
-        !t.isIdentifier(parentDeclarator.node.id) ||
-        !/^[A-Z]/.test(parentDeclarator.node.id.name)
-      ) {
-        return; // Not a component
-      }
-
-      if (styleDeclaration) {
-        let children: (
-          | t.JSXElement
-          | t.JSXFragment
-          | t.JSXExpressionContainer
-          | t.JSXSpreadChild
-          | t.JSXText
-        )[] = [];
-        if (hasTextProp) {
-          children = [t.jsxExpressionContainer(t.identifier("text"))];
-        } else if (hasChildrenProp) {
-          children = [t.jsxExpressionContainer(t.identifier("children"))];
+      if (t.isIdentifier(path.node.id)) {
+        // Remove useNode destructuring
+        if (
+          t.isObjectPattern(path.node.id) &&
+          t.isCallExpression(path.node.init) &&
+          t.isIdentifier(path.node.init.callee, { name: "useNode" })
+        ) {
+          path.parentPath.remove();
+          return;
         }
 
-        const newReturnElement = t.jsxElement(
-          t.jsxOpeningElement(t.jsxIdentifier("Tag"), [
-            t.jsxAttribute(
-              t.jsxIdentifier("style"),
-              t.jsxExpressionContainer(t.identifier("style")),
-            ),
-          ]),
-          t.jsxClosingElement(t.jsxIdentifier("Tag")),
-          children,
-          false,
-        );
+        // Remove useTheme calls
+        if (
+          path.node.id.name === "theme" &&
+          t.isCallExpression(path.node.init) &&
+          t.isIdentifier(path.node.init.callee, { name: "useTheme" })
+        ) {
+          path.parentPath.remove();
+          return;
+        }
 
-        path
-          .get("body")
-          .replaceWith(
-            t.blockStatement([
-              styleDeclaration,
-              t.returnStatement(newReturnElement),
+        // Remove useRef calls
+        if (
+          path.node.id.name === "ref" &&
+          t.isCallExpression(path.node.init) &&
+          t.isIdentifier(path.node.init.callee, { name: "useRef" })
+        ) {
+          path.parentPath.remove();
+          return;
+        }
+
+        // Remove useState calls for editing
+        if (
+          t.isArrayPattern(path.node.id) &&
+          t.isCallExpression(path.node.init) &&
+          t.isIdentifier(path.node.init.callee, { name: "useState" })
+        ) {
+          //@ts-ignore
+          const elements = path.node.id.elements;
+          if (
+            elements &&
+            elements.length >= 2 &&
+            t.isIdentifier(elements[0], { name: "editing" })
+          ) {
+            path.parentPath.remove();
+            return;
+          }
+        }
+
+        // Remove editor function declarations
+        if (
+          [
+            "onDoubleClick",
+            "handleBlur",
+            "handleKeyDown",
+            "commonProps",
+          ].includes(path.node.id.name)
+        ) {
+          path.parentPath.remove();
+        }
+      }
+    },
+  });
+
+  // Transforming the main component
+  traverse(ast, {
+    VariableDeclarator(path: {
+      node: { id: t.Node | null | undefined; init: t.Node | null | undefined };
+    }) {
+      if (
+        t.isIdentifier(path.node.id) &&
+        path.node.id.name === componentName &&
+        t.isArrowFunctionExpression(path.node.init)
+      ) {
+        const arrowFunc = path.node.init;
+
+        // Clean the type annotation to remove craft property
+        if (t.isTSTypeAnnotation(path.node.id.typeAnnotation)) {
+          const newType = t.tsTypeReference(
+            t.tsQualifiedName(t.identifier("React"), t.identifier("FC")),
+            t.tsTypeParameterInstantiation([
+              t.tsTypeReference(t.identifier(propsType)),
             ]),
           );
+          path.node.id.typeAnnotation = t.tsTypeAnnotation(newType);
+        }
+
+        // Clean the function body
+        if (t.isBlockStatement(arrowFunc.body)) {
+          const cleanedStatements: t.Statement[] = [];
+
+          for (const statement of arrowFunc.body.body) {
+            if (t.isVariableDeclaration(statement)) {
+              for (const declarator of statement.declarations) {
+                if (t.isIdentifier(declarator.id)) {
+                  // Keep only the style declaration
+                  if (declarator.id.name === "style") {
+                    const cleanedStyle = cleanStyleDeclaration(declarator);
+                    cleanedStatements.push(
+                      t.variableDeclaration("const", [cleanedStyle]),
+                    );
+                  }
+                  // Skip all other variable declarations (they're editor-specific)
+                }
+              }
+            } else if (t.isReturnStatement(statement)) {
+              // Clean the return statement
+              const cleanedReturn = cleanReturnStatement(statement);
+              cleanedStatements.push(cleanedReturn);
+            }
+            // Skip all other statements (they're editor-specific)
+          }
+
+          arrowFunc.body = t.blockStatement(cleanedStatements);
+        }
+      }
+    },
+  });
+
+  // Adding theme import at the beginning
+  const themeImport = t.importDeclaration(
+    [t.importSpecifier(t.identifier("theme"), t.identifier("theme"))],
+    t.stringLiteral("../../theme"),
+  );
+  ast.program.body.unshift(themeImport);
+
+  // Cleaning up React imports
+  traverse(ast, {
+    ImportDeclaration(path: {
+      node: { source: { value: string }; specifiers: any[] };
+      remove: () => void;
+    }) {
+      if (path.node.source.value === "react") {
+        const filteredSpecifiers = path.node.specifiers.filter((spec) => {
+          if (t.isImportSpecifier(spec) && t.isIdentifier(spec.imported)) {
+            return !["useNode", "useRef", "useState", "useEffect"].includes(
+              spec.imported.name,
+            );
+          }
+          return true;
+        });
+
+        if (filteredSpecifiers.length > 0) {
+          path.node.specifiers = filteredSpecifiers;
+        } else {
+          path.remove();
+        }
       }
     },
   });
@@ -335,11 +440,182 @@ function convertToPureComponent(inputPath: string, outputPath: string) {
   const { code: outputCode } = generate(ast, {
     jsescOption: { minimal: true },
   });
+
   fs.writeFileSync(outputPath, outputCode, "utf-8");
 }
 
+function cleanStyleDeclaration(
+  declarator: t.VariableDeclarator,
+): t.VariableDeclarator {
+  const cleanedDeclarator = t.cloneNode(declarator, true);
+
+  if (t.isCallExpression(cleanedDeclarator.init)) {
+    traverse(
+      t.file(t.program([t.expressionStatement(cleanedDeclarator.init)])),
+      {
+        // Replace useTheme() with theme
+        CallExpression(path: {
+          node: { callee: t.Node | null | undefined };
+          replaceWith: (arg0: t.Identifier) => void;
+        }) {
+          if (t.isIdentifier(path.node.callee, { name: "useTheme" })) {
+            path.replaceWith(t.identifier("theme"));
+          }
+        },
+
+        // Remove editor-specific properties
+        ObjectProperty(path: {
+          node: { key: t.Node | null | undefined };
+          remove: () => void;
+        }) {
+          if (
+            t.isIdentifier(path.node.key) &&
+            ["outline", "outlineOffset", "cursor", "transition"].includes(
+              path.node.key.name,
+            )
+          ) {
+            path.remove();
+          }
+        },
+
+        // Clean conditionals that reference editor state
+        ConditionalExpression(path: {
+          node: { test: t.Node | null | undefined; alternate: any };
+          replaceWith: (arg0: any) => void;
+        }) {
+          if (
+            t.isIdentifier(path.node.test, { name: "selected" }) ||
+            t.isIdentifier(path.node.test, { name: "editing" }) ||
+            (t.isLogicalExpression(path.node.test) &&
+              (t.isIdentifier(path.node.test.left, { name: "selected" }) ||
+                t.isIdentifier(path.node.test.right, { name: "selected" }) ||
+                t.isIdentifier(path.node.test.left, { name: "editing" }) ||
+                t.isIdentifier(path.node.test.right, { name: "editing" })))
+          ) {
+            path.replaceWith(path.node.alternate);
+          }
+        },
+
+        // Clean dependency arrays
+        ArrayExpression(path: {
+          node: {
+            elements: { filter: (arg0: (element: any) => boolean) => never[] };
+          };
+        }) {
+          path.node.elements =
+            path.node.elements?.filter((element) => {
+              if (t.isIdentifier(element)) {
+                return !["selected", "editing", "connect", "drag"].includes(
+                  element.name,
+                );
+              }
+              return true;
+            }) || [];
+        },
+      },
+      undefined,
+    );
+  }
+
+  return cleanedDeclarator;
+}
+
+function cleanReturnStatement(
+  returnStatement: t.ReturnStatement,
+): t.ReturnStatement {
+  const cleanedReturn = t.cloneNode(returnStatement, true);
+
+  traverse(
+    t.file(t.program([cleanedReturn])),
+    {
+      JSXAttribute(path: {
+        node: { name: t.Node | null | undefined };
+        remove: () => void;
+      }) {
+        if (
+          t.isJSXIdentifier(path.node.name) &&
+          [
+            "ref",
+            "onDoubleClick",
+            "onBlur",
+            "onKeyDown",
+            "contentEditable",
+            "suppressContentEditableWarning",
+            "dangerouslySetInnerHTML",
+          ].includes(path.node.name.name)
+        ) {
+          path.remove();
+        }
+      },
+      JSXSpreadAttribute(path: {
+        node: { argument: any };
+        remove: () => void;
+      }) {
+        const arg = path.node.argument;
+
+        // Direct commonProps spread: {...commonProps}
+        if (t.isIdentifier(arg, { name: "commonProps" })) {
+          path.remove();
+          return;
+        }
+
+        // Cast expression spread: {...(commonProps as any)}
+        if (
+          t.isTSAsExpression(arg) &&
+          t.isIdentifier(arg.expression, { name: "commonProps" })
+        ) {
+          path.remove();
+          return;
+        }
+
+        // Parenthesized cast: {...((commonProps as any))}
+        if (
+          t.isParenthesizedExpression(arg) &&
+          t.isTSAsExpression(arg.expression) &&
+          t.isIdentifier(arg.expression.expression, { name: "commonProps" })
+        ) {
+          path.remove();
+          return;
+        }
+      },
+
+      // Handle conditional rendering - always use non-editing version
+      ConditionalExpression(path: {
+        node: { test: t.Node | null | undefined; alternate: any };
+        replaceWith: (arg0: any) => void;
+      }) {
+        if (
+          t.isIdentifier(path.node.test, { name: "editing" }) ||
+          (t.isLogicalExpression(path.node.test) &&
+            (t.isIdentifier(path.node.test.left, { name: "selected" }) ||
+              t.isIdentifier(path.node.test.right, { name: "selected" })))
+        ) {
+          path.replaceWith(path.node.alternate);
+        }
+      },
+
+      // Remove calls to editor functions
+      CallExpression(path: {
+        node: { callee: t.Node | null | undefined };
+        replaceWith: (arg0: t.Identifier) => void;
+      }) {
+        if (
+          t.isMemberExpression(path.node.callee) &&
+          t.isIdentifier(path.node.callee.object) &&
+          ["connect", "drag"].includes(path.node.callee.object.name)
+        ) {
+          path.replaceWith(t.identifier("undefined"));
+        }
+      },
+    },
+    undefined,
+  );
+
+  return cleanedReturn;
+}
+
 // ==================================================================================
-// SECTION 3: API ROUTE HANDLER
+// SECTION 3: THE DEFINITIVE API ROUTE HANDLER
 // ==================================================================================
 export async function POST(req: NextRequest) {
   try {
@@ -347,10 +623,7 @@ export async function POST(req: NextRequest) {
 
     if (!pageState || !activeTheme || !themeName || !seo) {
       return NextResponse.json(
-        {
-          status: "error",
-          message: "Missing required data (pageState, theme, themeName, seo)",
-        },
+        { status: "error", message: "Missing required data" },
         { status: 400 },
       );
     }
@@ -397,17 +670,26 @@ export async function POST(req: NextRequest) {
 
     fs.writeFileSync(
       path.join(appPath, "page.tsx"),
-      generatePageCode(nodes, usedComponents as string[]),
+      generatePageCode(nodes, usedComponents),
+    );
+
+    const primitivesToExport = usedComponents.filter((name) =>
+      ["Container", "Text"].includes(name),
     );
 
     const baseDir = path.join(
       process.cwd(),
       "src/components/core/craft/user-components",
     );
-    for (const comp of usedComponents as string[]) {
-      const sourcePath = findComponentPath(comp, baseDir);
+    for (const comp of primitivesToExport) {
+      const sourcePath = findComponentPath(
+        comp,
+        path.join(baseDir, "primitives"),
+      );
       if (!sourcePath) {
-        console.warn(`[Export Warning] Component ${comp} source not found.`);
+        console.warn(
+          `[Export Warning] Primitive component ${comp} source not found.`,
+        );
         continue;
       }
       const outputDir = path.join(componentsOutPath, comp);

@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useMemo, useRef, useState, type JSX } from "react";
 import { theme } from "../../theme";
+import React, { useMemo, type JSX } from "react";
 export type TextAlign = "left" | "center" | "right" | "justify" | "start" | "end";
 export type TextTransform = "none" | "uppercase" | "lowercase" | "capitalize";
 export type TextProps = {
@@ -30,9 +30,7 @@ export type TextProps = {
   boxShadow?: string;
   display?: string;
 };
-export const Text: React.FC<TextProps> & {
-  craft?: any;
-} = ({
+export const Text: React.FC<TextProps> = ({
   text,
   as: Tag = "p",
   color,
@@ -83,8 +81,8 @@ export const Text: React.FC<TextProps> & {
     boxShadow,
     display
     // Editor-specific styles
-  }), [
+  }), [theme,
   // Add theme to dependency array
   color, fontSize, fontWeight, fontFamily, lineHeight, letterSpacing, textAlign, textTransform, italic, underline, strike, margin, padding, width, height, background, borderColor, borderWidth, borderStyle, borderRadius, boxShadow, display]);
-  return <Tag style={style}>{text}</Tag>;
+  return <Tag>{text}</Tag>;
 };
