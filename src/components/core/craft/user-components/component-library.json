@@ -1,0 +1,56 @@
+{
+  "categories": [
+    {
+      "name": "Layout",
+      "icon": "LayoutTemplate",
+      "components": [
+        {
+          "name": "Container",
+          "preview": {
+            "is": "Container",
+            "props": {
+              "canvas": true,
+              "padding": "16px",
+              "background": "#f3f4f6",
+              "borderRadius": "8px",
+              "minHeight": "80px",
+              "custom": { "displayName": "New Container" }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Typography",
+      "icon": "Type",
+      "components": [
+        {
+          "name": "Text",
+          "preview": {
+            "is": "Text",
+            "props": {
+              "text": "New Text",
+              "fontSize": "16px"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cards",
+      "icon": "Contact",
+      "components": [
+        {
+          "name": "Card 1",
+          "preview": {
+            "is": "Card1",
+            "props": {
+              "title": "Card Title",
+              "description": "A short, descriptive subtitle."
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

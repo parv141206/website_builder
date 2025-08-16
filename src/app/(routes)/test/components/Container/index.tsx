@@ -169,6 +169,3 @@ export const Container: React.FC<ContainerProps> = ({
   ]);
   return <Tag style={style}>{children}</Tag>;
 };
-
-// This section defines the component's behavior in the Craft.js editor.
-// It does not need to change.
