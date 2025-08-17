@@ -621,7 +621,7 @@ function cleanReturnStatement(
 export async function POST(req: NextRequest) {
   try {
     const { pageState, theme: activeTheme, themeName, seo } = await req.json();
-
+    console.log(activeTheme);
     if (!pageState || !activeTheme || !themeName || !seo) {
       return NextResponse.json(
         { status: "error", message: "Missing required data" },
@@ -658,7 +658,11 @@ export async function POST(req: NextRequest) {
     );
     const themeJsonDestPath = path.join(themeOutPath, "theme.json");
     if (fs.existsSync(themeJsonSourcePath)) {
-      fs.copyFileSync(themeJsonSourcePath, themeJsonDestPath);
+      fs.writeFileSync(
+        themeJsonDestPath,
+        JSON.stringify(activeTheme, null, 2),
+        "utf-8",
+      );
     } else {
       throw new Error(`Theme file not found: ${themeJsonSourcePath}`);
     }

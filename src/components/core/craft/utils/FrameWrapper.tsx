@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useEditor, Element } from "@craftjs/core";
 import { useTheme } from "~/themes";
 import { DeviceFrame } from "./DeviceFrame";
-import { COMPONENT_RESOLVER } from "./user-components/componentResolver";
+import { COMPONENT_RESOLVER } from "../user-components/componentResolver";
 
 const { Container, Text } = COMPONENT_RESOLVER;
 

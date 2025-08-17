@@ -2,24 +2,24 @@
   "name": "artisan",
   "colors": {
     "background": {
-      "primary": "#eee5da",
-      "secondary": "#e9e4d9",
-      "tertiary": "#e4dfd6",
+      "primary": "#535653",
+      "secondary": "#251f12",
+      "tertiary": "#323232",
       "quaternary": "#dcd5cc",
       "quinary": "#d1c9bf"
     },
     "text": {
-      "heading": "#262424",
+      "heading": "#d8cfcf",
       "subheading": "#3a3838",
-      "body": "#3a3838",
+      "body": "#ececec",
       "muted": "#837e7e",
       "onPrimary": "#eee5da",
       "onSecondary": "#eee5da",
       "onBackground": "#262424",
       "inverse": "#262424"
     },
-    "primary": "#262424",
-    "secondary": "#504c4c",
+    "primary": "#dadada",
+    "secondary": "#f7f7f7",
     "roles": {
       "success": "#579368",
       "danger": "#c8644f",
@@ -32,5 +32,8 @@
   "fonts": {
     "heading": "Outfit, sans-serif",
     "body": "Inter, sans-serif"
-  }
+  },
+  "radius": "16px",
+  "horizontalSpacing": "0px",
+  "verticalSpacing": "0px"
 }

@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import libraryData from "../craft/user-components/component-library.json";
 
-import { SafePreview } from "./withPreview";
+import { SafePreview } from "./utils/withPreview";
 import { COMPONENT_RESOLVER } from "./user-components/componentResolver";
 
 // ==================================================================================

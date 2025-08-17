@@ -26,7 +26,7 @@ import {
   Strikethrough,
   Search,
 } from "lucide-react";
-import { CustomColorPicker } from "./CustomColorPicker";
+import { CustomColorPicker } from "./utils/CustomColorPicker";
 
 // ==================================================================================
 // SECTION 1: GOOGLE FONTS DATA
@@ -50,7 +50,7 @@ const loadGoogleFont = (fontName: string) => {
 // SECTION 2: FONT PICKER COMPONENT
 // ==================================================================================
 
-const FontPicker = memo(
+export const FontPicker = memo(
   ({
     value,
     onChange,

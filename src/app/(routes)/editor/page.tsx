@@ -11,12 +11,11 @@ import { DefaultLayer, Layers } from "~/components/core/craft/layers-panel";
 import { TopBar } from "~/components/core/craft/TopBar";
 import { LuFolderTree } from "react-icons/lu";
 import { useEditorHotkeys } from "~/hooks/useEditorHotkeys";
-import { DeviceFrame } from "~/components/core/craft/DeviceFrame";
+import { DeviceFrame } from "~/components/core/craft/utils/DeviceFrame";
 import { COMPONENT_RESOLVER } from "~/components/core/craft/user-components/componentResolver";
+import { useAppStateStore } from "~/store/AppStateStore";
+import { ThemePanel } from "~/components/core/craft/ThemePanel";
 
-// ==================================================================================
-// ⭐ 1. THE DEFINITIVE FIX: A REACTIVE THEME UPDATER COMPONENT ⭐
-// ==================================================================================
 const ThemeUpdater = () => {
   const { actions } = useEditor();
   const theme = useTheme();
@@ -52,7 +51,16 @@ const EditorUI = ({ savedJson }: { savedJson: string | null }) => {
     "EditorUI rendering with savedJson:",
     savedJson ? "JSON present" : "No JSON",
   );
-
+  const { activePanel, setActivePanel } = useAppStateStore();
+  const { selected } = useEditor((state) => ({
+    selected: state.events.selected.size > 0,
+  }));
+  // Logic to switch back to settings panel when a component is selected
+  useEffect(() => {
+    if (selected) {
+      setActivePanel("settings");
+    }
+  }, [selected, setActivePanel]);
   return (
     <div className="flex h-screen w-full flex-col">
       <TopBar />
@@ -108,7 +116,7 @@ const EditorUI = ({ savedJson }: { savedJson: string | null }) => {
         </main>
 
         <div className="w-80 flex-shrink-0 overflow-y-auto bg-white shadow-lg">
-          <SettingsPanel />
+          {activePanel === "theme" ? <ThemePanel /> : <SettingsPanel />}
         </div>
         <AddComponentModal
           isOpen={isModalOpen}

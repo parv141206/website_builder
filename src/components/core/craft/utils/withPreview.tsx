@@ -3,7 +3,7 @@
 import React, { useMemo } from "react";
 import { Editor, Frame, Element } from "@craftjs/core";
 
-import { COMPONENT_RESOLVER } from "./user-components/componentResolver";
+import { COMPONENT_RESOLVER } from "../user-components/componentResolver";
 
 type MiniCraftPreviewProps = {
   componentConfig: {

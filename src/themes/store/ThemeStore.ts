@@ -59,9 +59,16 @@ export type ThemeStore = {
   setRadius: (radius: string) => void;
   setHorizontalSpacing: (spacing: string) => void;
   setVerticalSpacing: (spacing: string) => void;
-  updateFont: (key: keyof Theme["fonts"], value: string | number) => void;
   getCurrentTheme: () => Theme;
   resetTheme: () => void;
+  updateColor: (
+    category: keyof Theme["colors"] | null,
+    key: string,
+    value: string,
+  ) => void;
+  updateFont: (key: keyof Theme["fonts"], value: string) => void;
+  addNewTheme: (newName: string) => void;
+  resetCurrentTheme: () => void;
 };
 
 // -----------------------------
@@ -98,7 +105,33 @@ export const useThemeStore = create<ThemeStore>()(
       horizontalSpacing: "0px",
       verticalSpacing: "0px",
       ...loadState(),
+      updateColor: (category, key, value) => {
+        const { themes, currentTheme } = get();
+        const newThemes = { ...themes };
+        const themeToUpdate = { ...newThemes[currentTheme] };
 
+        if (category) {
+          (themeToUpdate.colors as any)[category] = {
+            ...(themeToUpdate.colors as any)[category],
+            [key]: value,
+          };
+        } else {
+          (themeToUpdate.colors as any)[key] = value;
+        }
+
+        newThemes[currentTheme] = themeToUpdate;
+        set({ themes: newThemes });
+      },
+      updateFont: (key, value) => {
+        const { themes, currentTheme } = get();
+        const newThemes = { ...themes };
+        const themeToUpdate = { ...newThemes[currentTheme] };
+
+        themeToUpdate.fonts[key] = value;
+
+        newThemes[currentTheme] = themeToUpdate;
+        set({ themes: newThemes });
+      },
       setTheme: (themeName) => {
         const { themes } = get();
         if (themes[themeName]) {
@@ -107,7 +140,43 @@ export const useThemeStore = create<ThemeStore>()(
           console.warn(`Theme "${themeName}" does not exist`);
         }
       },
+      addNewTheme: (newName) => {
+        if (!newName || get().themes[newName]) {
+          alert("Invalid or duplicate theme name.");
+          return;
+        }
+        const { themes, currentTheme } = get();
+        const currentThemeObject = themes[currentTheme];
 
+        const newTheme = {
+          ...JSON.parse(JSON.stringify(currentThemeObject)), // Deep copy the current theme
+          name: newName,
+        };
+
+        set({
+          themes: {
+            ...themes,
+            [newName]: newTheme,
+          },
+          currentTheme: newName,
+        });
+      },
+
+      resetCurrentTheme: () => {
+        const { themes, currentTheme } = get();
+        const originalTheme = defaultThemes[currentTheme];
+
+        if (originalTheme) {
+          set({
+            themes: {
+              ...themes,
+              [currentTheme]: originalTheme,
+            },
+          });
+        } else {
+          alert("Cannot reset a custom theme to default.");
+        }
+      },
       setThemeFromJson: (theme) => {
         set((state: ThemeStore) => ({
           themes: {
@@ -131,20 +200,6 @@ export const useThemeStore = create<ThemeStore>()(
       setVerticalSpacing: (spacing) => {
         const value = spacing.endsWith("px") ? spacing : `${spacing}px`;
         set({ verticalSpacing: value });
-      },
-
-      updateFont: (key, value) => {
-        const theme = get().getCurrentTheme();
-        const updatedFonts = { ...theme.fonts, [key]: String(value) };
-        set((state: ThemeStore) => ({
-          themes: {
-            ...state.themes,
-            [state.currentTheme]: {
-              ...theme,
-              fonts: updatedFonts,
-            },
-          },
-        }));
       },
 
       getCurrentTheme: () => get().themes[get().currentTheme]!,
