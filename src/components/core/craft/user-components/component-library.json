@@ -30,10 +30,7 @@
         },
         {
           "name": "Link",
-          "preview": {
-            "is": "Link",
-            "props": { "text": "Clickable Link", "href": "#" }
-          }
+          "preview": { "is": "Link", "props": { "text": "Clickable Link", "href": "#" } }
         }
       ]
     },
@@ -75,6 +72,214 @@
             "props": {
               "title": "Card Title",
               "description": "A short subtitle."
+            }
+          }
+        },
+        {
+          "name": "Image Top Card",
+          "preview": {
+            "is": "ImageTopCard",
+            "props": {
+              "image": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f",
+              "title": "Beautiful Scenery",
+              "description": "An image on top with text below."
+            }
+          }
+        },
+        {
+          "name": "Image Left Card",
+          "preview": {
+            "is": "ImageLeftCard",
+            "props": {
+              "image": "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d",
+              "title": "Side Image Card",
+              "description": "An image on the left with text on the right."
+            }
+          }
+        },
+        {
+          "name": "Gradient Text Card",
+          "preview": {
+            "is": "GradientTextCard",
+            "props": {
+              "title": "Gradient Heading",
+              "description": "Text styled with a gradient effect."
+            }
+          }
+        },
+        {
+          "name": "Glassmorphic Card",
+          "preview": {
+            "is": "GlassmorphicCard",
+            "props": {
+              "title": "Futuristic Card",
+              "description": "Glassmorphism with blur and glow effect"
+            }
+          }
+        },
+        {
+          "name": "Neon Border Card",
+          "preview": {
+            "is": "NeonBorderCard",
+            "props": {
+              "title": "Neon Glow Card",
+              "description": "Animated neon border effect"
+            }
+          }
+        },
+        {
+          "name": "Tilt Hover Card",
+          "preview": {
+            "is": "TiltHoverCard",
+            "props": {
+              "title": "3D Tilt Card",
+              "description": "Moves in 3D space when hovered"
+            }
+          }
+        },
+        {
+          "name": "Flip Card",
+          "preview": {
+            "is": "FlipCard",
+            "props": {
+              "frontTitle": "Front Side",
+              "frontDescription": "Hover to flip",
+              "backTitle": "Back Side",
+              "backDescription": "Cool, right?"
+            }
+          }
+        },
+        {
+          "name": "Glass Card",
+          "preview": {
+            "is": "GlassCard",
+            "props": {
+              "title": "Glass Card",
+              "description": "Futuristic frosted glass effect"
+            }
+          }
+        },
+        {
+          "name": "Pricing Card",
+          "preview": {
+            "is": "PricingCard",
+            "props": {
+              "plan": "Basic Plan",
+              "price": "$19/mo",
+              "features": ["Feature 1", "Feature 2", "Feature 3"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Banners",
+      "icon": "Flag",
+      "components": [
+        {
+          "name": "Call To Action",
+          "preview": {
+            "is": "CallToAction",
+            "props": {
+              "heading": "Get Started Today!",
+              "buttonText": "Sign Up",
+              "containerProps": {},
+              "headingProps": {},
+              "buttonProps": {}
+            }
+          }
+        },
+        {
+          "name": "Hero Banner",
+          "preview": {
+            "is": "HeroBanner",
+            "props": {
+              "heading": "Welcome to Our Website",
+              "subheading": "We build awesome experiences.",
+              "containerProps": {},
+              "headingProps": {},
+              "subheadingProps": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Team",
+      "icon": "Users",
+      "components": [
+        {
+          "name": "Team Member",
+          "preview": {
+            "is": "TeamMember",
+            "props": {
+              "name": "Jane Doe",
+              "role": "CEO",
+              "imageProps": { "src": "https://via.placeholder.com/150", "alt": "Team Member" },
+              "containerProps": {},
+              "nameProps": {},
+              "roleProps": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "FAQ",
+      "icon": "QuestionMarkCircle",
+      "components": [
+        {
+          "name": "FAQ Item",
+          "preview": {
+            "is": "FAQItem",
+            "props": {
+              "question": "What is your service about?",
+              "answer": "We provide high-quality web solutions.",
+              "containerProps": {},
+              "questionProps": {},
+              "answerProps": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Video",
+      "icon": "VideoCamera",
+      "components": [
+        {
+          "name": "Video Section",
+          "preview": {
+            "is": "VideoSection",
+            "props": {
+              "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+              "title": "Our Intro Video",
+              "description": "Learn more about our services in this video.",
+              "containerProps": {},
+              "titleProps": {},
+              "descriptionProps": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Gallery",
+      "icon": "Photograph",
+      "components": [
+        {
+          "name": "Image Gallery",
+          "preview": {
+            "is": "ImageGallery",
+            "props": {
+              "images": [
+                { "src": "https://via.placeholder.com/300x200", "alt": "Image 1" },
+                { "src": "https://via.placeholder.com/300x200", "alt": "Image 2" },
+                { "src": "https://via.placeholder.com/300x200", "alt": "Image 3" }
+              ],
+              "columns": 3,
+              "gap": "12px",
+              "containerProps": {}
             }
           }
         }

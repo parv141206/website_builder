@@ -34,26 +34,42 @@ export const Button: React.FC<ButtonProps> = ({
   borderWidth,
   borderColor,
   borderStyle = "none",
-  boxShadow
+  boxShadow,
 }) => {
-  const style: React.CSSProperties = useMemo(() => ({
-    background: background || theme.colors.primary,
-    color: color || theme.colors.text.onPrimary || "#ffffff",
-    fontSize: fontSize || "16px",
-    fontWeight: fontWeight || "bold",
-    fontFamily: fontFamily || theme.fonts.body,
-    padding: padding || "12px 24px",
-    borderRadius: borderRadius || "8px",
-    borderWidth,
-    borderColor,
-    borderStyle,
-    boxShadow,
-    margin,
-    width,
-    height,
-    textAlign: "center"
-  }), [background, color, fontSize, fontWeight, fontFamily, margin, padding, width, height, borderRadius, borderWidth, borderColor, borderStyle, boxShadow, theme]);
-  return <button style={style}>
-      {text}
-    </button>;
+  const style: React.CSSProperties = useMemo(
+    () => ({
+      background: background ?? theme.colors.primary,
+      color: (color ?? theme.colors.text.onPrimary) || "#ffffff",
+      fontSize: fontSize ?? "16px",
+      fontWeight: fontWeight ?? "bold",
+      fontFamily: fontFamily ?? theme.fonts.body,
+      padding: padding ?? "12px 24px",
+      borderRadius: borderRadius ?? "8px",
+      borderWidth,
+      borderColor,
+      borderStyle,
+      boxShadow,
+      margin,
+      width,
+      height,
+      textAlign: "center",
+    }),
+    [
+      background,
+      color,
+      fontSize,
+      fontWeight,
+      fontFamily,
+      margin,
+      padding,
+      width,
+      height,
+      borderRadius,
+      borderWidth,
+      borderColor,
+      borderStyle,
+      boxShadow,
+    ],
+  );
+  return <button style={style}>{text}</button>;
 };
