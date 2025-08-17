@@ -12,5 +12,4 @@ export const COMPONENT_RESOLVER = {
   Button,
   Link,
   Card1,
-  ThemeUpdater,
 };
