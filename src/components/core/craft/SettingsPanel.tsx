@@ -84,7 +84,7 @@ const FontPicker = memo(
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-left text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-left text-sm focus:ring-2 focus:ring-gray-500 focus:outline-none"
           style={{ fontFamily: value || "inherit" }}
         >
           <span>{value || "Select font..."}</span>
@@ -103,7 +103,7 @@ const FontPicker = memo(
                   placeholder="Search fonts..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full rounded border border-gray-300 py-1 pr-3 pl-8 text-sm focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                  className="w-full rounded border border-gray-300 py-1 pr-3 pl-8 text-sm focus:ring-1 focus:ring-gray-500 focus:outline-none"
                 />
               </div>
             </div>
@@ -113,8 +113,8 @@ const FontPicker = memo(
                 <button
                   key={font.name}
                   onClick={() => handleFontSelect(font.name)}
-                  className={`w-full border-b border-gray-100 px-3 py-2 text-left text-sm last:border-b-0 hover:bg-blue-50 ${
-                    value === font.name ? "bg-blue-100 text-blue-700" : ""
+                  className={`w-full border-b border-gray-100 px-3 py-2 text-left text-sm last:border-b-0 hover:bg-gray-50 ${
+                    value === font.name ? "bg-gray-100 text-gray-700" : ""
                   }`}
                   style={{ fontFamily: font.name }}
                 >
@@ -141,10 +141,6 @@ const FontPicker = memo(
 );
 FontPicker.displayName = "FontPicker";
 
-// ==================================================================================
-// SECTION 3: CUSTOM FIELD COMPONENTS (MEMOIZED)
-// ==================================================================================
-
 type ButtonGroupOption = {
   value: string;
   label: string;
@@ -169,8 +165,8 @@ const ButtonGroup = memo(
             key={option.value}
             title={option.label}
             onClick={() => onChange(option.value)}
-            className={`flex-1 rounded-[5px] p-1.5 text-gray-600 transition-colors hover:bg-gray-200 focus:ring-2 focus:ring-blue-500 focus:outline-none ${
-              isActive ? "!bg-white !text-blue-600 shadow-sm" : ""
+            className={`flex-1 rounded-[5px] p-1.5 text-gray-600 transition-colors hover:bg-gray-200 focus:ring-2 focus:ring-gray-500 focus:outline-none ${
+              isActive ? "!bg-white !text-gray-600 shadow-sm" : ""
             }`}
           >
             <option.icon className="mx-auto h-4 w-4" />
@@ -197,8 +193,8 @@ const IconToggleButton = memo(
     <button
       title={label}
       onClick={onClick}
-      className={`flex-1 rounded-[5px] p-1.5 text-gray-600 transition-colors hover:bg-gray-200 focus:ring-2 focus:ring-blue-500 focus:outline-none ${
-        isActive ? "!bg-blue-50 !text-blue-600" : ""
+      className={`flex-1 rounded-[5px] p-1.5 text-gray-600 transition-colors hover:bg-gray-200 focus:ring-2 focus:ring-gray-500 focus:outline-none ${
+        isActive ? "!bg-gray-50 !text-gray-600" : ""
       }`}
     >
       <Icon className="mx-auto h-4 w-4" />
@@ -206,10 +202,6 @@ const IconToggleButton = memo(
   ),
 );
 IconToggleButton.displayName = "IconToggleButton";
-
-// ==================================================================================
-// SECTION 4: THE INTELLIGENT UI MAPS (ENHANCED)
-// ==================================================================================
 
 const CUSTOM_UI_MAP: Record<string, React.FC<any>> = {
   flexDirection: ({ value, onChange, field }) => (
@@ -309,10 +301,6 @@ const TOGGLE_ICON_MAP: Record<string, React.ElementType> = {
   strike: Strikethrough,
 };
 
-// ==================================================================================
-// SECTION 5: THE MAIN SETTINGS PANEL (MEMOIZED)
-// ==================================================================================
-
 export const SettingsPanel = () => {
   const { selected, actions } = useEditor((state) => {
     const [selectedId] = state.events.selected;
@@ -349,7 +337,7 @@ export const SettingsPanel = () => {
         id: key,
         name: key,
         className:
-          "w-full px-2 py-1 text-sm bg-gray-100 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500",
+          "w-full px-2 py-1 text-sm bg-gray-100 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500",
       };
 
       const CustomComponent = CUSTOM_UI_MAP[key];
@@ -445,7 +433,7 @@ export const SettingsPanel = () => {
                 type="checkbox"
                 checked={!!value}
                 onChange={(e) => setProp(key, e.target.checked)}
-                className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-blue-500"
+                className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-gray-600 focus:ring-gray-500"
               />
             </div>
           );

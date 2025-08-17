@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { useEditor } from "@craftjs/core";
 import { useThemeStore, type Theme } from "~/themes/store/ThemeStore";
 import {
@@ -10,6 +10,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import {
+  Undo2,
+  Redo2,
+  Trash2,
+  Monitor,
+  Tablet,
+  Smartphone,
+} from "lucide-react";
+import { useDeviceStore, type Device } from "~/store/DeviceStore";
 
 const ThemePalette = ({ theme }: { theme: Theme }) => {
   if (!theme) return null;
@@ -26,14 +35,44 @@ const ThemePalette = ({ theme }: { theme: Theme }) => {
       {keyColors.map((color, index) => (
         <div
           key={index}
-          className="h-4 w-4 rounded-full border border-neutral-300/20"
+          className="h-4 w-4 rounded-full border border-neutral-400/50"
           style={{ backgroundColor: color }}
         />
       ))}
     </div>
   );
 };
+// ⭐ 3. A NEW COMPONENT for the device selector UI
+const DeviceSelector = memo(() => {
+  const { device, setDevice } = useDeviceStore();
 
+  const options = [
+    { value: "desktop", label: "Desktop", icon: Monitor },
+    { value: "tablet", label: "Tablet", icon: Tablet },
+    { value: "mobile", label: "Mobile", icon: Smartphone },
+  ];
+
+  return (
+    <div className="flex items-center rounded-md bg-neutral-100 p-0.5">
+      {options.map((option) => {
+        const isActive = device === option.value;
+        return (
+          <button
+            key={option.value}
+            title={option.label}
+            onClick={() => setDevice(option.value as Device)}
+            className={`rounded-[5px] p-2 text-neutral-500 transition-colors hover:bg-white hover:text-neutral-900 focus:ring-2 focus:ring-blue-500 focus:outline-none ${
+              isActive ? "!bg-white !text-blue-600 shadow-sm" : ""
+            }`}
+          >
+            <option.icon className="h-4 w-4" />
+          </button>
+        );
+      })}
+    </div>
+  );
+});
+DeviceSelector.displayName = "DeviceSelector";
 export const ThemeSelector = () => {
   const { themes, currentTheme, setTheme } = useThemeStore();
   const themeKeys = Object.keys(themes).filter(Boolean);
@@ -43,20 +82,20 @@ export const ThemeSelector = () => {
       value={currentTheme}
       onValueChange={(themeName) => setTheme(themeName)}
     >
-      <SelectTrigger className="w-60 border-neutral-300 text-sm text-black">
+      <SelectTrigger className="w-60 border-neutral-300 bg-neutral-100/80 text-sm text-neutral-800 ring-offset-white focus:ring-blue-500">
         <SelectValue placeholder="Select a theme" />
       </SelectTrigger>
-      <SelectContent className="border-neutral-300 text-black">
+      <SelectContent className="border-neutral-200 bg-white text-neutral-800">
         {themeKeys.map((key) => {
           const theme = themes[key];
           return (
             <SelectItem
               key={key}
               value={key}
-              className="focus:bg-sky-500/20 focus:text-black"
+              className="focus:bg-blue-50 focus:text-blue-600"
             >
               <div className="flex items-center gap-3">
-                <ThemePalette theme={theme} />
+                <ThemePalette theme={theme!} />
                 <span className="capitalize">{key}</span>
               </div>
             </SelectItem>
@@ -68,14 +107,22 @@ export const ThemeSelector = () => {
 };
 
 export const TopBar = () => {
-  const { query } = useEditor();
+  const { actions, canUndo, canRedo, selected } = useEditor((state, query) => {
+    const [selectedId] = state.events.selected;
+    return {
+      canUndo: query.history.canUndo(),
+      canRedo: query.history.canRedo(),
+      selected: selectedId,
+    };
+  });
+
   const [isLoading, setIsLoading] = useState(false);
   const { themes, currentTheme, radius, horizontalSpacing, verticalSpacing } =
     useThemeStore.getState();
 
   const handleExport = async () => {
     setIsLoading(true);
-    const pageState = query.serialize();
+    const pageState = query.serialize(); // No need to get query from useEditor again
     const activeThemePayload = {
       ...themes[currentTheme],
       radius,
@@ -113,20 +160,54 @@ export const TopBar = () => {
     }
   };
 
+  const handleDelete = () => {
+    if (selected && selected !== "ROOT") {
+      actions.delete(selected);
+    }
+  };
+
   return (
-    <header className="z-50 flex h-16 items-center justify-between gap-4 border-b border-neutral-300 px-6 text-black shadow-md">
-      <div className="flex items-center gap-3">
-        <h1 className="text-lg font-semibold tracking-wide">NexoraHub</h1>
-        <div className="text-xl">|</div>
-        <div className="text-md">Theme</div>
-        <ThemeSelector />
+    <header className="z-50 grid h-16 grid-cols-3 items-center border-b border-neutral-200 bg-white px-6 shadow-sm">
+      <div className="flex items-center justify-start gap-3">
+        <h1 className="text-lg font-semibold tracking-wide text-neutral-800">
+          Page Editor
+        </h1>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center justify-center gap-2">
+        <DeviceSelector />
+        <button
+          title="Undo (Ctrl+Z)"
+          onClick={() => actions.history.undo()}
+          disabled={!canUndo}
+          className="rounded-md p-2 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 disabled:text-neutral-300 disabled:hover:bg-transparent"
+        >
+          <Undo2 className="h-5 w-5" />
+        </button>
+        <button
+          title="Redo (Ctrl+Shift+Z)"
+          onClick={() => actions.history.redo()}
+          disabled={!canRedo}
+          className="rounded-md p-2 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 disabled:text-neutral-300 disabled:hover:bg-transparent"
+        >
+          <Redo2 className="h-5 w-5" />
+        </button>
+        <button
+          title="Delete (Del)"
+          onClick={handleDelete}
+          disabled={!selected || selected === "ROOT"}
+          className="rounded-md p-2 text-neutral-500 transition-colors hover:bg-red-50 hover:text-red-600 disabled:text-neutral-300 disabled:hover:bg-transparent"
+        >
+          <Trash2 className="h-5 w-5" />
+        </button>
+      </div>
+
+      <div className="flex items-center justify-end gap-4">
+        <ThemeSelector />
         <button
           onClick={handleExport}
           disabled={isLoading}
-          className="inline-flex h-10 cursor-pointer items-center justify-center rounded-md bg-green-200 px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-green-300 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+          className="inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white ring-offset-white transition-colors hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
         >
           {isLoading ? "Exporting..." : "Export Project"}
         </button>

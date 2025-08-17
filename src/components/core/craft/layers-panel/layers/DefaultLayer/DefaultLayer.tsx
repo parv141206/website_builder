@@ -26,7 +26,7 @@ export const DefaultLayer = ({ children }: DefaultLayerProps) => {
   return (
     <div
       ref={(ref) => layer(ref)}
-      className={`flex w-60 flex-col rounded-md transition-colors duration-150 ${hovered && !hasChildCanvases ? "" : ""} ${hasChildCanvases && expanded ? "mt-2" : ""} `}
+      className={`flex w-64 flex-col rounded-md transition-colors duration-150 ${hovered && !hasChildCanvases ? "" : ""} ${hasChildCanvases && expanded ? "mt-2" : ""} `}
     >
       <DefaultLayerHeader />
       {expanded && children && (

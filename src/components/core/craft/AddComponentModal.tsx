@@ -117,7 +117,7 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
                       onClick={() => setActiveCategory(category.name)}
                       className={`flex items-center gap-3 rounded-md px-3 py-2 text-left text-sm font-medium transition-colors ${
                         isActive
-                          ? "bg-blue-500 text-white"
+                          ? "bg-gray-500 text-white"
                           : "text-gray-600 hover:bg-gray-200/70"
                       }`}
                     >
@@ -139,7 +139,7 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
                     placeholder="Search components..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full rounded-md border border-gray-300 bg-white py-2 pr-4 pl-9 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    className="w-full rounded-md border border-gray-300 bg-white py-2 pr-4 pl-9 text-sm focus:ring-2 focus:ring-gray-500 focus:outline-none"
                   />
                 </div>
               </div>
@@ -150,7 +150,7 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
                   {filteredComponents.map((comp) => (
                     <div
                       key={comp.name}
-                      className="group cursor-pointer rounded-lg border border-gray-200 bg-white p-4 transition-all hover:border-blue-500 hover:shadow-md"
+                      className="group cursor-pointer rounded-lg border border-gray-200 bg-white p-4 transition-all hover:border-gray-500 hover:shadow-md"
                       onClick={() => handleAddComponent(comp.preview)}
                     >
                       <h4 className="mb-3 text-sm font-semibold text-gray-700">
