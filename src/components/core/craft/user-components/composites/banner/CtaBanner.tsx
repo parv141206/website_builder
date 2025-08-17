@@ -13,7 +13,7 @@ export type CallToActionProps = {
   buttonProps?: Partial<TextProps>;
 };
 
-export const CallToAction: React.FC<CallToActionProps> & { craft?: any } = ({
+export const CallToAction: React.FC<CallToActionProps> & { craft?: unknown } = ({
   heading,
   buttonText,
   containerProps,
@@ -23,8 +23,17 @@ export const CallToAction: React.FC<CallToActionProps> & { craft?: any } = ({
   const {
     connectors: { connect, drag },
   } = useNode();
+
   return (
-    <div ref={(ref) => connect(drag(ref!))}>
+    <Element
+      is={Container}
+      canvas
+      id="CallToAction-wrapper"
+      ref={(ref) => connect(drag(ref as HTMLDivElement))}
+      padding="0"
+      backgroundColor="transparent"
+      {...containerProps}
+    >
       <Element
         is={Container}
         canvas
@@ -34,7 +43,6 @@ export const CallToAction: React.FC<CallToActionProps> & { craft?: any } = ({
         textAlign="center"
         color="#fff"
         borderRadius="12px"
-        {...containerProps}
       >
         <Element
           is={Text}
@@ -61,7 +69,7 @@ export const CallToAction: React.FC<CallToActionProps> & { craft?: any } = ({
           {...buttonProps}
         />
       </Element>
-    </div>
+    </Element>
   );
 };
 

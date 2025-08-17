@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNode, Element } from "@craftjs/core";
 import { Container, type ContainerProps } from "../../primitives/Container";
 import { Text, type TextProps } from "../../primitives/Text";
@@ -38,10 +38,8 @@ export const FlipCard: React.FC<FlipCardProps> & { craft?: any } = ({
   const [flipped, setFlipped] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  // ✅ Mount only on client to avoid SSR hydration mismatch
   useEffect(() => setMounted(true), []);
 
-  // ✅ Connect drag & drop after mount
   useEffect(() => {
     if (wrapperRef.current) connect(drag(wrapperRef.current));
   }, [connect, drag]);
@@ -49,8 +47,10 @@ export const FlipCard: React.FC<FlipCardProps> & { craft?: any } = ({
   if (!mounted) return null;
 
   return (
-    <div
+    <Container
       ref={wrapperRef}
+      padding="0"
+      borderRadius="12px"
       className="relative h-80 w-64 cursor-pointer"
       style={{ perspective: "1000px" }}
       onClick={() => setFlipped((prev) => !prev)}
@@ -129,11 +129,10 @@ export const FlipCard: React.FC<FlipCardProps> & { craft?: any } = ({
           />
         </Element>
       </div>
-    </div>
+    </Container>
   );
 };
 
-// ✅ Craft.js editor config
 FlipCard.craft = {
   displayName: "Flip Card",
   props: {
@@ -149,24 +148,4 @@ FlipCard.craft = {
     backTextProps: {},
   },
   rules: { canDrag: () => true },
-  related: {
-    settingsSchema: {
-      groups: [
-        {
-          label: "Front",
-          fields: [
-            { key: "frontTitle", type: "text", label: "Front Title" },
-            { key: "frontText", type: "textarea", label: "Front Text" },
-          ],
-        },
-        {
-          label: "Back",
-          fields: [
-            { key: "backTitle", type: "text", label: "Back Title" },
-            { key: "backText", type: "textarea", label: "Back Text" },
-          ],
-        },
-      ],
-    },
-  },
 };

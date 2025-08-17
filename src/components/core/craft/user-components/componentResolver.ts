@@ -13,7 +13,10 @@ import { PricingCard } from "./composites/cards/PricingCard";
 import { TeamMember } from "./composites/cards/TeamMember";
 import { TiltHoverCard } from "./composites/cards/TiltHoverCard";
 import { ImageGallery } from "./composites/gallery/ImageGallery";
+import { RotatingText } from "./composites/text/RotatingText";
+import { ScrollFloat } from "./composites/text/ScrollFloat";
 import { VideoSection } from "./composites/video/VideoSection";
+import { Animated } from "./primitives/Animated";
 import { Button } from "./primitives/Button";
 import { Container } from "./primitives/Container";
 import { Image } from "./primitives/Image";
@@ -26,6 +29,7 @@ export const COMPONENT_RESOLVER = {
   Image,
   Button,
   Link,
+  Animated,
   Card1,
   ImageTopCard,
   ImageLeftCard,
@@ -42,5 +46,6 @@ export const COMPONENT_RESOLVER = {
   FAQItem,
   VideoSection,
   ImageGallery,
-
+  ScrollFloat,
+  RotatingText,
 };

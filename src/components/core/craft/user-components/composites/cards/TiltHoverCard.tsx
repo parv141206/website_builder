@@ -25,8 +25,9 @@ export const TiltHoverCard: React.FC<TiltHoverCardProps> & { craft?: any } = ({
   } = useNode();
 
   return (
-    <div
+    <Container
       ref={(ref) => connect(drag(ref as HTMLDivElement))}
+      canvas
       className="relative transition-transform duration-500 ease-out hover:scale-105 hover:rotate-1"
     >
       <Element
@@ -60,7 +61,7 @@ export const TiltHoverCard: React.FC<TiltHoverCardProps> & { craft?: any } = ({
           {...descriptionProps}
         />
       </Element>
-    </div>
+    </Container>
   );
 };
 
@@ -75,17 +76,4 @@ TiltHoverCard.craft = {
     descriptionProps: {},
   },
   rules: { canDrag: () => true },
-  related: {
-    settingsSchema: {
-      groups: [
-        {
-          label: "Content",
-          fields: [
-            { key: "title", type: "text", label: "Title" },
-            { key: "description", type: "textarea", label: "Description" },
-          ],
-        },
-      ],
-    },
-  },
 };

@@ -21,9 +21,10 @@ export const NeonBorderCard: React.FC<NeonBorderCardProps> & {
   } = useNode();
 
   return (
-    <div
+    <Container
       ref={(ref) => connect(drag(ref as HTMLDivElement))}
-      className="animate-gradient-x relative rounded-2xl bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-cyan-500 p-[2px]"
+      className="animate-gradient-x relative rounded-2xl p-[2px]"
+      background="linear-gradient(to right, #06b6d4, #d946ef, #06b6d4)"
     >
       <Element
         is={Container}
@@ -55,7 +56,7 @@ export const NeonBorderCard: React.FC<NeonBorderCardProps> & {
           {...descriptionProps}
         />
       </Element>
-    </div>
+    </Container>
   );
 };
 
@@ -69,17 +70,4 @@ NeonBorderCard.craft = {
     descriptionProps: {},
   },
   rules: { canDrag: () => true },
-  related: {
-    settingsSchema: {
-      groups: [
-        {
-          label: "Content",
-          fields: [
-            { key: "title", type: "text", label: "Title" },
-            { key: "description", type: "textarea", label: "Description" },
-          ],
-        },
-      ],
-    },
-  },
 };

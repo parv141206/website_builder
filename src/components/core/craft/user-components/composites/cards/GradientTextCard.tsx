@@ -22,24 +22,28 @@ export const GradientTextCard: React.FC<GradientTextCardProps> & {
   } = useNode();
 
   return (
-    <motion.div
+    <Container
       ref={(ref) => connect(drag(ref as HTMLDivElement))}
-      className="max-w-sm rounded-2xl p-6 shadow-lg"
+      maxWidth="24rem"
+      borderRadius="2xl"
+      padding="6"
       style={{
         background: "linear-gradient(90deg, #6366f1, #9333ea, #ec4899)",
         color: "white",
       }}
+      className="shadow-lg"
+      as={motion.div} // <-- enables motion animations on Container
       whileHover={{ scale: 1.05, rotate: 1 }}
       whileTap={{ scale: 0.97 }}
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
+      {...containerProps}
     >
       <Element
         is={Container}
         canvas
         id="GradientTextCard-content"
-        {...containerProps}
         style={{ backgroundColor: "transparent", padding: 0 }}
       >
         <Element
@@ -63,7 +67,7 @@ export const GradientTextCard: React.FC<GradientTextCardProps> & {
           {...textProps}
         />
       </Element>
-    </motion.div>
+    </Container>
   );
 };
 
@@ -77,15 +81,4 @@ GradientTextCard.craft = {
     textProps: {},
   },
   rules: { canDrag: () => true },
-  related: {
-    settingsSchema: [
-      {
-        label: "Content",
-        fields: [
-          { key: "title", type: "text", label: "Title" },
-          { key: "text", type: "textarea", label: "Text" },
-        ],
-      },
-    ],
-  },
 };

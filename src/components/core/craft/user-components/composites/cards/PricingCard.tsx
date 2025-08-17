@@ -29,51 +29,48 @@ export const PricingCard: React.FC<PricingCardProps> & { craft?: any } = ({
   } = useNode();
 
   return (
-    <div ref={(ref) => ref && connect(drag(ref))}>
+    <Container
+      ref={(ref) => connect(drag(ref as HTMLDivElement))}
+      canvas
+      padding="24px"
+      borderRadius="12px"
+      boxShadow="0 4px 12px rgba(0,0,0,0.1)"
+      textAlign="center"
+      {...containerProps}
+    >
       <Element
-        is={Container}
-        canvas
-        id="PricingCard-container"
-        padding="24px"
-        borderRadius="12px"
-        boxShadow="0 4px 12px rgba(0,0,0,0.1)"
-        textAlign="center"
-        {...containerProps}
-      >
+        is={Text}
+        id="PricingCard-plan"
+        text={plan}
+        as="h3"
+        fontWeight="bold"
+        fontSize="20px"
+        margin="0 0 12px 0"
+        {...planProps}
+      />
+      <Element
+        is={Text}
+        id="PricingCard-price"
+        text={price}
+        as="p"
+        fontSize="24px"
+        fontWeight="bold"
+        margin="0 0 16px 0"
+        {...priceProps}
+      />
+      {features.map((feature, index) => (
         <Element
+          key={index}
           is={Text}
-          id="PricingCard-plan"
-          text={plan}
-          as="h3"
-          fontWeight="bold"
-          fontSize="20px"
-          margin="0 0 12px 0"
-          {...planProps}
-        />
-        <Element
-          is={Text}
-          id="PricingCard-price"
-          text={price}
+          id={`PricingCard-feature-${index}`}
+          text={`• ${feature}`}
           as="p"
-          fontSize="24px"
-          fontWeight="bold"
-          margin="0 0 16px 0"
-          {...priceProps}
+          fontSize="14px"
+          margin="4px 0"
+          {...featureProps}
         />
-        {features.map((feature, index) => (
-          <Element
-            key={index}
-            is={Text}
-            id={`PricingCard-feature-${index}`}
-            text={`• ${feature}`}
-            as="p"
-            fontSize="14px"
-            margin="4px 0"
-            {...featureProps}
-          />
-        ))}
-      </Element>
-    </div>
+      ))}
+    </Container>
   );
 };
 

@@ -26,7 +26,15 @@ export const FAQItem: React.FC<FAQItemProps> & { craft?: any } = ({
   const [open, setOpen] = useState(false);
 
   return (
-    <div ref={(ref) => connect(drag(ref!))}>
+    <Element
+      is={Container}
+      canvas
+      id="FAQItem-wrapper"
+      ref={(ref) => connect(drag(ref as HTMLDivElement))}
+      padding="0"
+      backgroundColor="transparent"
+      {...containerProps}
+    >
       <Element
         is={Container}
         canvas
@@ -35,7 +43,6 @@ export const FAQItem: React.FC<FAQItemProps> & { craft?: any } = ({
         borderRadius="8px"
         border="1px solid #e5e7eb"
         margin="8px 0"
-        {...containerProps}
       >
         <Text
           text={question}
@@ -56,7 +63,7 @@ export const FAQItem: React.FC<FAQItemProps> & { craft?: any } = ({
           />
         )}
       </Element>
-    </div>
+    </Element>
   );
 };
 

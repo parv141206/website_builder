@@ -23,8 +23,17 @@ export const HeroBanner: React.FC<HeroBannerProps> & { craft?: any } = ({
   const {
     connectors: { connect, drag },
   } = useNode();
+
   return (
-    <div ref={(ref) => connect(drag(ref!))}>
+    <Element
+      is={Container}
+      canvas
+      id="HeroBanner-wrapper"
+      ref={(ref) => connect(drag(ref as HTMLDivElement))}
+      padding="0"
+      backgroundColor="transparent"
+      {...containerProps}
+    >
       <Element
         is={Container}
         canvas
@@ -33,7 +42,6 @@ export const HeroBanner: React.FC<HeroBannerProps> & { craft?: any } = ({
         backgroundColor="#1e40af"
         color="#fff"
         textAlign="center"
-        {...containerProps}
       >
         <Element
           is={Text}
@@ -54,7 +62,7 @@ export const HeroBanner: React.FC<HeroBannerProps> & { craft?: any } = ({
           {...subheadingProps}
         />
       </Element>
-    </div>
+    </Element>
   );
 };
 
