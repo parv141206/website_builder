@@ -4,7 +4,6 @@ import { HeroBanner } from "./composites/banner/HeroBanner";
 import { Card1 } from "./composites/cards/Card1";
 import { FlipCard } from "./composites/cards/FlipCard";
 import { GlassCard } from "./composites/cards/GlassCard";
-import { GlassmorphicCard } from "./composites/cards/GlassmorphicCard";
 import { GradientTextCard } from "./composites/cards/GradientTextCard";
 import { ImageLeftCard } from "./composites/cards/ImageLeftCard";
 import { ImageTopCard } from "./composites/cards/ImageTopCard";
@@ -34,7 +33,6 @@ export const COMPONENT_RESOLVER = {
   ImageTopCard,
   ImageLeftCard,
   GradientTextCard,
-  GlassmorphicCard,
   NeonBorderCard,
   TiltHoverCard,
   FlipCard,

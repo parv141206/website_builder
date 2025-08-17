@@ -23,6 +23,7 @@ import {
 import { useDeviceStore, type Device } from "~/store/DeviceStore";
 import { useAppStateStore } from "~/store/AppStateStore";
 import { useCurrentTheme } from "~/themes/hooks/useCurrentTheme";
+import { SeoModal } from "./utils/SeoModal";
 
 const ThemePalette = ({ theme }: { theme: Theme }) => {
   if (!theme) return null;
@@ -126,11 +127,16 @@ export const TopBar = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isThemeManagerOpen, setIsThemeManagerOpen] = useState(false);
+  const [isSeoModalOpen, setIsSeoModalOpen] = useState(false);
 
   const { themes, currentTheme, radius, horizontalSpacing, verticalSpacing } =
     useThemeStore.getState();
   const theme = useCurrentTheme;
-  const handleExport = async () => {
+  const handleExport = async (seo: {
+    title: string;
+    description: string;
+    keywords: string;
+  }) => {
     setIsLoading(true);
     const pageState = query.serialize();
     const activeThemePayload = {
@@ -139,11 +145,11 @@ export const TopBar = () => {
       horizontalSpacing,
       verticalSpacing,
     };
-    const seo = {
-      title: "My Exported Page",
-      description: "A page exported from my website builder.",
-      keywords: "nextjs, react, export",
-    };
+    //  const seo = {
+    //    title: "My Exported Page",
+    //    description: "A page exported from my website builder.",
+    //    keywords: "nextjs, react, export",
+    //  };
     console.log(activeThemePayload);
     try {
       const response = await fetch("/api/export", {
@@ -238,7 +244,7 @@ export const TopBar = () => {
           </button>
 
           <button
-            onClick={handleExport}
+            onClick={() => setIsSeoModalOpen(true)}
             disabled={isLoading}
             className="inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white ring-offset-white transition-colors hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
           >
@@ -246,6 +252,11 @@ export const TopBar = () => {
           </button>
         </div>
       </header>
+      <SeoModal
+        isOpen={isSeoModalOpen}
+        onClose={() => setIsSeoModalOpen(false)}
+        onSubmit={handleExport}
+      />
     </>
   );
 };

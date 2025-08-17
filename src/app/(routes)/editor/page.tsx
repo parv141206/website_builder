@@ -15,6 +15,7 @@ import { DeviceFrame } from "~/components/core/craft/utils/DeviceFrame";
 import { COMPONENT_RESOLVER } from "~/components/core/craft/user-components/componentResolver";
 import { useAppStateStore } from "~/store/AppStateStore";
 import { ThemePanel } from "~/components/core/craft/ThemePanel";
+import ImageManager from "~/components/core/craft/image-manager/ImageManager";
 
 const ThemeUpdater = () => {
   const { actions } = useEditor();
@@ -114,7 +115,7 @@ const EditorUI = ({ savedJson }: { savedJson: string | null }) => {
             </button>
           </div>
         </main>
-
+        <ImageManager />
         <div className="w-80 flex-shrink-0 overflow-y-auto bg-white shadow-lg">
           {activePanel === "theme" ? <ThemePanel /> : <SettingsPanel />}
         </div>

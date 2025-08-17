@@ -72,7 +72,7 @@ function convertToPurePreview(inputPath: string): string {
         source.includes("@craftjs/core") ||
         source.startsWith("~/themes") ||
         source.includes("useTheme") ||
-        source.includes("framer-motion")
+        source.includes("motion/react")
       ) {
         path.remove();
       }

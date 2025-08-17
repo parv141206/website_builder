@@ -27,7 +27,7 @@ export const useEditorHotkeys = () => {
       }
 
       // --- DELETE COMPONENT ---
-      if ((e.key === "Delete" || e.key === "Backspace") && selected) {
+      if (e.key === "Delete" && selected) {
         // Prevent the browser from navigating back on backspace
         e.preventDefault();
 

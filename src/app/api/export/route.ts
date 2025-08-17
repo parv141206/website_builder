@@ -44,16 +44,27 @@ function generateAllGoogleFontsUrl(): string {
 
 function generateLayoutCode(seo: any): string {
   const googleFontsUrl = generateAllGoogleFontsUrl();
-
+  console.log(seo);
   return `
 import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "${seo.title.replace(/"/g, '\\"')}",
-  description: "${seo.description.replace(/"/g, '\\"')}",
-  keywords: "${seo.keywords.replace(/"/g, '\\"')}",
+  title: "${seo.title.replace(/\"/g, '\\"')}",
+  description: "${seo.description.replace(/\"/g, '\\"')}",
+  keywords: "${seo.keywords.replace(/\"/g, '\\"')}",
+  authors: [{ name: "${seo.author.replace(/\"/g, '\\"')}" }],
+  robots: "${seo.robots.replace(/\"/g, '\\"')}",
+  openGraph: {
+    title: "${seo.ogTitle.replace(/\"/g, '\\"')}",
+    description: "${seo.ogDescription.replace(/\"/g, '\\"')}",
+    images: ["${seo.ogImage.replace(/\"/g, '\\"')}"],
+  },
+  twitter: {
+    card: "${seo.twitterCard.replace(/\"/g, '\\"')}",
+  }
 };
+
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
   return (
@@ -258,7 +269,7 @@ function convertToPureComponent(inputPath: string, outputPath: string) {
         source.includes("@craftjs/core") ||
         source.startsWith("~/themes") ||
         source.includes("useTheme") ||
-        source.includes("framer-motion")
+        source.includes("motion/react")
       ) {
         path.remove();
       }

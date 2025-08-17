@@ -20,52 +20,55 @@
         }
       ]
     },
-{
-  "name": "Typography",
-  "icon": "Type",
-  "components": [
     {
-      "name": "Text",
-      "preview": { "is": "Text", "props": { "text": "New Text" } }
-    },
-    {
-      "name": "Link",
-      "preview": { "is": "Link", "props": { "text": "Clickable Link", "href": "#" } }
-    },
-    {
-      "name": "ScrollFloat",
-      "preview": {
-        "is": "ScrollFloat",
-        "props": {
-          "text": "React Bits",
-          "animationDuration": 1,
-          "ease": "back.inOut(2)",
-          "scrollStart": "center bottom+=50%",
-          "scrollEnd": "bottom bottom-=40%",
-          "stagger": 0.03
+      "name": "Typography",
+      "icon": "Type",
+      "components": [
+        {
+          "name": "Text",
+          "preview": { "is": "Text", "props": { "text": "New Text" } }
+        },
+        {
+          "name": "Link",
+          "preview": {
+            "is": "Link",
+            "props": { "text": "Clickable Link", "href": "#" }
+          }
+        },
+        {
+          "name": "ScrollFloat",
+          "preview": {
+            "is": "ScrollFloat",
+            "props": {
+              "text": "React Bits",
+              "animationDuration": 1,
+              "ease": "back.inOut(2)",
+              "scrollStart": "center bottom+=50%",
+              "scrollEnd": "bottom bottom-=40%",
+              "stagger": 0.03
+            }
+          }
+        },
+        {
+          "name": "RotatingText",
+          "preview": {
+            "is": "RotatingText",
+            "props": {
+              "texts": ["React", "Bits", "Is", "Cool!"],
+              "rotationInterval": 2000,
+              "staggerDuration": 0.025,
+              "staggerFrom": "last",
+              "loop": true,
+              "auto": true,
+              "splitBy": "characters",
+              "mainClassName": "",
+              "splitLevelClassName": "",
+              "elementLevelClassName": ""
+            }
+          }
         }
-      }
+      ]
     },
-    {
-      "name": "RotatingText",
-      "preview": {
-        "is": "RotatingText",
-        "props": {
-          "texts": ["React", "Bits", "Is", "Cool!"],
-          "rotationInterval": 2000,
-          "staggerDuration": 0.025,
-          "staggerFrom": "last",
-          "loop": true,
-          "auto": true,
-          "splitBy": "characters",
-          "mainClassName": "",
-          "splitLevelClassName": "",
-          "elementLevelClassName": ""
-        }
-      }
-    }
-  ]
-},
     {
       "name": "Media",
       "icon": "Image",
@@ -95,15 +98,24 @@
             }
           }
         },
-           {
+        {
           "name": "Image Gallery",
           "preview": {
             "is": "ImageGallery",
             "props": {
               "images": [
-                { "src": "https://via.placeholder.com/300x200", "alt": "Image 1" },
-                { "src": "https://via.placeholder.com/300x200", "alt": "Image 2" },
-                { "src": "https://via.placeholder.com/300x200", "alt": "Image 3" }
+                {
+                  "src": "https://via.placeholder.com/300x200",
+                  "alt": "Image 1"
+                },
+                {
+                  "src": "https://via.placeholder.com/300x200",
+                  "alt": "Image 2"
+                },
+                {
+                  "src": "https://via.placeholder.com/300x200",
+                  "alt": "Image 3"
+                }
               ],
               "columns": 3,
               "gap": "12px",
@@ -169,16 +181,7 @@
             }
           }
         },
-        {
-          "name": "Glassmorphic Card",
-          "preview": {
-            "is": "GlassmorphicCard",
-            "props": {
-              "title": "Futuristic Card",
-              "description": "Glassmorphism with blur and glow effect"
-            }
-          }
-        },
+
         {
           "name": "Neon Border Card",
           "preview": {
@@ -228,7 +231,10 @@
             "props": {
               "name": "Jane Doe",
               "role": "CEO",
-              "imageProps": { "src": "https://via.placeholder.com/150", "alt": "Team Member" },
+              "imageProps": {
+                "src": "https://via.placeholder.com/150",
+                "alt": "Team Member"
+              },
               "containerProps": {},
               "nameProps": {},
               "roleProps": {}
@@ -280,7 +286,7 @@
         }
       ]
     },
-  
+
     {
       "name": "FAQ",
       "icon": "QuestionMarkCircle",

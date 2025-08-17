@@ -5,6 +5,7 @@ import { useNode, Element } from "@craftjs/core";
 import { Animated } from "../../primitives/Animated";
 import { Image, type ImageProps } from "../../primitives/Image";
 import { Text, type TextProps } from "../../primitives/Text";
+import { Container } from "../../primitives/Container";
 
 export type ImageLeftCardProps = {
   imageProps?: Partial<ImageProps>;
@@ -22,15 +23,7 @@ export const ImageLeftCard: React.FC<ImageLeftCardProps> & { craft?: any } = ({
   } = useNode();
 
   return (
-    <Animated
-      ref={(ref) => connect(drag(ref as HTMLDivElement))}
-      className="flex max-w-lg overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg"
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.97 }}
-      initial={{ opacity: 0, x: -30 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-    >
+    <Element flexDirection="row" id="ImageLeftCard" is={Container}>
       <Element
         is={Image}
         id="ImageLeftCard-image"
@@ -39,7 +32,7 @@ export const ImageLeftCard: React.FC<ImageLeftCardProps> & { craft?: any } = ({
         className="w-1/3 object-cover"
         {...imageProps}
       />
-      <div className="flex-1 p-4">
+      <Element flexDirection="column" id="ImageLeftCard" is={Container}>
         <Element
           is={Text}
           id="ImageLeftCard-title"
@@ -60,8 +53,8 @@ export const ImageLeftCard: React.FC<ImageLeftCardProps> & { craft?: any } = ({
           margin="4px 0 0 0"
           {...textProps}
         />
-      </div>
-    </Animated>
+      </Element>
+    </Element>
   );
 };
 
