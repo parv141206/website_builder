@@ -27,7 +27,7 @@ export const VideoSection: React.FC<VideoSectionProps> & { craft?: any } = ({
   } = useNode();
 
   return (
-    <div ref={(ref) => connect(drag(ref!)}>
+    <div ref={(ref) => connect(drag(ref as HTMLDivElement))}>
       <Element
         is={Container}
         canvas
