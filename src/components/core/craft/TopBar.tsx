@@ -1,5 +1,3 @@
-"use client";
-
 import React, { memo, useState } from "react";
 import { useEditor } from "@craftjs/core";
 import { useThemeStore, type Theme } from "~/themes/store/ThemeStore";
@@ -27,6 +25,7 @@ import { useCurrentTheme } from "~/themes/hooks/useCurrentTheme";
 import { SeoModal } from "./utils/SeoModal";
 import { LuFolderTree } from "react-icons/lu";
 import { useOutlinePanelStore } from "~/store/OutlinePanelStore";
+import { db } from "./image-manager/ImageManager";
 
 const ThemePalette = ({ theme }: { theme: Theme }) => {
   if (!theme) return null;
@@ -135,26 +134,29 @@ export const TopBar = () => {
   const { themes, currentTheme, radius, horizontalSpacing, verticalSpacing } =
     useThemeStore.getState();
   const theme = useCurrentTheme;
+
   const handleExport = async (seo: {
     title: string;
     description: string;
     keywords: string;
   }) => {
     setIsLoading(true);
-    const pageState = query.serialize();
-    const activeThemePayload = {
-      ...themes[currentTheme],
-      radius,
-      horizontalSpacing,
-      verticalSpacing,
-    };
-    //  const seo = {
-    //    title: "My Exported Page",
-    //    description: "A page exported from my website builder.",
-    //    keywords: "nextjs, react, export",
-    //  };
-    console.log(activeThemePayload);
     try {
+      const storedImages = await db.table("images").toArray();
+      const imageData = storedImages.map((img) => ({
+        key: img.key,
+        base64: img.base64,
+      }));
+      console.log("Image Data: ", imageData);
+      const pageState = query.serialize();
+
+      const activeThemePayload = {
+        ...themes[currentTheme],
+        radius,
+        horizontalSpacing,
+        verticalSpacing,
+      };
+
       const response = await fetch("/api/export", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -163,8 +165,10 @@ export const TopBar = () => {
           theme: activeThemePayload,
           themeName: currentTheme,
           seo,
+          imageData,
         }),
       });
+
       if (response.ok) {
         alert("Project exported successfully!");
       } else {

@@ -591,7 +591,6 @@ function cleanReturnStatement(
         }
       },
 
-      // Handle conditional rendering - always use non-editing version
       ConditionalExpression(path: {
         node: { test: t.Node | null | undefined; alternate: any };
         replaceWith: (arg0: any) => void;
@@ -606,7 +605,6 @@ function cleanReturnStatement(
         }
       },
 
-      // Remove calls to editor functions
       CallExpression(path: {
         node: { callee: t.Node | null | undefined };
         replaceWith: (arg0: t.Identifier) => void;
@@ -631,8 +629,14 @@ function cleanReturnStatement(
 // ==================================================================================
 export async function POST(req: NextRequest) {
   try {
-    const { pageState, theme: activeTheme, themeName, seo } = await req.json();
-    console.log(activeTheme);
+    const {
+      imageData,
+      pageState,
+      theme: activeTheme,
+      themeName,
+      seo,
+    } = await req.json();
+
     if (!pageState || !activeTheme || !themeName || !seo) {
       return NextResponse.json(
         { status: "error", message: "Missing required data" },
@@ -652,10 +656,34 @@ export async function POST(req: NextRequest) {
     const appPath = path.join(projectPath, "app");
     const componentsOutPath = path.join(appPath, "components");
     const themeOutPath = path.join(appPath, "theme");
-
-    [projectPath, appPath, componentsOutPath, themeOutPath].forEach((p) => {
+    const publicImagesPath = path.join(projectPath, "public");
+    [
+      projectPath,
+      appPath,
+      componentsOutPath,
+      themeOutPath,
+      publicImagesPath,
+    ].forEach((p) => {
       if (!fs.existsSync(p)) fs.mkdirSync(p, { recursive: true });
     });
+
+    if (imageData && Array.isArray(imageData)) {
+      for (const imgData of imageData) {
+        if (imgData.key && imgData.base64) {
+          const imagePath = path.join(
+            publicImagesPath,
+            path.basename(imgData.key),
+          );
+          const base64Data = imgData.base64.replace(
+            /^data:image\/\w+;base64,/,
+            "",
+          );
+          const buffer = Buffer.from(base64Data, "base64");
+
+          fs.writeFileSync(imagePath, buffer);
+        }
+      }
+    }
 
     fs.writeFileSync(path.join(appPath, "layout.tsx"), generateLayoutCode(seo));
     fs.writeFileSync(
@@ -668,6 +696,7 @@ export async function POST(req: NextRequest) {
       `src/themes/config/themes-json/${themeName}.json`,
     );
     const themeJsonDestPath = path.join(themeOutPath, "theme.json");
+
     if (fs.existsSync(themeJsonSourcePath)) {
       fs.writeFileSync(
         themeJsonDestPath,
@@ -680,7 +709,6 @@ export async function POST(req: NextRequest) {
 
     const themeLoaderContent = `import themeData from './theme.json';\n\nexport const theme = themeData;\n`;
     fs.writeFileSync(path.join(themeOutPath, "index.ts"), themeLoaderContent);
-
     fs.writeFileSync(
       path.join(appPath, "page.tsx"),
       generatePageCode(nodes, usedComponents),
@@ -694,6 +722,7 @@ export async function POST(req: NextRequest) {
       process.cwd(),
       "src/components/core/craft/user-components",
     );
+
     for (const comp of primitivesToExport) {
       const sourcePath = findComponentPath(
         comp,
@@ -705,11 +734,11 @@ export async function POST(req: NextRequest) {
         );
         continue;
       }
+
       const outputDir = path.join(componentsOutPath, comp);
       if (!fs.existsSync(outputDir))
         fs.mkdirSync(outputDir, { recursive: true });
-      const outputFile = path.join(outputDir, `index.tsx`);
-
+      const outputFile = path.join(outputDir, "index.tsx");
       convertToPureComponent(sourcePath, outputFile);
     }
 

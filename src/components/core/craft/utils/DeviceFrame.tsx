@@ -10,7 +10,7 @@ const deviceWidths: Record<string, string> = {
 };
 
 type DeviceFrameProps = {
-  children?: React.ReactNode; // Make children optional since we might not need them when loading JSON
+  children?: React.ReactNode;
   savedJson: string | null;
 };
 
@@ -27,13 +27,7 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({
       style={{ maxWidth: width }}
     >
       <div className="h-full w-full overflow-y-auto">
-        {savedJson ? (
-          // When loading from JSON, don't pass children - let Frame deserialize the JSON
-          <Frame json={savedJson} />
-        ) : (
-          // Only use children when there's no saved JSON (first load)
-          <Frame>{children}</Frame>
-        )}
+        {savedJson ? <Frame json={savedJson} /> : <Frame>{children}</Frame>}
       </div>
     </div>
   );

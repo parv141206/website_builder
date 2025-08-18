@@ -3,7 +3,6 @@ import React, { useMemo } from "react";
 import { useNode } from "@craftjs/core";
 import { useTheme } from "~/themes";
 
-// The props definition, including all possible style options.
 export type ContainerProps = {
   as?: React.ElementType;
   // layout

@@ -1,12 +1,12 @@
-import { useMethods } from '@craftjs/utils';
-import React from 'react';
+import { useMethods } from "@craftjs/utils";
+import React from "react";
 
-import { LayerMethods } from './actions';
-import { LayerManagerContext, LayerStore } from './context';
+import { LayerMethods } from "./actions";
+import { LayerManagerContext, LayerStore } from "./context";
 
-import { LayerEventContextProvider } from '../events';
-import { LayerOptions } from '../interfaces';
-import { DefaultLayer } from '../layers';
+import { LayerEventContextProvider } from "../events";
+import { LayerOptions } from "../interfaces";
+import { DefaultLayer } from "../layers";
 
 type LayerManagerProviderProps = {
   options: Partial<LayerOptions>;
@@ -17,7 +17,6 @@ export const LayerManagerProvider = ({
   children,
   options,
 }: LayerManagerProviderProps) => {
-  // TODO: fix type
   const store = useMethods(LayerMethods, {
     layers: {},
     events: {

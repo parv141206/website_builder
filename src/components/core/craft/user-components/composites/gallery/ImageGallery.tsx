@@ -6,7 +6,7 @@ import { Container, type ContainerProps } from "../../primitives/Container";
 import { Image, type ImageProps } from "../../primitives/Image";
 
 export type ImageGalleryProps = {
-  images: Partial<ImageProps>[]; // Optional props allowed
+  images: Partial<ImageProps>[];
   columns?: number;
   gap?: string;
   containerProps?: Partial<ContainerProps>;
@@ -36,12 +36,12 @@ export const ImageGallery: React.FC<ImageGalleryProps> & { craft?: any } = ({
           key={idx}
           is={Image}
           id={`ImageGallery-image-${idx}`}
-          src={imgProps.src ?? "https://via.placeholder.com/300x200"} // default src
-          alt={imgProps.alt ?? `Image ${idx + 1}`} // default alt
+          src={imgProps.src ?? "https://via.placeholder.com/300x200"}
+          alt={imgProps.alt ?? `Image ${idx + 1}`}
           width={imgProps.width}
           height={imgProps.height}
           objectFit={imgProps.objectFit}
-          {...imgProps} // spread other optional props
+          {...imgProps}
         />
       ))}
     </Container>

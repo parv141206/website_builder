@@ -57,10 +57,8 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
       const Component = COMPONENT_MAP[componentConfig.is];
       if (!Component) return;
 
-      // Create a React element from the config
       const element = <Element is={Component} {...componentConfig.props} />;
 
-      // Create the Craft.js node and add it to the ROOT
       const node = query.createNode(element);
       actions.add(node, "ROOT");
       onClose();
@@ -68,7 +66,6 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
     [actions, query, onClose],
   );
 
-  // Memoized filtering logic for performance
   const filteredComponents = useMemo(() => {
     const category = libraryData.categories.find(
       (c) => c.name === activeCategory,
@@ -102,7 +99,6 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
             className="flex h-[70vh] w-full max-w-4xl overflow-hidden rounded-xl border border-white/20 bg-white/80 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Sidebar for Categories */}
             <aside className="w-56 flex-shrink-0 border-r border-gray-200/80 bg-white/60 p-4">
               <h2 className="mb-4 text-lg font-semibold text-gray-800">
                 Components
@@ -129,7 +125,6 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
               </nav>
             </aside>
 
-            {/* Main Content: Search and Previews */}
             <main className="flex flex-1 flex-col overflow-hidden">
               <div className="flex-shrink-0 border-b border-gray-200/80 p-4">
                 <div className="relative">
@@ -144,7 +139,6 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
                 </div>
               </div>
 
-              {/* Grid for Component Previews */}
               <div className="flex-1 overflow-y-auto p-6">
                 <div className="grid grid-cols-2 gap-4">
                   {filteredComponents.map((comp) => (
@@ -157,7 +151,6 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
                         {comp.name}
                       </h4>
 
-                      {/* This is where the magic happens - just one line! */}
                       <div className="min-h-[100px] overflow-hidden rounded border border-gray-100 bg-white">
                         <SafePreview
                           componentConfig={comp.preview}
@@ -176,7 +169,6 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
               </div>
             </main>
 
-            {/* Close Button */}
             <button
               onClick={onClose}
               className="absolute top-4 right-4 rounded-full p-1 text-gray-400 transition-colors hover:bg-gray-200/80 hover:text-gray-700"

@@ -12,17 +12,14 @@ import React, {
 import { useNode, Element } from "@craftjs/core";
 import { AnimatePresence, type Transition, type Variants } from "motion/react";
 
-// Assuming these primitives are in a relative path from your component
 import { Animated } from "../../primitives/Animated";
 import { Container, type ContainerProps } from "../../primitives/Container";
 import { Text, type TextProps } from "../../primitives/Text";
 
-// Utility function to concatenate class names
 function cn(...classes: (string | undefined | false)[]): string {
   return classes.filter(Boolean).join(" ");
 }
 
-// Define the types for the component's props
 export type RotatingTextProps = {
   texts: string[];
   transition?: Transition;
@@ -42,10 +39,9 @@ export type RotatingTextProps = {
   splitLevelClassName?: string;
   elementLevelClassName?: string;
   containerProps?: Partial<ContainerProps>;
-  textProps?: Partial<TextProps>; // Props for the editable Text element
+  textProps?: Partial<TextProps>;
 };
 
-// Define the type for the imperative handle methods
 export type RotatingTextRef = {
   next: () => void;
   previous: () => void;

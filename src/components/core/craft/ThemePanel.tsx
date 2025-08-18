@@ -2,11 +2,10 @@
 
 import React from "react";
 import { useThemeStore, type Theme } from "~/themes/store/ThemeStore";
-import { FontPicker } from "./SettingsPanel"; // Reuse the FontPicker
-import { Plus, RotateCcw } from "lucide-react"; // Import new icons
+import { FontPicker } from "./SettingsPanel";
+import { Plus, RotateCcw } from "lucide-react";
 import { CustomColorPicker } from "./utils/CustomColorPicker";
 
-// A small, reusable component for a single theme setting with a label
 const ThemeSetting = ({
   label,
   children,
@@ -53,7 +52,6 @@ export const ThemePanel = () => {
     }
   };
 
-  // Helper function to create a labeled color picker for a nested color property
   const renderColorPicker = (
     label: string,
     category: keyof Theme["colors"],

@@ -24,7 +24,6 @@ export const MiniCraftPreview: React.FC<MiniCraftPreviewProps> = ({
   const Component =
     COMPONENT_RESOLVER[componentConfig.is as keyof typeof COMPONENT_RESOLVER];
 
-  // Error fallback
   if (!Component) {
     return (
       <div
@@ -36,7 +35,6 @@ export const MiniCraftPreview: React.FC<MiniCraftPreviewProps> = ({
     );
   }
 
-  // Memoize the preview to avoid unnecessary re-renders
   const preview = useMemo(
     () => (
       <div
@@ -65,7 +63,6 @@ export const MiniCraftPreview: React.FC<MiniCraftPreviewProps> = ({
             <Element
               is={Component}
               {...componentConfig.props}
-              // Override any editor-specific props
               canvas={undefined}
               connectors={undefined}
             />

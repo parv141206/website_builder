@@ -32,7 +32,7 @@ export const GradientTextCard: React.FC<GradientTextCardProps> & {
         color: "white",
       }}
       className="shadow-lg"
-      as={motion.div} // <-- enables motion animations on Container
+      as={motion.div}
       whileHover={{ scale: 1.05, rotate: 1 }}
       whileTap={{ scale: 0.97 }}
       initial={{ opacity: 0, y: 40 }}

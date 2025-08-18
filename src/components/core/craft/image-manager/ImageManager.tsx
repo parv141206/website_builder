@@ -23,10 +23,33 @@ export default function ImageManager() {
     for (const file of Array.from(files)) {
       const path = `public/${file.name}`;
 
-      // Save to IndexedDB
-      await db.table("images").put({ key: path, blob: file });
+      let base64: string | null = null;
+      try {
+        base64 = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const result = reader.result;
+            if (typeof result === "string") {
+              resolve(result);
+            } else {
+              reject(new Error("FileReader result is not a string."));
+            }
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      } catch (error) {
+        console.error("Error reading file as Base64:", error);
+        continue;
+      }
 
-      // Use SW path
+      if (base64) {
+        await db.table("images").put({ key: path, base64 });
+      } else {
+        console.warn(`Skipping ${file.name} due to failed Base64 conversion.`);
+        continue;
+      }
+
       const url = `/${path}`;
       newImages.push({ name: file.name, url, path });
     }
@@ -53,7 +76,6 @@ export default function ImageManager() {
 
   return (
     <aside className="w-80 overflow-y-auto border-l border-gray-200 bg-white p-4">
-      {/* Header */}
       <div className="mb-4 flex items-center justify-between">
         <div>
           <h3 className="text-lg font-semibold text-gray-800">Image Manager</h3>
@@ -71,7 +93,6 @@ export default function ImageManager() {
         </label>
       </div>
 
-      {/* Images */}
       <div className="space-y-3">
         {images.length === 0 ? (
           <p className="text-center text-sm text-gray-500">

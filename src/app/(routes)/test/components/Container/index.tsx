@@ -2,7 +2,6 @@
 
 import { theme } from "../../theme";
 import React, { useMemo } from "react";
-// The props definition, including all possible style options.
 export type ContainerProps = {
   as?: React.ElementType;
   // layout

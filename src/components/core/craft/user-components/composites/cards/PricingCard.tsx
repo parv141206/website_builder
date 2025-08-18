@@ -74,7 +74,6 @@ export const PricingCard: React.FC<PricingCardProps> & { craft?: any } = ({
   );
 };
 
-// Craft.js settings
 PricingCard.craft = {
   displayName: "Pricing Card",
   props: {

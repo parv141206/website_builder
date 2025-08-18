@@ -80,7 +80,6 @@ export const Text: React.FC<TextProps> & {
 
   const style: React.CSSProperties = useMemo(
     () => ({
-      // Use the prop if it exists, otherwise fall back to the theme value.
       color: color || theme.colors.text.body,
       fontFamily: fontFamily || theme.fonts.body,
       background: background || "transparent",

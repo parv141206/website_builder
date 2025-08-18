@@ -1,10 +1,10 @@
-import { useEditor, ROOT_NODE } from '@craftjs/core';
-import React, { useRef, useEffect, useLayoutEffect, useState } from 'react';
+import { useEditor, ROOT_NODE } from "@craftjs/core";
+import React, { useRef, useEffect, useLayoutEffect, useState } from "react";
 
-import { LayerContextProvider } from './LayerContextProvider';
-import { useLayer } from './useLayer';
+import { LayerContextProvider } from "./LayerContextProvider";
+import { useLayer } from "./useLayer";
 
-import { useLayerManager } from '../manager/useLayerManager';
+import { useLayerManager } from "../manager/useLayerManager";
 
 export const LayerNode = () => {
   const { id, depth, children, expanded } = useLayer((layer) => ({
@@ -12,8 +12,7 @@ export const LayerNode = () => {
   }));
 
   const { data, shouldBeExpanded } = useEditor((state, query) => {
-    // TODO: handle multiple selected elements
-    const selected = query.getEvent('selected').first();
+    const selected = query.getEvent("selected").first();
 
     return {
       data: state.nodes[id] && state.nodes[id].data,
@@ -42,7 +41,7 @@ export const LayerNode = () => {
   expandedRef.current = expanded;
 
   const shouldBeExpandedOnLoad = useRef<boolean>(
-    expandRootOnLoad && id === ROOT_NODE
+    expandRootOnLoad && id === ROOT_NODE,
   );
 
   useEffect(() => {
@@ -66,7 +65,7 @@ export const LayerNode = () => {
           ? children.map((id) => (
               <LayerContextProvider key={id} id={id} depth={depth + 1} />
             ))
-          : null
+          : null,
       )}
     </div>
   ) : null;

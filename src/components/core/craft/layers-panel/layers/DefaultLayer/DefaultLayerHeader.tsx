@@ -2,7 +2,6 @@
 import React from "react";
 import { useEditor } from "@craftjs/core";
 
-// --- 1. Import the desired icons ---
 import { FiEye, FiEyeOff, FiLink, FiChevronDown } from "react-icons/fi";
 
 import { EditableLayerName } from "./EditableLayerName";
