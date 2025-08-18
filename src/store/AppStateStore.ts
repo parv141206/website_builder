@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type ActivePanel = "settings" | "theme";
+export type ActivePanel = "settings" | "theme" | "images" | "hide";
 
 export type AppStateStore = {
   activePanel: ActivePanel;

@@ -2,6 +2,8 @@
 
 import Dexie from "dexie";
 import { useState, useEffect } from "react";
+import { Plus, Trash2 } from "lucide-react";
+
 export const db = new Dexie("mydb");
 db.version(1).stores({
   images: "key",
@@ -21,16 +23,20 @@ export default function ImageManager() {
     for (const file of Array.from(files)) {
       const path = `public/${file.name}`;
 
-      // Save in IndexedDB with public/ prefix as key
+      // Save to IndexedDB
       await db.table("images").put({ key: path, blob: file });
 
-      // Use the service worker URL instead of createObjectURL for display
-      // This ensures the image is served through the service worker
-      const url = `/${path}`; // This will be intercepted by service worker
+      // Use SW path
+      const url = `/${path}`;
       newImages.push({ name: file.name, url, path });
     }
 
     setImages((prev) => [...prev, ...newImages]);
+  }
+
+  async function handleDelete(path: string) {
+    await db.table("images").delete(path);
+    setImages((prev) => prev.filter((img) => img.path !== path));
   }
 
   useEffect(() => {
@@ -38,7 +44,7 @@ export default function ImageManager() {
       const stored = await db.table("images").toArray();
       const previews = stored.map((img: any) => ({
         name: img.key.replace("public/", ""),
-        url: `/${img.key}`, // Use service worker URL
+        url: `/${img.key}`,
         path: img.key,
       }));
       setImages(previews);
@@ -46,42 +52,73 @@ export default function ImageManager() {
   }, []);
 
   return (
-    <div className="flex h-screen w-48 flex-col border-r p-2">
-      <input
-        type="file"
-        accept="image/*"
-        multiple
-        onChange={handleUpload}
-        className="mb-2 text-sm"
-      />
-      <div className="flex-1 space-y-3 overflow-y-auto">
-        {images.map((img) => (
-          <div key={img.path} className="flex flex-col items-center">
-            <img
-              src={img.url}
-              alt={img.name}
-              className="h-24 w-24 rounded border object-cover"
-              onError={(e) => {
-                console.error("Failed to load image:", img.url);
-                // Fallback to blob URL if service worker fails
-                (async () => {
-                  try {
-                    const record = await db.table("images").get(img.path);
-                    if (record?.blob) {
-                      (e.target as HTMLImageElement).src = URL.createObjectURL(
-                        record.blob,
-                      );
-                    }
-                  } catch (error) {
-                    console.error("Failed to create fallback URL:", error);
-                  }
-                })();
-              }}
-            />
-            <p className="mt-1 text-center text-xs break-all">{img.path}</p>
-          </div>
-        ))}
+    <aside className="w-80 overflow-y-auto border-l border-gray-200 bg-white p-4">
+      {/* Header */}
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <h3 className="text-lg font-semibold text-gray-800">Image Manager</h3>
+          <p className="text-sm text-gray-500">Manage your uploaded assets</p>
+        </div>
+        <label className="cursor-pointer rounded-md p-2 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-blue-600">
+          <Plus className="h-4 w-4" />
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            className="hidden"
+            onChange={handleUpload}
+          />
+        </label>
       </div>
-    </div>
+
+      {/* Images */}
+      <div className="space-y-3">
+        {images.length === 0 ? (
+          <p className="text-center text-sm text-gray-500">
+            No images uploaded yet.
+          </p>
+        ) : (
+          images.map((img) => (
+            <div
+              key={img.path}
+              className="flex flex-col gap-3 rounded-md border p-2 shadow-sm"
+            >
+              <img
+                src={img.url}
+                alt={img.name}
+                className="max-h-40 w-full rounded object-cover"
+                onError={(e) => {
+                  (async () => {
+                    try {
+                      const record = await db.table("images").get(img.path);
+                      if (record?.blob) {
+                        (e.target as HTMLImageElement).src =
+                          URL.createObjectURL(record.blob);
+                      }
+                    } catch (error) {
+                      console.error("Failed fallback:", error);
+                    }
+                  })();
+                }}
+              />
+              <div className="flex justify-between">
+                <div className="flex-1">
+                  <p className="truncate text-sm font-medium text-gray-700">
+                    {img.name}
+                  </p>
+                  <p className="truncate text-xs text-gray-500">{img.path}</p>
+                </div>
+                <button
+                  onClick={() => handleDelete(img.path)}
+                  className="rounded-md p-2 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-red-600"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </aside>
   );
 }

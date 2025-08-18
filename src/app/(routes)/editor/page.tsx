@@ -1,21 +1,16 @@
 "use client";
 import { Editor, Frame, Element, useEditor } from "@craftjs/core";
 import React, { useState, useEffect } from "react";
-// Import hooks and providers
 import { useEditorPersistence } from "~/hooks/useEditorPersistence";
 import { ThemeProvider, useTheme } from "~/themes";
-// Import UI components
-import { SettingsPanel } from "~/components/core/craft/SettingsPanel";
 import { AddComponentModal } from "~/components/core/craft/AddComponentModal";
-import { DefaultLayer, Layers } from "~/components/core/craft/layers-panel";
 import { TopBar } from "~/components/core/craft/TopBar";
-import { LuFolderTree } from "react-icons/lu";
 import { useEditorHotkeys } from "~/hooks/useEditorHotkeys";
 import { DeviceFrame } from "~/components/core/craft/utils/DeviceFrame";
 import { COMPONENT_RESOLVER } from "~/components/core/craft/user-components/componentResolver";
 import { useAppStateStore } from "~/store/AppStateStore";
-import { ThemePanel } from "~/components/core/craft/ThemePanel";
-import ImageManager from "~/components/core/craft/image-manager/ImageManager";
+import { Sidebar } from "~/components/core/craft/Sidebar";
+import { OutlinePanel } from "~/components/core/craft/OutlinePanel";
 
 const ThemeUpdater = () => {
   const { actions } = useEditor();
@@ -30,9 +25,6 @@ const ThemeUpdater = () => {
   return null;
 };
 
-// ==================================================================================
-// IMPORTANT: Add ThemeUpdater to the resolver so Craft.js recognizes it
-// ==================================================================================
 const EXTENDED_COMPONENT_RESOLVER = {
   ...COMPONENT_RESOLVER,
   ThemeUpdater,
@@ -40,9 +32,6 @@ const EXTENDED_COMPONENT_RESOLVER = {
 
 const { Container, Text } = COMPONENT_RESOLVER;
 
-// ==================================================================================
-// This component contains the actual editor UI.
-// ==================================================================================
 const EditorUI = ({ savedJson }: { savedJson: string | null }) => {
   const theme = useTheme();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,7 +45,6 @@ const EditorUI = ({ savedJson }: { savedJson: string | null }) => {
   const { selected } = useEditor((state) => ({
     selected: state.events.selected.size > 0,
   }));
-  // Logic to switch back to settings panel when a component is selected
   useEffect(() => {
     if (selected) {
       setActivePanel("settings");
@@ -66,12 +54,7 @@ const EditorUI = ({ savedJson }: { savedJson: string | null }) => {
     <div className="flex h-screen w-full flex-col">
       <TopBar />
       <div className="flex flex-1 overflow-hidden">
-        <div className="flex w-68 flex-shrink-0 flex-col gap-1 overflow-y-auto bg-white p-3 py-4 shadow-lg">
-          <div className="flex items-center justify-start gap-1 font-bold">
-            <LuFolderTree /> <div>Outline</div>
-          </div>
-          <Layers renderLayer={DefaultLayer} />
-        </div>
+        <OutlinePanel />
 
         <main className="relative flex-1 overflow-y-auto p-4 transition-colors duration-200">
           <DeviceFrame savedJson={savedJson}>
@@ -115,10 +98,7 @@ const EditorUI = ({ savedJson }: { savedJson: string | null }) => {
             </button>
           </div>
         </main>
-        <ImageManager />
-        <div className="w-80 flex-shrink-0 overflow-y-auto bg-white shadow-lg">
-          {activePanel === "theme" ? <ThemePanel /> : <SettingsPanel />}
-        </div>
+        <Sidebar activePanel={activePanel} />
         <AddComponentModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
@@ -128,9 +108,6 @@ const EditorUI = ({ savedJson }: { savedJson: string | null }) => {
   );
 };
 
-// ==================================================================================
-// This wrapper component handles the loading state.
-// ==================================================================================
 const App = () => {
   const { isLoaded, savedJson } = useEditorPersistence();
 
@@ -145,9 +122,6 @@ const App = () => {
   return <EditorUI savedJson={savedJson} />;
 };
 
-// ==================================================================================
-// The final, clean page export - using the extended resolver
-// ==================================================================================
 export default function EditorPage() {
   return (
     <ThemeProvider>

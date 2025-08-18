@@ -19,11 +19,14 @@ import {
   Smartphone,
   Settings,
   Palette,
+  Image,
 } from "lucide-react";
 import { useDeviceStore, type Device } from "~/store/DeviceStore";
 import { useAppStateStore } from "~/store/AppStateStore";
 import { useCurrentTheme } from "~/themes/hooks/useCurrentTheme";
 import { SeoModal } from "./utils/SeoModal";
+import { LuFolderTree } from "react-icons/lu";
+import { useOutlinePanelStore } from "~/store/OutlinePanelStore";
 
 const ThemePalette = ({ theme }: { theme: Theme }) => {
   if (!theme) return null;
@@ -182,6 +185,7 @@ export const TopBar = () => {
     }
   };
   const { setActivePanel, activePanel } = useAppStateStore();
+  const { isOutlinePanelOpen, toggleOutlinePanel } = useOutlinePanelStore();
   return (
     <>
       <header className="z-50 grid h-16 grid-cols-3 items-center border-b border-neutral-200 bg-white px-6 shadow-sm">
@@ -189,6 +193,15 @@ export const TopBar = () => {
           <h1 className="text-lg font-semibold tracking-wide text-neutral-800">
             Page Editor
           </h1>
+          <button
+            title="Outline Manager"
+            onClick={toggleOutlinePanel}
+            className={`rounded-md ${
+              isOutlinePanelOpen ? "bg-gray-100" : ""
+            } p-2 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-blue-600`}
+          >
+            <LuFolderTree className="h-5 w-5" />
+          </button>
         </div>
 
         <div className="flex items-center justify-center gap-2">
@@ -223,19 +236,33 @@ export const TopBar = () => {
           <ThemeSelector />
           <button
             title="Manage Theme"
-            onClick={() => setActivePanel("theme")}
+            onClick={() =>
+              setActivePanel(activePanel === "theme" ? "hide" : "theme")
+            }
             className={`rounded-md ${
               activePanel === "theme" ? "bg-gray-100" : ""
             } p-2 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-blue-600`}
           >
             <Palette className="h-5 w-5" />
           </button>
+
           <button
-            title="Theme Manager"
-            onClick={() => {
-              setIsThemeManagerOpen(false);
-              setActivePanel("settings");
-            }}
+            title="Image Manager"
+            onClick={() =>
+              setActivePanel(activePanel === "images" ? "hide" : "images")
+            }
+            className={`rounded-md ${
+              activePanel === "images" ? "bg-gray-100" : ""
+            } p-2 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-blue-600`}
+          >
+            <Image className="h-5 w-5" />
+          </button>
+
+          <button
+            title="Settings Manager"
+            onClick={() =>
+              setActivePanel(activePanel === "settings" ? "hide" : "settings")
+            }
             className={`rounded-md ${
               activePanel === "settings" ? "bg-gray-100" : ""
             } p-2 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-blue-600`}

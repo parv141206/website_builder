@@ -4,7 +4,7 @@ import React from "react";
 import { useNode, Element } from "@craftjs/core";
 import { Container, type ContainerProps } from "../../primitives/Container";
 import { Text, type TextProps } from "../../primitives/Text";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 export type GradientTextCardProps = {
   title: string;

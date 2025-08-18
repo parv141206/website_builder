@@ -10,7 +10,7 @@ import React, {
   type ForwardedRef,
 } from "react";
 import { useNode, Element } from "@craftjs/core";
-import { AnimatePresence, type Transition, type Variants } from "framer-motion";
+import { AnimatePresence, type Transition, type Variants } from "motion/react";
 
 // Assuming these primitives are in a relative path from your component
 import { Animated } from "../../primitives/Animated";

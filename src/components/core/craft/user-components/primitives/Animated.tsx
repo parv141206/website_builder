@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect, type ReactNode } from "react";
 import { useNode } from "@craftjs/core";
-import { motion, type MotionProps } from "framer-motion";
+import { motion, type MotionProps } from "motion/react";
 
 export type AnimatedProps = MotionProps & {
   children: ReactNode;
@@ -10,7 +10,7 @@ export type AnimatedProps = MotionProps & {
 
 /**
  * Animated primitive for Craft.js
- * Wraps any content and adds framer-motion animations
+ * Wraps any content and adds motion/react animations
  */
 export const Animated: React.FC<AnimatedProps> & { craft?: unknown } = ({
   children,
