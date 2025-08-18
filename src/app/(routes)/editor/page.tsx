@@ -11,6 +11,7 @@ import { COMPONENT_RESOLVER } from "~/components/core/craft/user-components/comp
 import { useAppStateStore } from "~/store/AppStateStore";
 import { Sidebar } from "~/components/core/craft/Sidebar";
 import { OutlinePanel } from "~/components/core/craft/OutlinePanel";
+import { Toaster } from "sonner";
 
 const ThemeUpdater = () => {
   const { actions } = useEditor();
@@ -128,6 +129,7 @@ export default function EditorPage() {
       <Editor resolver={EXTENDED_COMPONENT_RESOLVER}>
         <App />
       </Editor>
+      <Toaster />
     </ThemeProvider>
   );
 }
