@@ -25,8 +25,10 @@ export const Card1: React.FC<Card1Props> & { craft?: any } = ({
   } = useNode();
 
   return (
-    <Container
+    <Element
+      id={"Card1"}
       ref={(ref) => connect(drag(ref as HTMLDivElement))}
+      is={Container}
       padding="16px"
       borderRadius="8px"
       boxShadow="0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)"
@@ -50,7 +52,7 @@ export const Card1: React.FC<Card1Props> & { craft?: any } = ({
         fontSize="14px"
         {...descriptionProps}
       />
-    </Container>
+    </Element>
   );
 };
 
