@@ -11,7 +11,6 @@
             "props": {
               "canvas": true,
               "padding": "16px",
-              "background": "#f3f4f6",
               "borderRadius": "8px",
               "minHeight": "80px",
               "custom": { "displayName": "New Container" }
@@ -27,6 +26,26 @@
         {
           "name": "Text",
           "preview": { "is": "Text", "props": { "text": "New Text" } }
+        },
+        {
+          "name": "TextPressure",
+          "preview": { "is": "TextPressure", "props": { "text": "New Text" } }
+        },
+        {
+          "name": "SplitText",
+          "preview": { "is": "SplitText", "props": { "text": "New Text" } }
+        },
+        {
+          "name": "BlurText",
+          "preview": { "is": "BlurText", "props": { "text": "New Text" } }
+        },
+        {
+          "name": "TextType",
+          "preview": { "is": "TextType", "props": { "text": "New Text" } }
+        },
+        {
+          "name": "TextTrail",
+          "preview": { "is": "TextTrail", "props": { "text": "New Text" } }
         },
         {
           "name": "Link",

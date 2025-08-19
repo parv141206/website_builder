@@ -3,7 +3,7 @@
 import React, { useRef, useMemo, useEffect } from "react";
 import { useNode, Element } from "@craftjs/core";
 import { Container, type ContainerProps } from "../../primitives/Container";
-import { Text, type TextProps } from "../../primitives/Text";
+import { Text, type TextProps } from "../../primitives/Typography/Text";
 
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";

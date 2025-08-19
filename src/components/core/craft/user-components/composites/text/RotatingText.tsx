@@ -14,7 +14,7 @@ import { AnimatePresence, type Transition, type Variants } from "motion/react";
 
 import { Animated } from "../../primitives/Animated";
 import { Container, type ContainerProps } from "../../primitives/Container";
-import { Text, type TextProps } from "../../primitives/Text";
+import { Text, type TextProps } from "../../primitives/Typography/Text";
 
 function cn(...classes: (string | undefined | false)[]): string {
   return classes.filter(Boolean).join(" ");

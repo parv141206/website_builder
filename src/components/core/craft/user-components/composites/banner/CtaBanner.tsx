@@ -3,7 +3,7 @@
 import React from "react";
 import { useNode, Element } from "@craftjs/core";
 import { Container, type ContainerProps } from "../../primitives/Container";
-import { Text, type TextProps } from "../../primitives/Text";
+import { Text, type TextProps } from "../../primitives/Typography/Text";
 
 export type CallToActionProps = {
   heading: string;
@@ -13,13 +13,9 @@ export type CallToActionProps = {
   buttonProps?: Partial<TextProps>;
 };
 
-export const CallToAction: React.FC<CallToActionProps> & { craft?: unknown } = ({
-  heading,
-  buttonText,
-  containerProps,
-  headingProps,
-  buttonProps,
-}) => {
+export const CallToAction: React.FC<CallToActionProps> & {
+  craft?: unknown;
+} = ({ heading, buttonText, containerProps, headingProps, buttonProps }) => {
   const {
     connectors: { connect, drag },
   } = useNode();

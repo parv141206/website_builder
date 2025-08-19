@@ -20,11 +20,21 @@ import { Button } from "./primitives/Button";
 import { Container } from "./primitives/Container";
 import { Image } from "./primitives/Image";
 import { Link } from "./primitives/Link";
-import { Text } from "./primitives/Text";
+import { BlurText } from "./primitives/Typography/BlurText";
+import { SplitText } from "./primitives/Typography/SplitText";
+import { Text } from "./primitives/Typography/Text";
+import { TextPressure } from "./primitives/Typography/TextPressure";
+import { TextTrail } from "./primitives/Typography/TextTrail";
+import { TextType } from "./primitives/Typography/TextType";
 
 export const COMPONENT_RESOLVER = {
   Container,
   Text,
+  TextPressure,
+  SplitText,
+  BlurText,
+  TextType,
+  TextTrail,
   Image,
   Button,
   Link,

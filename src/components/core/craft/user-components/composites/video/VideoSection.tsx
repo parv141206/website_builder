@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from "react";
 import { useNode, Element } from "@craftjs/core";
 import { Container, type ContainerProps } from "../../primitives/Container";
-import { Text, type TextProps } from "../../primitives/Text";
+import { Text, type TextProps } from "../../primitives/Typography/Text";
 
 export type VideoSectionProps = {
   videoUrl: string;
@@ -14,7 +14,9 @@ export type VideoSectionProps = {
   descriptionProps?: Partial<TextProps>;
 };
 
-export const VideoSection: React.FC<VideoSectionProps> & { craft?: unknown } = ({
+export const VideoSection: React.FC<VideoSectionProps> & {
+  craft?: unknown;
+} = ({
   videoUrl,
   title,
   description,

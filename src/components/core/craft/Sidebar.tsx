@@ -37,7 +37,7 @@ export function Sidebar({ activePanel }: { activePanel: string }) {
         willChange: "width, opacity",
       }}
     >
-      <div className="h-full">
+      <div className="h-full overflow-scroll">
         {lastPanel === "theme" && <ThemePanel />}
         {lastPanel === "images" && <ImageManager />}
         {lastPanel === "settings" && <SettingsPanel />}

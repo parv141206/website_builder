@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from "react";
 import { useNode, Element } from "@craftjs/core";
 import { Container, type ContainerProps } from "../../primitives/Container";
-import { Text, type TextProps } from "../../primitives/Text";
+import { Text, type TextProps } from "../../primitives/Typography/Text";
 import { Image, type ImageProps } from "../../primitives/Image";
 
 export type ImageTopCardProps = {
@@ -13,12 +13,9 @@ export type ImageTopCardProps = {
   containerProps?: Partial<ContainerProps>;
 };
 
-export const ImageTopCard: React.FC<ImageTopCardProps> & { craft?: unknown } = ({
-  imageProps,
-  titleProps,
-  textProps,
-  containerProps,
-}) => {
+export const ImageTopCard: React.FC<ImageTopCardProps> & {
+  craft?: unknown;
+} = ({ imageProps, titleProps, textProps, containerProps }) => {
   const {
     connectors: { connect, drag },
   } = useNode();

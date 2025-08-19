@@ -4,7 +4,7 @@ import React from "react";
 import { useNode, Element } from "@craftjs/core";
 import { Animated } from "../../primitives/Animated";
 import { Image, type ImageProps } from "../../primitives/Image";
-import { Text, type TextProps } from "../../primitives/Text";
+import { Text, type TextProps } from "../../primitives/Typography/Text";
 import { Container } from "../../primitives/Container";
 
 export type ImageLeftCardProps = {

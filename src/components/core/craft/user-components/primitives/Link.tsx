@@ -3,7 +3,7 @@
 import React, { useMemo, useRef, useState } from "react";
 import { useNode } from "@craftjs/core";
 import { useTheme } from "~/themes";
-import { type TextProps } from "./Text";
+import { type TextProps } from "./Typography/Text";
 export type LinkProps = TextProps & {
   href: string;
   target?: "_blank" | "_self" | "_parent" | "_top";

@@ -29,7 +29,7 @@ export const useEditorPersistence = () => {
   useEffect(() => {
     try {
       const savedState = localStorage.getItem(EDITOR_STATE_KEY);
-      console.log("🔍 Checking localStorage for saved state...");
+      console.log("Checking localStorage for saved state...");
 
       if (savedState) {
         const parsedState = JSON.parse(savedState);

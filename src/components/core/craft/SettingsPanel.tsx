@@ -47,8 +47,10 @@ const loadGoogleFont = (fontName: string) => {
 };
 
 // ==================================================================================
-// SECTION 2: FONT PICKER COMPONENT
+// SECTION 2: UI COMPONENTS (UNCHANGED)
 // ==================================================================================
+// No changes are needed for FontPicker, ButtonGroup, or IconToggleButton.
+// They are self-contained and will work with the updated logic.
 
 export const FontPicker = memo(
   ({
@@ -203,6 +205,10 @@ const IconToggleButton = memo(
 );
 IconToggleButton.displayName = "IconToggleButton";
 
+// ==================================================================================
+// SECTION 3: MAPPINGS & HELPERS (UPDATED)
+// ==================================================================================
+
 const CUSTOM_UI_MAP: Record<string, React.FC<any>> = {
   flexDirection: ({ value, onChange, field }) => (
     <ButtonGroup
@@ -301,38 +307,68 @@ const TOGGLE_ICON_MAP: Record<string, React.ElementType> = {
   strike: Strikethrough,
 };
 
+// NEW: Helper function to safely retrieve nested property values.
+const getDeepValue = (obj: any, path: string) => {
+  if (!path) return obj;
+  return path.split(".").reduce((acc, part) => acc && acc[part], obj);
+};
+
+// ==================================================================================
+// SECTION 4: SETTINGS PANEL COMPONENT (UPDATED)
+// ==================================================================================
+
 export const SettingsPanel = () => {
   const { selected, actions } = useEditor((state) => {
     const [selectedId] = state.events.selected;
     if (!selectedId) return { selected: null };
+
     const node = state.nodes[selectedId];
     if (!node) return { selected: null };
-    const componentName = node.data.displayName;
-    const resolvedComponent = state.options.resolver[componentName];
-    const settingsSchema = resolvedComponent?.craft?.related?.settingsSchema;
+
+    const component = state.options.resolver[node.data.displayName];
+    const settingsSchema = component?.craft?.related?.settingsSchema;
+    console.log("Component itself : ", component);
+    // NEW: Also get the dynamic settings component if it exists
+    const settings = component?.craft?.related?.settings;
+
     return {
       selected: {
         id: selectedId,
-        name: componentName,
-        settings: settingsSchema,
+        name: node.data.displayName,
+        settings, // This can be a React component
+        settingsSchema, // This is the static object schema
         props: node.data.props,
       },
     };
   });
 
+  // NEW: Updated setProp to handle nested properties like "animation.duration".
   const setProp = useCallback(
     (key: string, value: any) => {
-      if (selected) {
-        actions.setProp(selected.id, (props) => (props[key] = value));
-      }
+      if (!selected) return;
+      actions.setProp(selected.id, (props) => {
+        const keys = key.split(".");
+        let current = props;
+        for (let i = 0; i < keys.length - 1; i++) {
+          if (current[keys[i]] === undefined) {
+            current[keys[i]] = {};
+          }
+          current = current[keys[i]];
+        }
+        current[keys[keys.length - 1]] = value;
+      });
     },
     [selected, actions],
   );
 
   const generateField = useCallback(
     (field: any) => {
-      const { key, type, label, options, allowUndefined, children } = field;
-      const value = selected?.props[key];
+      const { key, type, label, options, allowUndefined, children, step } =
+        field;
+
+      // NEW: Use the helper to get nested prop values
+      const value = selected ? getDeepValue(selected.props, key) : undefined;
+
       const commonProps = {
         id: key,
         name: key,
@@ -353,22 +389,34 @@ export const SettingsPanel = () => {
             {children.map((childField: any) => {
               const Icon = TOGGLE_ICON_MAP[childField.key];
               if (!Icon) return null;
-              let isActive = !!selected?.props[childField.key];
+
+              // NEW: Use getDeepValue for nested checks
+              let isActive = !!getDeepValue(selected?.props, childField.key);
+
               const handleClick = () => {
                 if (childField.valueMap) {
+                  const currentValue = getDeepValue(
+                    selected?.props,
+                    childField.key,
+                  );
                   const nextValue =
-                    selected?.props[childField.key] === childField.valueMap.on
+                    currentValue === childField.valueMap.on
                       ? childField.valueMap.off
                       : childField.valueMap.on;
                   setProp(childField.key, nextValue);
                 } else {
-                  setProp(childField.key, !selected?.props[childField.key]);
+                  const currentValue = getDeepValue(
+                    selected?.props,
+                    childField.key,
+                  );
+                  setProp(childField.key, !currentValue);
                 }
               };
+
               if (childField.key === "fontWeight") {
+                const weight = getDeepValue(selected?.props, "fontWeight");
                 isActive =
-                  selected?.props.fontWeight === childField.valueMap.on ||
-                  Number(selected?.props.fontWeight) >= 600;
+                  weight === childField.valueMap.on || Number(weight) >= 600;
               }
               return (
                 <IconToggleButton
@@ -403,6 +451,17 @@ export const SettingsPanel = () => {
               rows={3}
             />
           );
+        // NEW: Added number type for animation controls
+        case "number":
+          return (
+            <input
+              {...commonProps}
+              type="number"
+              step={step || 1}
+              value={value !== undefined ? value : ""}
+              onChange={(e) => setProp(key, e.target.valueAsNumber)}
+            />
+          );
         case "color":
           return (
             <CustomColorPicker
@@ -418,11 +477,19 @@ export const SettingsPanel = () => {
               onChange={(e) => setProp(key, e.target.value)}
             >
               {allowUndefined && <option value="">--</option>}
-              {options.map((option: string) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
+              {options.map(
+                (option: string | { label: string; value: string }) => {
+                  const optValue =
+                    typeof option === "string" ? option : option.value;
+                  const optLabel =
+                    typeof option === "string" ? option : option.label;
+                  return (
+                    <option key={optValue} value={optValue}>
+                      {optLabel}
+                    </option>
+                  );
+                },
+              )}
             </select>
           );
         case "boolean":
@@ -446,20 +513,36 @@ export const SettingsPanel = () => {
     [selected, setProp],
   );
 
+  // NEW: Prioritize rendering the dynamic settings component if available
+  if (selected && selected.settings) {
+    const SettingsComponent = selected.settings;
+    return (
+      <aside className="overflow-y-auto border-l border-gray-200 bg-white p-4">
+        <SettingsComponent />
+      </aside>
+    );
+  }
+  console.log("Selected: ", selected);
+  // Fallback to rendering from the static schema
   return (
     <aside className="overflow-y-auto border-l border-gray-200 bg-white p-4">
-      {selected && selected.settings ? (
+      {selected && selected.settingsSchema ? (
         <div>
           <h3 className="mb-4 text-lg font-semibold text-gray-800">
             {selected.name} Settings
           </h3>
-          {selected.settings.groups.map((group: any) => (
+          {selected.settingsSchema.groups.map((group: any) => (
             <div key={group.label} className="mb-4">
               <h4 className="text-md mb-2 border-b pb-1 font-medium text-gray-600">
                 {group.label}
               </h4>
               <div className="mt-2 space-y-3">
                 {group.fields.map((field: any) => {
+                  // NEW: Check for the conditional 'if' property before rendering
+                  if (field.if && !field.if(selected.props)) {
+                    return null;
+                  }
+
                   if (
                     field.type === "textarea" ||
                     field.type === "custom-toggle-group" ||

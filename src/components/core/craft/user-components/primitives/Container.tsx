@@ -1,7 +1,20 @@
 "use client";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useNode } from "@craftjs/core";
 import { useTheme } from "~/themes";
+import { motion, type Variants } from "motion/react";
+
+export type AnimationProps = {
+  animationEnabled?: boolean;
+  animationType?: "fadeIn" | "slideIn" | "scaleUp";
+  transitionDuration?: number;
+  transitionDelay?: number;
+  transitionEase?: "linear" | "easeIn" | "easeOut" | "easeInOut";
+  slideInOffset?: number;
+  slideInDirection?: "up" | "down" | "left" | "right";
+  scaleUpAmount?: number;
+  animateOnce?: boolean;
+};
 
 export type ContainerProps = {
   as?: React.ElementType;
@@ -64,44 +77,14 @@ export type ContainerProps = {
 
   // canvas flag is via craft config
   children?: React.ReactNode;
+  animation?: AnimationProps;
 };
 
 export const Container: React.FC<ContainerProps> & { craft?: any } = ({
   as: Tag = "div",
-  display = "flex",
-  flexDirection = "column",
-  flexWrap,
-  justifyContent,
-  alignItems,
-  alignContent,
-  gap,
-  rowGap,
-  columnGap,
-  gridTemplateColumns,
-  gridTemplateRows,
-  gridAutoFlow,
-
-  width,
-  height,
-  minWidth,
-  minHeight,
-  maxWidth,
-  maxHeight,
-
-  margin,
-  padding,
-  background, // This prop comes from the settings panel
-  borderColor,
-  borderWidth,
-  borderStyle = "none",
-  borderRadius,
-  boxShadow,
-
-  color, // This prop comes from the settings panel
-  fontFamily, // This prop comes from the settings panel
-  fontSize,
-
   children,
+  animation,
+  ...props // Use spread for remaining props
 }) => {
   const {
     connectors: { connect, drag },
@@ -110,86 +93,113 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
     selected: node.events.selected,
   }));
 
-  // Get the current theme object from the context for default fallbacks.
   const theme = useTheme();
-  console.log(background);
+
   const style: React.CSSProperties = useMemo(() => {
     const baseStyle: React.CSSProperties = {
-      // Pass all layout and box-model props directly.
-      display,
-      flexDirection,
-      flexWrap,
-      justifyContent,
-      alignItems,
-      alignContent,
-      gridTemplateColumns,
-      gridTemplateRows,
-      gridAutoFlow,
-      width,
-      height,
-      minWidth,
-      minHeight,
-      maxWidth,
-      maxHeight,
-      margin,
-      padding,
-      borderColor,
-      borderWidth,
-      borderStyle,
-      borderRadius,
-      boxShadow,
-      fontSize,
-
-      background: background || theme.colors.background.primary,
-      color: color || theme.colors.text.body,
-      fontFamily: fontFamily || theme.fonts.body,
-
+      display: props.display,
+      flexDirection: props.flexDirection,
+      flexWrap: props.flexWrap,
+      justifyContent: props.justifyContent,
+      alignItems: props.alignItems,
+      alignContent: props.alignContent,
+      gridTemplateColumns: props.gridTemplateColumns,
+      gridTemplateRows: props.gridTemplateRows,
+      gridAutoFlow: props.gridAutoFlow,
+      width: props.width,
+      height: props.height,
+      minWidth: props.minWidth,
+      minHeight: props.minHeight,
+      maxWidth: props.maxWidth,
+      maxHeight: props.maxHeight,
+      margin: props.margin,
+      padding: props.padding,
+      borderColor: props.borderColor,
+      borderWidth: props.borderWidth,
+      borderStyle: props.borderStyle,
+      borderRadius: props.borderRadius,
+      boxShadow: props.boxShadow,
+      fontSize: props.fontSize,
+      background: props.background || theme.colors.background.primary,
+      color: props.color || theme.colors.text.body,
+      fontFamily: props.fontFamily || theme.fonts.body,
       outline: selected ? "2px dashed #4c8bf5" : undefined,
       outlineOffset: "2px",
       transition: "outline 120ms ease",
     };
 
-    if (gap) {
-      baseStyle.gap = gap;
+    if (props.gap) {
+      baseStyle.gap = props.gap;
     } else {
-      baseStyle.rowGap = rowGap;
-      baseStyle.columnGap = columnGap;
+      baseStyle.rowGap = props.rowGap;
+      baseStyle.columnGap = props.columnGap;
     }
 
     return baseStyle;
-  }, [
-    display,
-    flexDirection,
-    flexWrap,
-    justifyContent,
-    alignItems,
-    alignContent,
-    gap,
-    rowGap,
-    columnGap,
-    gridTemplateColumns,
-    gridTemplateRows,
-    gridAutoFlow,
-    width,
-    height,
-    minWidth,
-    minHeight,
-    maxWidth,
-    maxHeight,
-    margin,
-    padding,
-    background,
-    borderColor,
-    borderWidth,
-    borderStyle,
-    borderRadius,
-    boxShadow,
-    color,
-    fontFamily,
-    fontSize,
-    selected,
-    theme,
-  ]);
+  }, [props, selected, theme]);
+
+  const animationVariants: Variants = useMemo(() => {
+    const {
+      animationType = "fadeIn",
+      slideInOffset = 50,
+      slideInDirection = "up",
+      scaleUpAmount = 0.9,
+    } = animation || {};
+
+    const initial = {
+      fadeIn: { opacity: 0 },
+      slideIn: {
+        opacity: 0,
+        y:
+          slideInDirection === "up"
+            ? slideInOffset
+            : slideInDirection === "down"
+              ? -slideInOffset
+              : 0,
+        x:
+          slideInDirection === "left"
+            ? slideInOffset
+            : slideInDirection === "right"
+              ? -slideInOffset
+              : 0,
+      },
+      scaleUp: { opacity: 0, scale: scaleUpAmount },
+    };
+
+    const animate = {
+      opacity: 1,
+      y: 0,
+      x: 0,
+      scale: 1,
+    };
+
+    return {
+      hidden: initial[animationType],
+      visible: animate,
+    };
+  }, [animation]);
+  useEffect(() => {}, []);
+  const MotionTag = motion(Tag as React.ElementType);
+
+  if (animation?.animationEnabled) {
+    return (
+      <MotionTag
+        ref={(ref: any) => connect(drag(ref))}
+        style={style}
+        variants={animationVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: animation.animateOnce ?? true }}
+        transition={{
+          duration: animation.transitionDuration ?? 0.5,
+          delay: animation.transitionDelay ?? 0,
+          ease: animation.transitionEase ?? "easeInOut",
+        }}
+      >
+        <div>{children}</div>
+      </MotionTag>
+    );
+  }
 
   return (
     <Tag ref={(ref: any) => connect(drag(ref))} style={style}>
@@ -206,6 +216,19 @@ Container.craft = {
     gap: "8px",
     padding: "12px",
     width: "100%",
+    // FIX 1: Initialize the animation object with default values.
+    // This prevents `props.animation` from being undefined.
+    animation: {
+      animationEnabled: false,
+      animationType: "fadeIn",
+      transitionDuration: 0.5,
+      transitionDelay: 0,
+      transitionEase: "easeInOut",
+      slideInOffset: 50,
+      slideInDirection: "up",
+      scaleUpAmount: 0.9,
+      animateOnce: true,
+    },
   } satisfies ContainerProps,
   rules: {
     canDrag: () => true,
@@ -321,6 +344,77 @@ Container.craft = {
             },
             { key: "borderRadius", type: "text", label: "Radius" },
             { key: "boxShadow", type: "text", label: "Shadow" },
+          ],
+        },
+        {
+          label: "Animation",
+          fields: [
+            {
+              key: "animation.animationEnabled",
+              type: "boolean",
+              label: "Enable Animation",
+            },
+            {
+              key: "animation.animationType",
+              type: "select",
+              label: "Animation Type",
+              options: ["fadeIn", "slideIn", "scaleUp"],
+              // FIX 2: Use optional chaining (?.) for safer property access.
+              if: (props) => props.animation?.animationEnabled,
+            },
+            {
+              key: "animation.transitionDuration",
+              type: "number",
+              label: "Duration (s)",
+              step: 0.1,
+              if: (props) => props.animation?.animationEnabled,
+            },
+            {
+              key: "animation.transitionDelay",
+              type: "number",
+              label: "Delay (s)",
+              step: 0.1,
+              if: (props) => props.animation?.animationEnabled,
+            },
+            {
+              key: "animation.transitionEase",
+              type: "select",
+              label: "Easing",
+              options: ["linear", "easeIn", "easeOut", "easeInOut"],
+              if: (props) => props.animation?.animationEnabled,
+            },
+            {
+              key: "animation.slideInOffset",
+              type: "number",
+              label: "Slide Offset (px)",
+              if: (props) =>
+                props.animation?.animationEnabled &&
+                props.animation?.animationType === "slideIn",
+            },
+            {
+              key: "animation.slideInDirection",
+              type: "select",
+              label: "Slide Direction",
+              options: ["up", "down", "left", "right"],
+              if: (props) =>
+                props.animation?.animationEnabled &&
+                props.animation?.animationType === "slideIn",
+            },
+            {
+              key: "animation.scaleUpAmount",
+              type: "number",
+              label: "Initial Scale",
+              step: 0.1,
+              if: (props) =>
+                props.animation?.animationEnabled &&
+                props.animation?.animationType === "scaleUp",
+            },
+            {
+              key: "animation.animateOnce",
+              type: "boolean",
+              label: "Animate Only Once",
+              if: (props) => props.animation?.animationEnabled,
+            },
           ],
         },
         {
