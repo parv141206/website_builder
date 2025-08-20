@@ -1,0 +1,37 @@
+
+{
+  "name": "dark-elegance",
+  "colors": {
+    "background": {
+      "primary": "#121212",
+      "secondary": "#1E1E1E",
+      "tertiary": "#2A2A2A",
+      "quaternary": "#333333",
+      "quinary": "#3D3D3D"
+    },
+    "text": {
+      "heading": "#FFFFFF",
+      "subheading": "#CCCCCC",
+      "body": "#B3B3B3",
+      "muted": "#808080",
+      "onPrimary": "#121212",
+      "onSecondary": "#1E1E1E",
+      "onBackground": "#FFFFFF",
+      "inverse": "#000000"
+    },
+    "primary": "#BB86FC",
+    "secondary": "#03DAC6",
+    "roles": {
+      "success": "#4CAF50",
+      "danger": "#CF6679",
+      "warning": "#FFB74D",
+      "info": "#2196F3"
+    },
+    "border": "#2A2A2A",
+    "shadow": "rgba(0, 0, 0, 0.5)"
+  },
+  "fonts": {
+    "heading": "Montserrat, sans-serif",
+    "body": "Inter, sans-serif"
+  }
+}

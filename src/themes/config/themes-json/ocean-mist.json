@@ -1,0 +1,36 @@
+{
+  "name": "ocean-mist",
+  "colors": {
+    "background": {
+      "primary": "#f0f9ff",
+      "secondary": "#e0f2fe",
+      "tertiary": "#bae6fd",
+      "quaternary": "#7dd3fc",
+      "quinary": "#38bdf8"
+    },
+    "text": {
+      "heading": "#082f49",
+      "subheading": "#0c4a6e",
+      "body": "#075985",
+      "muted": "#38bdf8",
+      "onPrimary": "#f0f9ff",
+      "onSecondary": "#e0f2fe",
+      "onBackground": "#082f49",
+      "inverse": "#ffffff"
+    },
+    "primary": "#0284c7",
+    "secondary": "#38bdf8",
+    "roles": {
+      "success": "#34d399",
+      "danger": "#ef4444",
+      "warning": "#fbbf24",
+      "info": "#3b82f6"
+    },
+    "border": "#7dd3fc",
+    "shadow": "rgba(2, 132, 199, 0.25)"
+  },
+  "fonts": {
+    "heading": "Poppins, sans-serif",
+    "body": "Lato, sans-serif"
+  }
+}

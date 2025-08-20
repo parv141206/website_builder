@@ -1,0 +1,36 @@
+{
+  "name": "solarized-dark",
+  "colors": {
+    "background": {
+      "primary": "#002b36",
+      "secondary": "#073642",
+      "tertiary": "#586e75",
+      "quaternary": "#657b83",
+      "quinary": "#839496"
+    },
+    "text": {
+      "heading": "#93a1a1",
+      "subheading": "#eee8d5",
+      "body": "#fdf6e3",
+      "muted": "#93a1a1",
+      "onPrimary": "#002b36",
+      "onSecondary": "#073642",
+      "onBackground": "#fdf6e3",
+      "inverse": "#fdf6e3"
+    },
+    "primary": "#268bd2",
+    "secondary": "#2aa198",
+    "roles": {
+      "success": "#859900",
+      "danger": "#dc322f",
+      "warning": "#b58900",
+      "info": "#268bd2"
+    },
+    "border": "#586e75",
+    "shadow": "rgba(38, 139, 210, 0.2)"
+  },
+  "fonts": {
+    "heading": "Merriweather, serif",
+    "body": "Source Sans Pro, sans-serif"
+  }
+}

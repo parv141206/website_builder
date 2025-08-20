@@ -1,0 +1,36 @@
+{
+  "name": "cotton-candy",
+  "colors": {
+    "background": {
+      "primary": "#ffe6f7",
+      "secondary": "#ffd9f4",
+      "tertiary": "#ffc2ed",
+      "quaternary": "#ffb3eb",
+      "quinary": "#ffa3e6"
+    },
+    "text": {
+      "heading": "#3d2a42",
+      "subheading": "#5b3a61",
+      "body": "#704773",
+      "muted": "#9c7ca5",
+      "onPrimary": "#ffe6f7",
+      "onSecondary": "#ffd9f4",
+      "onBackground": "#3d2a42",
+      "inverse": "#ffe6f7"
+    },
+    "primary": "#ff66c4",
+    "secondary": "#6a5acd",
+    "roles": {
+      "success": "#7ed957",
+      "danger": "#ff5757",
+      "warning": "#ffd966",
+      "info": "#6a5acd"
+    },
+    "border": "#ffb3eb",
+    "shadow": "rgba(255, 102, 196, 0.25)"
+  },
+  "fonts": {
+    "heading": "Pacifico, cursive",
+    "body": "Poppins, sans-serif"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "moss-green",
+  "colors": {
+    "background": {
+      "primary": "#f0f5f1",
+      "secondary": "#dbe8dc",
+      "tertiary": "#c6dbc8",
+      "quaternary": "#a8c6ab",
+      "quinary": "#8cab8e"
+    },
+    "text": {
+      "heading": "#1c352d",
+      "subheading": "#2d4a3f",
+      "body": "#405e50",
+      "muted": "#7d8f85",
+      "onPrimary": "#f0f5f1",
+      "onSecondary": "#dbe8dc",
+      "onBackground": "#1c352d",
+      "inverse": "#f0f5f1"
+    },
+    "primary": "#4caf50",
+    "secondary": "#388e3c",
+    "roles": {
+      "success": "#2e7d32",
+      "danger": "#c62828",
+      "warning": "#f9a825",
+      "info": "#1976d2"
+    },
+    "border": "#a8c6ab",
+    "shadow": "rgba(76, 175, 80, 0.2)"
+  },
+  "fonts": {
+    "heading": "Playfair Display, serif",
+    "body": "Open Sans, sans-serif"
+  }
+}

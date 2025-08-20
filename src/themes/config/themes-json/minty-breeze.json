@@ -1,0 +1,36 @@
+{
+  "name": "minty-breeze",
+  "colors": {
+    "background": {
+      "primary": "#e6fff5",
+      "secondary": "#ccffee",
+      "tertiary": "#b3ffe6",
+      "quaternary": "#99ffdd",
+      "quinary": "#80ffd4"
+    },
+    "text": {
+      "heading": "#003d33",
+      "subheading": "#00594d",
+      "body": "#006f5c",
+      "muted": "#339983",
+      "onPrimary": "#e6fff5",
+      "onSecondary": "#ccffee",
+      "onBackground": "#003d33",
+      "inverse": "#e6fff5"
+    },
+    "primary": "#00c896",
+    "secondary": "#008f6b",
+    "roles": {
+      "success": "#4caf50",
+      "danger": "#e53935",
+      "warning": "#ffb300",
+      "info": "#00acc1"
+    },
+    "border": "#80ffd4",
+    "shadow": "rgba(0, 200, 150, 0.2)"
+  },
+  "fonts": {
+    "heading": "Quicksand, sans-serif",
+    "body": "Nunito, sans-serif"
+  }
+}

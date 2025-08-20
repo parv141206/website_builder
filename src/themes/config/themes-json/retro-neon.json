@@ -1,0 +1,36 @@
+{
+  "name": "retro-neon",
+  "colors": {
+    "background": {
+      "primary": "#1a1a2e",
+      "secondary": "#16213e",
+      "tertiary": "#0f3460",
+      "quaternary": "#533483",
+      "quinary": "#6a0572"
+    },
+    "text": {
+      "heading": "#ff00ff",
+      "subheading": "#00f3ff",
+      "body": "#e0e0e0",
+      "muted": "#9a9a9a",
+      "onPrimary": "#1a1a2e",
+      "onSecondary": "#16213e",
+      "onBackground": "#e0e0e0",
+      "inverse": "#1a1a2e"
+    },
+    "primary": "#ff00ff",
+    "secondary": "#00f3ff",
+    "roles": {
+      "success": "#39ff14",
+      "danger": "#ff3131",
+      "warning": "#ffea00",
+      "info": "#00f3ff"
+    },
+    "border": "#6a0572",
+    "shadow": "rgba(255, 0, 255, 0.25)"
+  },
+  "fonts": {
+    "heading": "Audiowide, cursive",
+    "body": "Exo, sans-serif"
+  }
+}

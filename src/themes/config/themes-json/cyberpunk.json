@@ -1,0 +1,36 @@
+{
+  "name": "cyberpunk",
+  "colors": {
+    "background": {
+      "primary": "#0d0221",
+      "secondary": "#1a0933",
+      "tertiary": "#2e1745",
+      "quaternary": "#3e255f",
+      "quinary": "#512b81"
+    },
+    "text": {
+      "heading": "#ff00ff",
+      "subheading": "#00ffff",
+      "body": "#e0e0e0",
+      "muted": "#8a8a8a",
+      "onPrimary": "#0d0221",
+      "onSecondary": "#0d0221",
+      "onBackground": "#e0e0e0",
+      "inverse": "#0d0221"
+    },
+    "primary": "#ff00ff",
+    "secondary": "#00ffff",
+    "roles": {
+      "success": "#39ff14",
+      "danger": "#ff3131",
+      "warning": "#ffea00",
+      "info": "#00ffff"
+    },
+    "border": "#512b81",
+    "shadow": "rgba(255, 0, 255, 0.25)"
+  },
+  "fonts": {
+    "heading": "Orbitron, sans-serif",
+    "body": "Rajdhani, sans-serif"
+  }
+}

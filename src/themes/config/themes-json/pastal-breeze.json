@@ -1,0 +1,36 @@
+{
+  "name": "pastel-breeze",
+  "colors": {
+    "background": {
+      "primary": "#fdfdf6",
+      "secondary": "#faf5f0",
+      "tertiary": "#f7efe8",
+      "quaternary": "#f2e9e4",
+      "quinary": "#eae4da"
+    },
+    "text": {
+      "heading": "#403d39",
+      "subheading": "#5c534a",
+      "body": "#6d645c",
+      "muted": "#a39b91",
+      "onPrimary": "#fdfdf6",
+      "onSecondary": "#faf5f0",
+      "onBackground": "#403d39",
+      "inverse": "#ffffff"
+    },
+    "primary": "#c9ada7",
+    "secondary": "#9a8c98",
+    "roles": {
+      "success": "#a8dadc",
+      "danger": "#e5989b",
+      "warning": "#ffd6a5",
+      "info": "#90e0ef"
+    },
+    "border": "#dcd2cc",
+    "shadow": "rgba(90, 80, 70, 0.15)"
+  },
+  "fonts": {
+    "heading": "Playfair Display, serif",
+    "body": "Source Sans Pro, sans-serif"
+  }
+}

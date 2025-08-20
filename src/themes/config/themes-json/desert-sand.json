@@ -1,0 +1,36 @@
+{
+  "name": "desert-sand",
+  "colors": {
+    "background": {
+      "primary": "#faf3e0",
+      "secondary": "#f5e6c8",
+      "tertiary": "#e9d7a7",
+      "quaternary": "#d9c089",
+      "quinary": "#c2a878"
+    },
+    "text": {
+      "heading": "#3e2f23",
+      "subheading": "#5b4636",
+      "body": "#6f5a47",
+      "muted": "#9c8671",
+      "onPrimary": "#faf3e0",
+      "onSecondary": "#f5e6c8",
+      "onBackground": "#3e2f23",
+      "inverse": "#faf3e0"
+    },
+    "primary": "#a47148",
+    "secondary": "#c89f6c",
+    "roles": {
+      "success": "#7d9770",
+      "danger": "#a15c38",
+      "warning": "#e4b169",
+      "info": "#b88b4a"
+    },
+    "border": "#d9c089",
+    "shadow": "rgba(100, 80, 60, 0.25)"
+  },
+  "fonts": {
+    "heading": "Merriweather, serif",
+    "body": "Quicksand, sans-serif"
+  }
+}

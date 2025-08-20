@@ -1,0 +1,36 @@
+{
+  "name": "sage-calm",
+  "colors": {
+    "background": {
+      "primary": "#f5f7f4",
+      "secondary": "#e6ede8",
+      "tertiary": "#d9e3dc",
+      "quaternary": "#c9d7ce",
+      "quinary": "#b7c8bc"
+    },
+    "text": {
+      "heading": "#2e3a34",
+      "subheading": "#46564e",
+      "body": "#5b6b62",
+      "muted": "#89998e",
+      "onPrimary": "#f5f7f4",
+      "onSecondary": "#e6ede8",
+      "onBackground": "#2e3a34",
+      "inverse": "#ffffff"
+    },
+    "primary": "#6b9080",
+    "secondary": "#a4c3b2",
+    "roles": {
+      "success": "#81b29a",
+      "danger": "#e07a5f",
+      "warning": "#f2cc8f",
+      "info": "#3d5a80"
+    },
+    "border": "#c9d7ce",
+    "shadow": "rgba(50, 70, 60, 0.2)"
+  },
+  "fonts": {
+    "heading": "Nunito, sans-serif",
+    "body": "Open Sans, sans-serif"
+  }
+}

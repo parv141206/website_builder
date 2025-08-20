@@ -1,0 +1,36 @@
+{
+  "name": "sunset-glow",
+  "colors": {
+    "background": {
+      "primary": "#ffecd2",
+      "secondary": "#ffdac1",
+      "tertiary": "#ffb3a7",
+      "quaternary": "#ff8c94",
+      "quinary": "#ff6f61"
+    },
+    "text": {
+      "heading": "#3b1c32",
+      "subheading": "#5e2747",
+      "body": "#70354f",
+      "muted": "#a3737f",
+      "onPrimary": "#ffecd2",
+      "onSecondary": "#ffdac1",
+      "onBackground": "#3b1c32",
+      "inverse": "#ffecd2"
+    },
+    "primary": "#ff6f61",
+    "secondary": "#ff9966",
+    "roles": {
+      "success": "#66bb6a",
+      "danger": "#e57373",
+      "warning": "#ffb74d",
+      "info": "#64b5f6"
+    },
+    "border": "#ffb3a7",
+    "shadow": "rgba(255, 111, 97, 0.25)"
+  },
+  "fonts": {
+    "heading": "Lora, serif",
+    "body": "Roboto, sans-serif"
+  }
+}
