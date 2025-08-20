@@ -1,8 +1,97 @@
 "use client";
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useNode } from "@craftjs/core";
 import { useTheme } from "~/themes";
 import { motion, type Variants } from "motion/react";
+
+// ==================================================================================
+// SECTION 1: SELF-CONTAINED STATIC BACKGROUND DEFINITIONS
+// ==================================================================================
+
+// Helper to convert hex to an "r, g, b" string for use in rgba().
+const hexToRgb = (hex: string): string => {
+  if (!hex || typeof hex !== "string") return "255, 255, 255";
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
+    : "255, 255, 255"; // Default to white if parsing fails
+};
+
+// The 'style' property is a function that accepts a base color, pattern color, opacity, and size.
+const FANCY_BACKGROUNDS: Record<
+  string,
+  {
+    name: string;
+    style: (
+      baseColor: string,
+      patternColor: string,
+      patternOpacity: number,
+      patternSize: number,
+    ) => React.CSSProperties;
+  }
+> = {
+  graphGrid: {
+    name: "Graph Grid",
+    style: (baseColor, patternColor, patternOpacity, patternSize) => {
+      const patternRgba = `rgba(${hexToRgb(patternColor)}, ${patternOpacity})`;
+      return {
+        backgroundColor: baseColor,
+        backgroundImage: `
+          linear-gradient(${patternRgba} 1px, transparent 1px),
+          linear-gradient(90deg, ${patternRgba} 1px, transparent 1px)
+        `,
+        backgroundSize: `${patternSize}px ${patternSize}px`,
+      };
+    },
+  },
+  diagonalLines: {
+    name: "Diagonal Lines",
+    style: (baseColor, patternColor, patternOpacity, patternSize) => {
+      const patternRgba = `rgba(${hexToRgb(patternColor)}, ${patternOpacity})`;
+      return {
+        backgroundColor: baseColor,
+        backgroundImage: `repeating-linear-gradient(
+          45deg,
+          ${patternRgba},
+          ${patternRgba} 1px,
+          transparent 1px,
+          transparent ${patternSize}px
+        )`,
+      };
+    },
+  },
+  dotGrid: {
+    name: "Dot Grid",
+    style: (baseColor, patternColor, patternOpacity, patternSize) => {
+      const patternRgba = `rgba(${hexToRgb(patternColor)}, ${patternOpacity})`;
+      return {
+        backgroundColor: baseColor,
+        backgroundImage: `radial-gradient(circle at 1px 1px, ${patternRgba} 1px, transparent 0)`,
+        backgroundSize: `${patternSize}px ${patternSize}px`,
+      };
+    },
+  },
+  concentricCircles: {
+    name: "Concentric Circles",
+    style: (baseColor, patternColor, patternOpacity, patternSize) => {
+      const patternRgba = `rgba(${hexToRgb(patternColor)}, ${patternOpacity})`;
+      return {
+        backgroundColor: baseColor,
+        backgroundImage: `repeating-radial-gradient(
+              circle,
+              ${patternRgba},
+              ${patternRgba} 1px,
+              transparent 1px,
+              transparent ${patternSize}px
+          )`,
+      };
+    },
+  },
+};
+
+// ==================================================================================
+// SECTION 2: COMPONENT PROPS AND LOGIC
+// ==================================================================================
 
 export type AnimationProps = {
   animationEnabled?: boolean;
@@ -18,7 +107,6 @@ export type AnimationProps = {
 
 export type ContainerProps = {
   as?: React.ElementType;
-  // layout
   display?:
     | "block"
     | "flex"
@@ -46,36 +134,30 @@ export type ContainerProps = {
   gap?: string;
   rowGap?: string;
   columnGap?: string;
-
-  // grid
   gridTemplateColumns?: string;
   gridTemplateRows?: string;
   gridAutoFlow?: "row" | "column" | "dense" | "row dense" | "column dense";
-
-  // box
   width?: string;
   height?: string;
   minWidth?: string;
   minHeight?: string;
   maxWidth?: string;
   maxHeight?: string;
-
   margin?: string;
   padding?: string;
-  background?: string;
-
+  backgroundType?: string;
+  backgroundColor?: string;
+  patternColor?: string;
+  patternOpacity?: number;
+  patternSize?: number;
   borderColor?: string;
   borderWidth?: string;
   borderStyle?: "none" | "solid" | "dashed" | "dotted" | "double";
   borderRadius?: string;
   boxShadow?: string;
-
-  // text defaults
   color?: string;
   fontFamily?: string;
   fontSize?: string;
-
-  // canvas flag is via craft config
   children?: React.ReactNode;
   animation?: AnimationProps;
 };
@@ -84,7 +166,12 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
   as: Tag = "div",
   children,
   animation,
-  ...props // Use spread for remaining props
+  backgroundType = "color",
+  backgroundColor,
+  patternColor,
+  patternOpacity,
+  patternSize,
+  ...props
 }) => {
   const {
     connectors: { connect, drag },
@@ -120,13 +207,33 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
       borderRadius: props.borderRadius,
       boxShadow: props.boxShadow,
       fontSize: props.fontSize,
-      background: props.background || theme.colors.background.primary,
       color: props.color || theme.colors.text.body,
       fontFamily: props.fontFamily || theme.fonts.body,
       outline: selected ? "2px dashed #4c8bf5" : undefined,
       outlineOffset: "2px",
       transition: "outline 120ms ease",
     };
+
+    const baseColor = backgroundColor || theme.colors.background.secondary;
+    const finalPatternColor = patternColor || theme.colors.text.muted;
+    const finalPatternOpacity = patternOpacity ?? 0.1;
+    const finalPatternSize = patternSize ?? 20;
+
+    const selectedBgFn = FANCY_BACKGROUNDS[backgroundType]?.style;
+
+    if (selectedBgFn) {
+      Object.assign(
+        baseStyle,
+        selectedBgFn(
+          baseColor,
+          finalPatternColor,
+          finalPatternOpacity,
+          finalPatternSize,
+        ),
+      );
+    } else {
+      baseStyle.background = backgroundColor || theme.colors.background.primary;
+    }
 
     if (props.gap) {
       baseStyle.gap = props.gap;
@@ -136,7 +243,16 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
     }
 
     return baseStyle;
-  }, [props, selected, theme]);
+  }, [
+    props,
+    backgroundType,
+    backgroundColor,
+    patternColor,
+    patternOpacity,
+    patternSize,
+    selected,
+    theme,
+  ]);
 
   const animationVariants: Variants = useMemo(() => {
     const {
@@ -145,7 +261,6 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
       slideInDirection = "up",
       scaleUpAmount = 0.9,
     } = animation || {};
-
     const initial = {
       fadeIn: { opacity: 0 },
       slideIn: {
@@ -165,20 +280,10 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
       },
       scaleUp: { opacity: 0, scale: scaleUpAmount },
     };
-
-    const animate = {
-      opacity: 1,
-      y: 0,
-      x: 0,
-      scale: 1,
-    };
-
-    return {
-      hidden: initial[animationType],
-      visible: animate,
-    };
+    const animate = { opacity: 1, y: 0, x: 0, scale: 1 };
+    return { hidden: initial[animationType], visible: animate };
   }, [animation]);
-  useEffect(() => {}, []);
+
   const MotionTag = motion(Tag as React.ElementType);
 
   if (animation?.animationEnabled) {
@@ -196,7 +301,7 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
           ease: animation.transitionEase ?? "easeInOut",
         }}
       >
-        <div>{children}</div>
+        {children}
       </MotionTag>
     );
   }
@@ -208,16 +313,22 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
   );
 };
 
+// ==================================================================================
+// SECTION 3: CRAFT.JS CONFIGURATION
+// ==================================================================================
 Container.craft = {
   displayName: "Container",
   props: {
     display: "flex",
     flexDirection: "column",
     gap: "8px",
-    padding: "12px",
+    padding: "24px",
     width: "100%",
-    // FIX 1: Initialize the animation object with default values.
-    // This prevents `props.animation` from being undefined.
+    backgroundType: "color",
+    backgroundColor: undefined,
+    patternColor: undefined,
+    patternOpacity: 0.1,
+    patternSize: 20,
     animation: {
       animationEnabled: false,
       animationType: "fadeIn",
@@ -229,11 +340,8 @@ Container.craft = {
       scaleUpAmount: 0.9,
       animateOnce: true,
     },
-  } satisfies ContainerProps,
-  rules: {
-    canDrag: () => true,
-    canMoveIn: () => true,
-  },
+  } satisfies Partial<ContainerProps>,
+  rules: { canDrag: () => true, canMoveIn: () => true },
   isCanvas: true,
   related: {
     settingsSchema: {
@@ -333,7 +441,52 @@ Container.craft = {
             { key: "maxHeight", type: "text", label: "Max Height" },
             { key: "margin", type: "text", label: "Margin" },
             { key: "padding", type: "text", label: "Padding" },
-            { key: "background", type: "color", label: "Background" },
+            {
+              key: "backgroundType",
+              type: "select",
+              label: "BG Type",
+              options: [
+                { label: "Solid Color", value: "color" },
+                ...Object.entries(FANCY_BACKGROUNDS).map(([id, { name }]) => ({
+                  label: name,
+                  value: id,
+                })),
+              ],
+            },
+            {
+              key: "backgroundColor",
+              type: "color",
+              label: (props: ContainerProps) =>
+                props.backgroundType && props.backgroundType !== "color"
+                  ? "Base Color"
+                  : "Background Color",
+            },
+            {
+              key: "patternColor",
+              type: "color",
+              label: "Pattern Color",
+              if: (props: ContainerProps) =>
+                props.backgroundType && props.backgroundType !== "color",
+            },
+            {
+              key: "patternOpacity",
+              type: "number",
+              label: "Pattern Opacity",
+              min: 0,
+              max: 1,
+              step: 0.01,
+              if: (props: ContainerProps) =>
+                props.backgroundType && props.backgroundType !== "color",
+            },
+            {
+              key: "patternSize",
+              type: "number",
+              label: "Pattern Size (px)",
+              min: 1,
+              step: 1,
+              if: (props: ContainerProps) =>
+                props.backgroundType && props.backgroundType !== "color",
+            },
             { key: "borderColor", type: "color", label: "Border Color" },
             { key: "borderWidth", type: "text", label: "Border Width" },
             {
@@ -359,35 +512,34 @@ Container.craft = {
               type: "select",
               label: "Animation Type",
               options: ["fadeIn", "slideIn", "scaleUp"],
-              // FIX 2: Use optional chaining (?.) for safer property access.
-              if: (props) => props.animation?.animationEnabled,
+              if: (props: ContainerProps) => props.animation?.animationEnabled,
             },
             {
               key: "animation.transitionDuration",
               type: "number",
               label: "Duration (s)",
               step: 0.1,
-              if: (props) => props.animation?.animationEnabled,
+              if: (props: ContainerProps) => props.animation?.animationEnabled,
             },
             {
               key: "animation.transitionDelay",
               type: "number",
               label: "Delay (s)",
               step: 0.1,
-              if: (props) => props.animation?.animationEnabled,
+              if: (props: ContainerProps) => props.animation?.animationEnabled,
             },
             {
               key: "animation.transitionEase",
               type: "select",
               label: "Easing",
               options: ["linear", "easeIn", "easeOut", "easeInOut"],
-              if: (props) => props.animation?.animationEnabled,
+              if: (props: ContainerProps) => props.animation?.animationEnabled,
             },
             {
               key: "animation.slideInOffset",
               type: "number",
               label: "Slide Offset (px)",
-              if: (props) =>
+              if: (props: ContainerProps) =>
                 props.animation?.animationEnabled &&
                 props.animation?.animationType === "slideIn",
             },
@@ -396,7 +548,7 @@ Container.craft = {
               type: "select",
               label: "Slide Direction",
               options: ["up", "down", "left", "right"],
-              if: (props) =>
+              if: (props: ContainerProps) =>
                 props.animation?.animationEnabled &&
                 props.animation?.animationType === "slideIn",
             },
@@ -405,7 +557,7 @@ Container.craft = {
               type: "number",
               label: "Initial Scale",
               step: 0.1,
-              if: (props) =>
+              if: (props: ContainerProps) =>
                 props.animation?.animationEnabled &&
                 props.animation?.animationType === "scaleUp",
             },
@@ -413,7 +565,7 @@ Container.craft = {
               key: "animation.animateOnce",
               type: "boolean",
               label: "Animate Only Once",
-              if: (props) => props.animation?.animationEnabled,
+              if: (props: ContainerProps) => props.animation?.animationEnabled,
             },
           ],
         },

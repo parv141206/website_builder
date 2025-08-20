@@ -20,7 +20,7 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({
 }) => {
   const { device } = useDeviceStore();
   const width = deviceWidths[device] || "100%";
-
+  console.log("------>", savedJson);
   return (
     <div
       className="mx-auto h-full w-full overflow-hidden rounded-lg bg-white shadow-lg transition-all duration-300 ease-in-out"

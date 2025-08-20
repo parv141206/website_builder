@@ -59,12 +59,11 @@ const EditorUI = ({ savedJson }: { savedJson: string | null }) => {
 
         <main className="relative flex-1 overflow-y-auto p-4 transition-colors duration-200">
           <DeviceFrame savedJson={savedJson}>
-            {/* These children will only be used when savedJson is null (first load) */}
             <Element
               is={Container}
               canvas
               id="ROOT"
-              background={theme.colors.background.secondary}
+              // background={theme.colors.background.secondary}
               minHeight="100%"
               padding="24px"
             >
@@ -82,7 +81,7 @@ const EditorUI = ({ savedJson }: { savedJson: string | null }) => {
                 is={Container}
                 canvas
                 padding="16px"
-                background={theme.colors.background.tertiary}
+                // background={theme.colors.background.tertiary}
                 borderRadius="8px"
               >
                 <Text text="This is an inner container." />

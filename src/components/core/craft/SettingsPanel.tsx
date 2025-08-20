@@ -531,56 +531,69 @@ export const SettingsPanel = () => {
           <h3 className="mb-4 text-lg font-semibold text-gray-800">
             {selected.name} Settings
           </h3>
-          {selected.settingsSchema.groups.map((group: any) => (
-            <div key={group.label} className="mb-4">
-              <h4 className="text-md mb-2 border-b pb-1 font-medium text-gray-600">
-                {group.label}
-              </h4>
-              <div className="mt-2 space-y-3">
-                {group.fields.map((field: any) => {
-                  // NEW: Check for the conditional 'if' property before rendering
-                  if (field.if && !field.if(selected.props)) {
-                    return null;
-                  }
+          {selected.settingsSchema.groups.map(
+            (group: any) =>
+              // FIX: Add a check for the conditional `if` property on the GROUP itself.
+              (!group.if || group.if(selected.props)) && (
+                <div key={group.label} className="mb-4">
+                  <h4 className="text-md mb-2 border-b pb-1 font-medium text-gray-600">
+                    {group.label}
+                  </h4>
+                  <div className="mt-2 space-y-3">
+                    {group.fields.map((field: any) => {
+                      if (field.if && !field.if(selected.props)) {
+                        return null;
+                      }
 
-                  if (
-                    field.type === "textarea" ||
-                    field.type === "custom-toggle-group" ||
-                    CUSTOM_UI_MAP[field.key]
-                  ) {
-                    return (
-                      <div
-                        key={field.key}
-                        className="flex w-full flex-col gap-1.5"
-                      >
-                        <label
-                          htmlFor={field.key}
-                          className="text-sm font-medium text-gray-700"
-                        >
-                          {field.label}
-                        </label>
-                        {generateField(field)}
-                      </div>
-                    );
-                  }
-                  return (
-                    <div
-                      key={field.key}
-                      className="grid grid-cols-2 items-center gap-2"
-                    >
-                      <label
-                        htmlFor={field.key}
-                        className="text-sm font-medium text-gray-700"
-                      >
-                        {field.label}
-                      </label>
-                      {generateField(field)}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
+                      // Resolve the label correctly, checking if it's a function.
+                      const fieldLabel =
+                        typeof field.label === "function"
+                          ? field.label(selected.props)
+                          : field.label;
+
+                      // Use a single, unified return block to avoid duplication and errors.
+                      if (
+                        field.type === "textarea" ||
+                        field.type === "custom-toggle-group" ||
+                        CUSTOM_UI_MAP[field.key]
+                      ) {
+                        // Layout for full-width components
+                        return (
+                          <div
+                            key={field.key}
+                            className="flex w-full flex-col gap-1.5"
+                          >
+                            <label
+                              htmlFor={field.key}
+                              className="text-sm font-medium text-gray-700"
+                            >
+                              {fieldLabel}
+                            </label>
+                            {generateField(field)}
+                          </div>
+                        );
+                      } else {
+                        // Layout for grid (label + input) components
+                        return (
+                          <div
+                            key={field.key}
+                            className="grid grid-cols-2 items-center gap-2"
+                          >
+                            <label
+                              htmlFor={field.key}
+                              className="text-sm font-medium text-gray-700"
+                            >
+                              {fieldLabel}
+                            </label>
+                            {generateField(field)}
+                          </div>
+                        );
+                      }
+                    })}
+                  </div>
+                </div>
+              ),
+          )}
         </div>
       ) : (
         <div className="flex h-full items-center justify-center">
