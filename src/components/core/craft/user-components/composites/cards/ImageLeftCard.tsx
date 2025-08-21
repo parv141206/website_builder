@@ -40,7 +40,6 @@ export const ImageLeftCard: React.FC<ImageLeftCardProps> & { craft?: any } = ({
           as="h3"
           fontSize="18px"
           fontWeight="bold"
-          color="#111827"
           {...titleProps}
         />
         <Element
@@ -49,7 +48,6 @@ export const ImageLeftCard: React.FC<ImageLeftCardProps> & { craft?: any } = ({
           text={textProps?.text || "This card has an image on the left."}
           as="p"
           fontSize="14px"
-          color="#4b5563"
           margin="4px 0 0 0"
           {...textProps}
         />
