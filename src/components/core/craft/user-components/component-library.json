@@ -123,18 +123,9 @@
             "is": "ImageGallery",
             "props": {
               "images": [
-                {
-                  "src": "https://picsum.photos/200/300",
-                  "alt": "Image 1"
-                },
-                {
-                  "src": "https://picsum.photos/200/300",
-                  "alt": "Image 2"
-                },
-                {
-                  "src": "https://picsum.photos/200/300",
-                  "alt": "Image 3"
-                }
+                { "src": "https://picsum.photos/200/300", "alt": "Image 1" },
+                { "src": "https://picsum.photos/200/300", "alt": "Image 2" },
+                { "src": "https://picsum.photos/200/300", "alt": "Image 3" }
               ],
               "columns": 3,
               "gap": "12px",
@@ -173,7 +164,7 @@
           "preview": {
             "is": "ImageTopCard",
             "props": {
-              "image": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f",
+              "image": "https://randomuser.me/api/portraits/men/32.jpg",
               "title": "Beautiful Scenery",
               "description": "An image on top with text below."
             }
@@ -184,7 +175,7 @@
           "preview": {
             "is": "ImageLeftCard",
             "props": {
-              "image": "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d",
+              "image": "https://randomuser.me/api/portraits/men/32.jpg",
               "title": "Side Image Card",
               "description": "An image on the left with text on the right."
             }
@@ -200,7 +191,6 @@
             }
           }
         },
-
         {
           "name": "Neon Border Card",
           "preview": {
@@ -274,6 +264,134 @@
       ]
     },
     {
+      "name": "Sections",
+      "icon": "LayoutGrid",
+      "components": [
+        {
+          "name": "Testimonial Section",
+          "preview": {
+            "is": "TestimonialSection",
+            "props": {
+              "heading": "What our clients say",
+              "subheading": "Loved by teams around the world 🌍",
+              "testimonials": [
+                {
+                  "quote": "This service completely transformed our workflow!",
+                  "author": "John Smith",
+                  "role": "Product Manager",
+                  "company": "TechCorp",
+                  "rating": 5,
+                  "imageProps": {
+                    "src": "https://randomuser.me/api/portraits/men/32.jpg",
+                    "alt": "John Smith"
+                  }
+                },
+                {
+                  "quote": "I can't imagine going back to how we worked before. A real life saver!",
+                  "author": "Sarah Lee",
+                  "role": "CTO",
+                  "company": "InnoSoft",
+                  "rating": 5,
+                  "imageProps": {
+                    "src": "https://randomuser.me/api/portraits/women/44.jpg",
+                    "alt": "Sarah Lee"
+                  }
+                },
+                {
+                  "quote": "Beautiful UI and amazing performance. Highly recommend this team!",
+                  "author": "Michael Tan",
+                  "role": "Founder",
+                  "company": "Designify",
+                  "rating": 4,
+                  "imageProps": {
+                    "src": "https://randomuser.me/api/portraits/men/76.jpg",
+                    "alt": "Michael Tan"
+                  }
+                }
+              ],
+              "containerProps": {},
+              "headingProps": {},
+              "subheadingProps": {},
+              "quoteProps": {},
+              "authorProps": {},
+              "roleProps": {},
+              "companyProps": {},
+              "ratingProps": {}
+            }
+          }
+        },
+        {
+          "name": "Features Section",
+          "preview": {
+            "is": "FeaturesSection",
+            "props": {
+              "heading": "Our Awesome Features",
+              "subheading": "Packed with tools to help you grow 🚀",
+              "features": [
+                {
+                  "icon": "⚡",
+                  "title": "Fast Performance",
+                  "description": "Experience blazing fast speeds optimized for modern web."
+                },
+                {
+                  "icon": "🔒",
+                  "title": "Secure by Default",
+                  "description": "Top-notch security features to keep your data safe."
+                },
+                {
+                  "icon": "🎨",
+                  "title": "Customizable Design",
+                  "description": "Easily style and configure to match your brand."
+                },
+                {
+                  "icon": "☁️",
+                  "title": "Cloud Powered",
+                  "description": "Always available, scalable, and reliable in the cloud."
+                }
+              ],
+              "containerProps": {},
+              "headingProps": {},
+              "subheadingProps": {},
+              "featureTitleProps": {},
+              "featureDescriptionProps": {}
+            }
+          }
+        },
+        {
+          "name": "Pricing Section",
+          "preview": {
+            "is": "PricingSection",
+            "props": {
+              "heading": "Choose Your Plan",
+              "subheading": "Simple pricing for your team 🚀",
+              "plans": [
+                {
+                  "title": "Basic",
+                  "price": "$19/mo",
+                  "features": ["Feature A", "Feature B", "Feature C"],
+                  "buttonText": "Get Started"
+                },
+                {
+                  "title": "Pro",
+                  "price": "$49/mo",
+                  "features": ["Feature A", "Feature B", "Feature C", "Feature D"],
+                  "buttonText": "Upgrade"
+                },
+                {
+                  "title": "Enterprise",
+                  "price": "$99/mo",
+                  "features": ["All Features Included", "Priority Support", "Custom Solutions"],
+                  "buttonText": "Contact Sales"
+                }
+              ],
+              "containerProps": {},
+              "cardProps": {}
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "Banners",
       "icon": "Flag",
       "components": [
@@ -305,7 +423,6 @@
         }
       ]
     },
-
     {
       "name": "FAQ",
       "icon": "QuestionMarkCircle",
@@ -320,6 +437,36 @@
               "containerProps": {},
               "questionProps": {},
               "answerProps": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Footers",
+      "icon": "RectangleStack",
+      "components": [
+        {
+          "name": "Futuristic Footer",
+          "preview": {
+            "is": "FuturisticFooter",
+            "props": {
+              "title": "FutureUI",
+              "subtitle": "Crafted with 🚀 and neon vibes",
+              "links": [
+                { "label": "Home", "href": "#" },
+                { "label": "About", "href": "#" },
+                { "label": "Services", "href": "#" },
+                { "label": "Contact", "href": "#" }
+              ],
+              "socials": [
+                { "label": "Twitter", "href": "#" },
+                { "label": "LinkedIn", "href": "#" },
+                { "label": "GitHub", "href": "#" }
+              ],
+              "containerProps": {},
+              "titleProps": {},
+              "subtitleProps": {}
             }
           }
         }

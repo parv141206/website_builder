@@ -11,7 +11,12 @@ import { NeonBorderCard } from "./composites/cards/NeonBorderCard";
 import { PricingCard } from "./composites/cards/PricingCard";
 import { TeamMember } from "./composites/cards/TeamMember";
 import { TiltHoverCard } from "./composites/cards/TiltHoverCard";
+import { FeaturesSection } from "./composites/feature/FeatureSection";
+import { FuturisticFooter } from "./composites/footer/FuturisticFooter";
 import { ImageGallery } from "./composites/gallery/ImageGallery";
+import { MenuSection } from "./composites/menu/MenuSection";
+import { PricingSection } from "./composites/pricing/PricingSection";
+import { TestimonialSection } from "./composites/testimonial/TestimonialSection";
 import { RotatingText } from "./composites/text/RotatingText";
 import { ScrollFloat } from "./composites/text/ScrollFloat";
 import { VideoSection } from "./composites/video/VideoSection";
@@ -56,4 +61,9 @@ export const COMPONENT_RESOLVER = {
   ImageGallery,
   ScrollFloat,
   RotatingText,
+  FuturisticFooter,
+  TestimonialSection,
+  FeaturesSection,
+  PricingSection,
+  MenuSection,
 };
