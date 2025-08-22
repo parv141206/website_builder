@@ -16,6 +16,19 @@
               "custom": { "displayName": "New Container" }
             }
           }
+        },
+        {
+          "name": "Background",
+          "preview": {
+            "is": "Background",
+            "props": {
+              "canvas": true,
+              "padding": "16px",
+              "borderRadius": "8px",
+              "minHeight": "80px",
+              "custom": { "displayName": "New Background" }
+            }
+          }
         }
       ]
     },
@@ -374,13 +387,22 @@
                 {
                   "title": "Pro",
                   "price": "$49/mo",
-                  "features": ["Feature A", "Feature B", "Feature C", "Feature D"],
+                  "features": [
+                    "Feature A",
+                    "Feature B",
+                    "Feature C",
+                    "Feature D"
+                  ],
                   "buttonText": "Upgrade"
                 },
                 {
                   "title": "Enterprise",
                   "price": "$99/mo",
-                  "features": ["All Features Included", "Priority Support", "Custom Solutions"],
+                  "features": [
+                    "All Features Included",
+                    "Priority Support",
+                    "Custom Solutions"
+                  ],
                   "buttonText": "Contact Sales"
                 }
               ],

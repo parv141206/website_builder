@@ -1,4 +1,6 @@
+// src/components/core/craft/SettingsPanel.tsx
 "use client";
+
 import { useEditor } from "@craftjs/core";
 import React, { memo, useCallback, useState, useEffect } from "react";
 import {
@@ -363,8 +365,16 @@ export const SettingsPanel = () => {
 
   const generateField = useCallback(
     (field: any) => {
-      const { key, type, label, options, allowUndefined, children, step } =
-        field;
+      const {
+        key,
+        type,
+        label,
+        options,
+        allowUndefined,
+        children,
+        step,
+        item,
+      } = field;
 
       // NEW: Use the helper to get nested prop values
       const value = selected ? getDeepValue(selected.props, key) : undefined;
@@ -504,6 +514,41 @@ export const SettingsPanel = () => {
               />
             </div>
           );
+
+        // NEW: Support for "array" type with color picker items
+        case "array":
+          return (
+            <div>
+              {Array.isArray(value) ? (
+                value.map((itemValue: string, index: number) => (
+                  <div
+                    key={`${key}-${index}`}
+                    className="mb-2 grid grid-cols-2 items-center gap-2"
+                  >
+                    <label
+                      htmlFor={`${key}-${index}`}
+                      className="text-sm font-medium text-gray-700"
+                    >
+                      Color {index + 1}
+                    </label>
+                    <CustomColorPicker
+                      value={itemValue}
+                      onChange={(color) => {
+                        const newArray = [...value];
+                        newArray[index] = color;
+                        setProp(key, newArray);
+                      }}
+                    />
+                  </div>
+                ))
+              ) : (
+                <p className="text-xs text-gray-500">
+                  Invalid array format for {label}
+                </p>
+              )}
+            </div>
+          );
+
         default:
           return (
             <p className="text-xs text-gray-500">Unknown field type: {type}</p>

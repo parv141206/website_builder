@@ -207,6 +207,7 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
       borderRadius: props.borderRadius,
       boxShadow: props.boxShadow,
       fontSize: props.fontSize,
+      zIndex: "2",
       color: props.color || theme.colors.text.body,
       fontFamily: props.fontFamily || theme.fonts.body,
       outline: selected ? "2px dashed #4c8bf5" : undefined,

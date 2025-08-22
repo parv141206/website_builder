@@ -44,6 +44,7 @@
     "mdx-bundler": "^10.1.1",
     "motion": "^12.23.12",
     "next": "^15.2.3",
+    "ogl": "^1.0.11",
     "patch-package": "^8.0.0",
     "pnpm": "^10.14.0",
     "postinstall-postinstall": "^2.1.0",
