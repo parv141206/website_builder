@@ -65,10 +65,10 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({
       gap="32px"
       padding="64px"
       borderRadius="24px"
-      background="rgba(25, 25, 25, 0.8)"
-      border="1px solid rgba(255, 255, 255, 0.1)"
-      backdropFilter="blur(14px)"
-      boxShadow="0 6px 40px rgba(0,0,0,0.5)"
+      background="rgba(255, 255, 255, 0.12)"
+      border="1px solid rgba(255, 255, 255, 0.25)"
+      backdropFilter="blur(18px) saturate(180%)"
+      boxShadow="0 8px 24px rgba(0,0,0,0.15)"
       {...containerProps}
     >
       {heading && (
@@ -121,14 +121,15 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({
             textAlign="center"
             padding="28px"
             borderRadius="18px"
-            background="rgba(35, 35, 35, 0.85)"
-            border="1px solid rgba(255, 255, 255, 0.1)"
-            backdropFilter="blur(12px)"
-            boxShadow="0 4px 20px rgba(0,0,0,0.4)"
-            transition="transform 0.3s ease, box-shadow 0.3s ease"
+            background="rgba(255, 255, 255, 0.15)"
+            border="1px solid rgba(255,255,255,0.25)"
+            backdropFilter="blur(14px) saturate(160%)"
+            boxShadow="0 4px 16px rgba(0,0,0,0.15)"
+            transition="transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease"
             _hover={{
-              transform: "translateY(-8px) scale(1.03)",
-              boxShadow: "0 0 35px rgba(0,0,0,0.5)",
+              transform: "translateY(-6px) scale(1.02)",
+              boxShadow: "0 8px 20px rgba(0,0,0,0.25)",
+              background: "rgba(255,255,255,0.25)",
             }}
             {...cardProps}
           >
@@ -139,7 +140,7 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({
                 text={f.icon}
                 fontSize="40px"
                 marginBottom="16px"
-                color="var(--theme-color-accent)"
+                color="var(--theme-accent)"
               />
             )}
 

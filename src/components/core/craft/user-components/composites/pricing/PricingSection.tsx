@@ -50,11 +50,11 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
       alignItems="center"
       gap="32px"
       padding="64px"
-      background="rgba(25,25,25,0.8)"
-      border="1px solid rgba(255,255,255,0.1)"
-      backdropFilter="blur(14px)"
+      background="rgba(255, 255, 255, 0.12)"
+      border="1px solid rgba(255,255,255,0.25)"
+      backdropFilter="blur(18px) saturate(180%)"
       borderRadius="24px"
-      boxShadow="0 6px 40px rgba(0,0,0,0.5)"
+      boxShadow="0 8px 24px rgba(0,0,0,0.15)"
       {...containerProps}
     >
       {heading && (
@@ -107,14 +107,15 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             textAlign="center"
             padding="28px"
             borderRadius="18px"
-            background="rgba(35,35,35,0.85)"
-            border="1px solid rgba(255,255,255,0.1)"
-            backdropFilter="blur(12px)"
-            boxShadow="0 4px 20px rgba(0,0,0,0.4)"
-            transition="transform 0.3s ease, box-shadow 0.3s ease"
+            background="rgba(255, 255, 255, 0.15)"
+            border="1px solid rgba(255,255,255,0.25)"
+            backdropFilter="blur(14px) saturate(160%)"
+            boxShadow="0 4px 16px rgba(0,0,0,0.15)"
+            transition="transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease"
             _hover={{
-              transform: "translateY(-8px) scale(1.03)",
-              boxShadow: "0 0 35px rgba(0,0,0,0.5)",
+              transform: "translateY(-6px) scale(1.02)",
+              boxShadow: "0 8px 20px rgba(0,0,0,0.25)",
+              background: "rgba(255,255,255,0.25)",
             }}
             {...cardProps}
           >
@@ -169,18 +170,34 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             {plan.buttonText && (
               <Element
                 id={`PricingSection-button-${idx}`}
-                is={Text}
-                text={plan.buttonText}
-                fontSize="14px"
-                fontWeight="600"
-                color="var(--theme-background-primary)"
-                background="var(--theme-accent)"
-                padding="10px 20px"
+                is={Container}
+                as="a"
+                href="#"
+                padding="12px 24px"
                 borderRadius="12px"
+                background="rgba(255,255,255,0.15)"
+                backdropFilter="blur(10px) saturate(160%)"
+                border="1px solid rgba(255,255,255,0.25)"
                 cursor="pointer"
-                textAlign="center"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                boxShadow="0 2px 10px rgba(0,0,0,0.15)"
+                transition="all 0.3s ease"
+                _hover={{
+                  transform: "translateY(-2px)",
+                  background: "rgba(255,255,255,0.25)",
+                  boxShadow: "0 6px 16px rgba(0,0,0,0.25)",
+                }}
                 {...plan.buttonProps}
-              />
+              >
+                <Text
+                  text={plan.buttonText}
+                  fontSize="14px"
+                  fontWeight="600"
+                  color="var(--theme-accent)"
+                />
+              </Element>
             )}
           </Element>
         ))}

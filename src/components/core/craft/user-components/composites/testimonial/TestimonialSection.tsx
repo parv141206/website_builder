@@ -56,11 +56,11 @@ export const TestimonialSection: React.FC<TestimonialSectionProps> = ({
       alignItems="center"
       gap="32px"
       padding="64px"
-      background="rgba(20, 20, 20, 0.7)"
-      border="1px solid rgba(255, 255, 255, 0.1)"
-      backdropFilter="blur(12px)"
       borderRadius="24px"
-      boxShadow="0 4px 30px rgba(0,0,0,0.5)"
+      background="rgba(255, 255, 255, 0.12)"
+      border="1px solid rgba(255, 255, 255, 0.25)"
+      backdropFilter="blur(18px) saturate(180%)"
+      boxShadow="0 8px 24px rgba(0,0,0,0.15)"
       {...containerProps}
     >
       {heading && (
@@ -111,16 +111,17 @@ export const TestimonialSection: React.FC<TestimonialSectionProps> = ({
             flexDirection="column"
             alignItems="center"
             textAlign="center"
-            padding="24px"
-            borderRadius="16px"
-            background="rgba(30, 30, 30, 0.75)"
-            backdropFilter="blur(10px)"
-            border="1px solid rgba(255,255,255,0.1)"
-            boxShadow="0 4px 20px rgba(0,0,0,0.4)"
-            transition="transform 0.3s ease, box-shadow 0.3s ease"
+            padding="28px"
+            borderRadius="18px"
+            background="rgba(255, 255, 255, 0.15)"
+            border="1px solid rgba(255,255,255,0.25)"
+            backdropFilter="blur(14px) saturate(160%)"
+            boxShadow="0 4px 16px rgba(0,0,0,0.15)"
+            transition="transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease"
             _hover={{
               transform: "translateY(-6px) scale(1.02)",
-              boxShadow: "0 8px 25px rgba(0,0,0,0.5)",
+              boxShadow: "0 8px 20px rgba(0,0,0,0.25)",
+              background: "rgba(255,255,255,0.25)",
             }}
             {...cardProps}
           >

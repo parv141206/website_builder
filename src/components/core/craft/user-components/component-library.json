@@ -281,6 +281,72 @@
       "icon": "LayoutGrid",
       "components": [
         {
+          "name": "Menu Section",
+          "preview": {
+            "is": "MenuSection",
+            "props": {
+              "heading": "Our Menu",
+              "subheading": "Delicious items curated for you 🍽️",
+              "items": [
+                {
+                  "name": "Spicy Ramen",
+                  "description": "A hot bowl of flavorful noodles",
+                  "price": "$12",
+                  "imageSrc": "https://images.unsplash.com/photo-1604908177524-5c7fa3e2d84f",
+                  "imageAlt": "Spicy Ramen"
+                },
+                {
+                  "name": "Avocado Toast",
+                  "description": "Healthy breakfast option",
+                  "price": "$8",
+                  "imageSrc": "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+                  "imageAlt": "Avocado Toast"
+                },
+                {
+                  "name": "Chocolate Cake",
+                  "description": "Rich and moist dessert",
+                  "price": "$6",
+                  "imageSrc": "https://images.unsplash.com/photo-1563805042-7684c019e1cb",
+                  "imageAlt": "Chocolate Cake"
+                }
+              ],
+              "containerProps": {},
+              "cardProps": {},
+              "headingProps": {},
+              "subheadingProps": {},
+              "nameProps": {},
+              "descriptionProps": {},
+              "priceProps": {}
+            }
+          }
+        },
+        {
+          "name": "Closing Section",
+          "preview": {
+            "is": "ClosingSection",
+            "props": {
+              "heading": "Ready to Take Off?",
+              "subheading": "Join us today and explore the future of UI design 🚀",
+              "backgroundImageSrc": "https://images.unsplash.com/photo-1605902711622-cfb43c4431c6",
+              "buttonText": "Get Started",
+              "buttonLink": "#",
+              "containerProps": {},
+              "headingProps": {},
+              "subheadingProps": {},
+              "buttonProps": {
+                "padding": "16px 32px",
+                "borderRadius": "12px",
+                "background": "linear-gradient(135deg, #ff00cc, #3333ff)",
+                "textProps": {
+                  "fontSize": "16px",
+                  "fontWeight": "700",
+                  "color": "#fff"
+                }
+              }
+            }
+          }
+        },
+        {
           "name": "Testimonial Section",
           "preview": {
             "is": "TestimonialSection",
@@ -411,6 +477,8 @@
             }
           }
         }
+
+        
       ]
     },
     {

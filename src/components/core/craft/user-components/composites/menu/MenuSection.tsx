@@ -56,11 +56,11 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
       alignItems="center"
       gap="32px"
       padding="64px"
-      background="rgba(20, 20, 20, 0.7)"
-      border="1px solid rgba(255, 255, 255, 0.1)"
-      backdropFilter="blur(12px)"
+      background="rgba(255, 255, 255, 0.12)" // translucent base
+      border="1px solid rgba(255, 255, 255, 0.25)" // frosted edge
+      backdropFilter="blur(18px) saturate(180%)" // glass blur + saturation
       borderRadius="24px"
-      boxShadow="0 4px 30px rgba(0,0,0,0.5)"
+      boxShadow="0 8px 24px rgba(0,0,0,0.15)" // soft ambient shadow
       {...containerProps}
     >
       {heading && (
@@ -112,15 +112,16 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
             alignItems="center"
             textAlign="center"
             padding="24px"
-            borderRadius="16px"
-            background="rgba(30, 30, 30, 0.75)"
-            backdropFilter="blur(10px)"
-            border="1px solid rgba(255,255,255,0.1)"
-            boxShadow="0 4px 20px rgba(0,0,0,0.4)"
+            borderRadius="20px"
+            background="rgba(255, 255, 255, 0.15)" // card translucency
+            backdropFilter="blur(12px) saturate(160%)"
+            border="1px solid rgba(255,255,255,0.25)"
+            boxShadow="0 4px 12px rgba(0,0,0,0.1)"
             transition="transform 0.3s ease, box-shadow 0.3s ease"
             _hover={{
-              transform: "translateY(-6px) scale(1.02)",
-              boxShadow: "0 8px 25px rgba(0,0,0,0.5)",
+              transform: "translateY(-4px)",
+              boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
+              background: "rgba(255, 255, 255, 0.2)", // brighten a bit on hover
             }}
             {...cardProps}
           >
@@ -132,7 +133,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
                 alt={item.imageAlt || item.name}
                 width="100px"
                 height="100px"
-                borderRadius="12px"
+                borderRadius="16px"
                 objectFit="cover"
                 marginBottom="16px"
                 {...item.imageProps}
