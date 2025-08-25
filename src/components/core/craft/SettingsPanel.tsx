@@ -474,9 +474,13 @@ export const SettingsPanel = () => {
           );
         case "color":
           return (
-            <CustomColorPicker
-              value={value}
-              onChange={(color) => setProp(key, color)}
+            <input
+              {...commonProps}
+              type="color"
+              value={value || "#000000"}
+              onChange={(e) => setProp(key, e.target.value)}
+              className="h-8 w-full cursor-pointer rounded border border-gray-300"
+              style={{ maxWidth: "100%" }}
             />
           );
         case "select":
@@ -531,13 +535,17 @@ export const SettingsPanel = () => {
                     >
                       Color {index + 1}
                     </label>
-                    <CustomColorPicker
-                      value={itemValue}
-                      onChange={(color) => {
+                    <input
+                      type="color"
+                      id={`${key}-${index}`}
+                      value={itemValue || "#000000"}
+                      onChange={(e) => {
                         const newArray = [...value];
-                        newArray[index] = color;
+                        newArray[index] = e.target.value;
                         setProp(key, newArray);
                       }}
+                      className="h-8 w-full cursor-pointer rounded border border-gray-300"
+                      style={{ maxWidth: "100%" }}
                     />
                   </div>
                 ))

@@ -40,6 +40,19 @@
               "blindCount": 16
             }
           }
+        },
+        {
+          "name": "Orb",
+          "preview": {
+            "is": "Orb",
+            "props": {
+              "hue": 270,
+              "hoverIntensity": 0.2,
+              "rotateOnHover": true,
+              "forceHoverState": false,
+              "className": "w-full h-96"
+            }
+          }
         }
       ]
     },
@@ -291,6 +304,20 @@
       "name": "Sections",
       "icon": "LayoutGrid",
       "components": [
+        {
+          "name": "ChromaGrid",
+          "preview": {
+            "is": "ChromaGrid",
+            "props": {
+              "items": [],
+              "className": "",
+              "radius": 300,
+              "damping": 0.45,
+              "fadeOut": 0.6,
+              "ease": "power3.out"
+            }
+          }
+        },
         {
           "name": "Menu Section",
           "preview": {
