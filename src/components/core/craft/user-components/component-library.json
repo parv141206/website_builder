@@ -17,16 +17,16 @@
             }
           }
         },
+
         {
-          "name": "Background",
+          "name": "LightRays",
           "preview": {
-            "is": "Background",
+            "is": "LightRays",
             "props": {
-              "canvas": true,
-              "padding": "16px",
-              "borderRadius": "8px",
-              "minHeight": "80px",
-              "custom": { "displayName": "New Background" }
+              "raysColor": "#ffffff",
+              "raysSpeed": 1,
+              "lightSpread": 1,
+              "rayLength": 2
             }
           }
         }
@@ -477,8 +477,6 @@
             }
           }
         }
-
-        
       ]
     },
     {

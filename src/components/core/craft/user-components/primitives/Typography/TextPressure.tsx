@@ -225,7 +225,7 @@ export const TextPressure: React.FC<TextPressureProps> & { craft?: any } = ({
         style={{
           fontFamily,
           textTransform: "uppercase",
-          fontSize: fontSize,
+          fontSize: minFontSize,
           lineHeight,
           transform: `scale(1, ${scaleY})`,
           transformOrigin: "center top",
@@ -276,7 +276,7 @@ TextPressure.craft = {
     enableScale: false,
     textColor: "#ff0000",
     strokeColor: "#FFFFFF",
-    minFontSize: 24,
+    minFontSize: 84,
   } satisfies TextPressureProps,
   rules: {
     canDrag: () => true,

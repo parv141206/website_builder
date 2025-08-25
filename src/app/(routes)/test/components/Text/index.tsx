@@ -1,14 +1,8 @@
 "use client";
 
 import { theme } from "../../theme";
-import React, { useMemo, type JSX } from "react";
-export type TextAlign =
-  | "left"
-  | "center"
-  | "right"
-  | "justify"
-  | "start"
-  | "end";
+import React, { useMemo, useRef, useState, type JSX } from "react";
+export type TextAlign = "left" | "center" | "right" | "justify" | "start" | "end";
 export type TextTransform = "none" | "uppercase" | "lowercase" | "capitalize";
 export type TextProps = {
   text: string;
@@ -60,56 +54,34 @@ export const Text: React.FC<TextProps> = ({
   borderStyle = "none",
   borderRadius,
   boxShadow,
-  display,
+  display
 }) => {
-  const style = React.useMemo(
-    () => ({
-      color: color || theme.colors.text.body,
-      fontFamily: fontFamily || theme.fonts.body,
-      background: background || "transparent",
-      fontSize: fontSize,
-      fontWeight: fontWeight,
-      lineHeight: lineHeight,
-      letterSpacing: letterSpacing,
-      textAlign: textAlign,
-      textTransform: textTransform,
-      fontStyle: italic ? "italic" : undefined,
-      margin: margin,
-      padding: padding,
-      width: width,
-      height: height,
-      borderColor: borderColor,
-      borderWidth: borderWidth,
-      borderStyle: borderStyle,
-      borderRadius: borderRadius,
-      boxShadow: boxShadow,
-      display: display,
-    }),
-    [
-      theme,
-      color,
-      fontSize,
-      fontWeight,
-      fontFamily,
-      lineHeight,
-      letterSpacing,
-      textAlign,
-      textTransform,
-      italic,
-      underline,
-      strike,
-      margin,
-      padding,
-      width,
-      height,
-      background,
-      borderColor,
-      borderWidth,
-      borderStyle,
-      borderRadius,
-      boxShadow,
-      display,
-    ],
-  );
-  return <Tag style={style}>{text}</Tag>;
+  const style: React.CSSProperties = useMemo(() => ({
+    color: color || theme.colors.text.body,
+    fontFamily: fontFamily || theme.fonts.body,
+    background: background || "transparent",
+    // Other props
+    fontSize,
+    fontWeight,
+    lineHeight,
+    letterSpacing,
+    textAlign,
+    textTransform,
+    fontStyle: italic ? "italic" : undefined,
+    textDecoration: [underline ? "underline" : undefined, strike ? "line-through" : undefined].filter(Boolean).join(" ") || undefined,
+    margin,
+    padding,
+    width,
+    height,
+    borderColor,
+    borderWidth,
+    borderStyle,
+    borderRadius,
+    boxShadow,
+    display
+    // Editor-specific styles
+  }), [theme,
+  // Add theme to dependency array
+  color, fontSize, fontWeight, fontFamily, lineHeight, letterSpacing, textAlign, textTransform, italic, underline, strike, margin, padding, width, height, background, borderColor, borderWidth, borderStyle, borderRadius, boxShadow, display]);
+  return <Tag>{text}</Tag>;
 };

@@ -1,3 +1,5 @@
+// COMPONENT_RESOLVER.ts
+
 import { FAQItem } from "./composites/accordian/FAQaccordian";
 import { CallToAction } from "./composites/banner/CtaBanner";
 import { HeroBanner } from "./composites/banner/HeroBanner";
@@ -23,7 +25,7 @@ import { RotatingText } from "./composites/text/RotatingText";
 import { ScrollFloat } from "./composites/text/ScrollFloat";
 import { VideoSection } from "./composites/video/VideoSection";
 import { Animated } from "./primitives/Animated";
-import Background from "./primitives/Background";
+import { LightRays } from "./primitives/Backgrounds/LightRays";
 import { Button } from "./primitives/Button";
 import { Container } from "./primitives/Container";
 import { Image } from "./primitives/Image";
@@ -37,7 +39,6 @@ import { TextType } from "./primitives/Typography/TextType";
 
 export const COMPONENT_RESOLVER = {
   Container,
-  Background,
   Text,
   TextPressure,
   SplitText,
@@ -72,4 +73,5 @@ export const COMPONENT_RESOLVER = {
   MenuSection,
   ClosingSection,
   CircularGallerySection,
+  LightRays, // Add LightRays to the resolver
 };

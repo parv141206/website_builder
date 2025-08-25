@@ -1,3 +1,5 @@
+// Container.tsx
+
 "use client";
 import React, { useMemo } from "react";
 import { useNode } from "@craftjs/core";
@@ -160,6 +162,12 @@ export type ContainerProps = {
   fontSize?: string;
   children?: React.ReactNode;
   animation?: AnimationProps;
+  position?: "static" | "relative" | "absolute" | "fixed" | "sticky";
+  top?: string;
+  right?: string;
+  bottom?: string;
+  left?: string;
+  zIndex?: string;
 };
 
 export const Container: React.FC<ContainerProps> & { craft?: any } = ({
@@ -171,6 +179,12 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
   patternColor,
   patternOpacity,
   patternSize,
+  position,
+  top,
+  right,
+  bottom,
+  left,
+  zIndex,
   ...props
 }) => {
   const {
@@ -207,12 +221,17 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
       borderRadius: props.borderRadius,
       boxShadow: props.boxShadow,
       fontSize: props.fontSize,
-      zIndex: "2",
+      zIndex: zIndex || "auto",
       color: props.color || theme.colors.text.body,
       fontFamily: props.fontFamily || theme.fonts.body,
       outline: selected ? "2px dashed #4c8bf5" : undefined,
       outlineOffset: "2px",
       transition: "outline 120ms ease",
+      position: position,
+      top: top,
+      right: right,
+      bottom: bottom,
+      left: left,
     };
 
     const baseColor = backgroundColor || theme.colors.background.secondary;
@@ -253,6 +272,12 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
     patternSize,
     selected,
     theme,
+    position,
+    top,
+    right,
+    bottom,
+    left,
+    zIndex,
   ]);
 
   const animationVariants: Variants = useMemo(() => {
@@ -341,12 +366,62 @@ Container.craft = {
       scaleUpAmount: 0.9,
       animateOnce: true,
     },
+    position: "relative",
+    top: "auto",
+    right: "auto",
+    bottom: "auto",
+    left: "auto",
+    zIndex: "auto",
   } satisfies Partial<ContainerProps>,
   rules: { canDrag: () => true, canMoveIn: () => true },
   isCanvas: true,
   related: {
     settingsSchema: {
       groups: [
+        {
+          label: "Position",
+          fields: [
+            {
+              key: "position",
+              type: "select",
+              label: "Position",
+              options: ["static", "relative", "absolute", "fixed", "sticky"],
+            },
+            {
+              key: "top",
+              type: "text",
+              label: "Top",
+              if: (props: ContainerProps) =>
+                props.position === "absolute" || props.position === "fixed",
+            },
+            {
+              key: "right",
+              type: "text",
+              label: "Right",
+              if: (props: ContainerProps) =>
+                props.position === "absolute" || props.position === "fixed",
+            },
+            {
+              key: "bottom",
+              type: "text",
+              label: "Bottom",
+              if: (props: ContainerProps) =>
+                props.position === "absolute" || props.position === "fixed",
+            },
+            {
+              key: "left",
+              type: "text",
+              label: "Left",
+              if: (props: ContainerProps) =>
+                props.position === "absolute" || props.position === "fixed",
+            },
+            {
+              key: "zIndex",
+              type: "text",
+              label: "Z-Index",
+            },
+          ],
+        },
         {
           label: "Layout",
           fields: [

@@ -1,76 +1,76 @@
 "use client";
 import React from "react";
 import { Container } from "./components/Container";
-import { Text } from "./components/Text";
+import { TextPressure } from "./components/TextPressure";
+import { LightRays } from "./components/LightRays";
 
 export default function Page() {
   return (
-    <div
-      display="flex"
-      flexDirection="column"
-      gap="8px"
-      padding="24px"
-      width="100%"
-      id="ROOT"
-      background="#ffffff"
-      height="100%"
-    >
-      <Text
-        text="Welcome to your new page!"
-        as="h1"
-        fontSize="24px"
-        fontWeight="bold"
-        lineHeight="1.5"
-        textAlign="center"
-        margin="0 0 24px 0"
-      />
+    <div className="mx-auto h-screen max-w-7xl">
       <Container
+        backgroundType="color"
+        patternOpacity={0.1}
+        patternSize={20}
+        height="100%"
+        animation={{
+          animationEnabled: false,
+          animationType: "fadeIn",
+          transitionDuration: 0.5,
+          transitionDelay: 0,
+          transitionEase: "easeInOut",
+          slideInOffset: 50,
+          slideInDirection: "up",
+          scaleUpAmount: 0.9,
+          animateOnce: true,
+        }}
+        id="ROOT"
         display="flex"
         flexDirection="column"
         gap="8px"
-        padding="16px"
+        padding="24px"
         width="100%"
-        background="#f3f4f6"
-        borderRadius="8px"
+        position="relative"
+        top="auto"
+        right="auto"
+        bottom="auto"
+        left="auto"
+        zIndex="auto"
+        minHeight="100vh"
       >
-        <Text
-          text="This is an inner container. Drag components here or double-click to edit text."
-          as="p"
-          fontSize="16px"
-          fontWeight={400}
-          lineHeight="1.5"
-          textAlign="left"
+        <TextPressure
+          text="New Text"
+          fontFamily="Compressa VF"
+          fontUrl="https://res.cloudinary.com/dr6lvwubh/raw/upload/v1529908256/CompressaPRO-GX.woff2"
+          enableWidth={true}
+          enableWeight={true}
+          enableItalic={true}
+          enableAlpha={false}
+          enableFlex={true}
+          enableStroke={false}
+          enableScale={false}
+          textColor="#ff0000"
+          strokeColor="#FFFFFF"
+          minFontSize={24}
         />
-      </Container>
-      <Container
-        display="flex"
-        flexDirection="column"
-        gap="8px"
-        padding="16px"
-        width="100%"
-        background="#ff3838"
-        borderRadius="8px"
-        boxShadow="0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)"
-      >
-        <Text
-          text="Something"
-          as="h3"
-          fontSize="20px"
-          fontWeight="bold"
-          lineHeight="1.5"
-          textAlign="left"
-          id="Card1-title"
-          margin="0 0 8px 0"
-        />
-        <Text
-          text="Also something"
-          as="p"
-          fontSize="14px"
-          fontWeight={400}
-          lineHeight="1.5"
-          textAlign="left"
-          id="Card1-description"
-          color="#6b7280"
+        <LightRays
+          raysOrigin="top-center"
+          raysColor="#0500ff"
+          raysSpeed={1}
+          lightSpread={1}
+          rayLength={2}
+          pulsating={false}
+          fadeDistance={1}
+          saturation={1}
+          followMouse={true}
+          mouseInfluence={0.1}
+          noiseAmount={0}
+          distortion={0}
+          className=""
+          position="absolute"
+          top="0"
+          left="0"
+          right="0"
+          bottom="0"
         />
       </Container>
     </div>

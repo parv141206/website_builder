@@ -18,6 +18,8 @@ const primitives = [
   "BlurText",
   "TextType",
   "TextTrail",
+  // Backgrounds
+  "LightRays",
 ];
 // ==================================================================================
 // SECTION 1: HELPER FUNCTIONS (Unchanged and Correct)
@@ -141,9 +143,9 @@ ${imports}
 
 export default function Page() {
   return (
-    <div ${rootProps}>
+    <Container ${rootProps}>
       ${rootChildrenJsx}
-    </div>
+    </Container>
   );
 }`;
 }
@@ -321,9 +323,9 @@ function cleanImports(ast: t.File) {
   });
 }
 
-function removeCraftJSVariables(ast: t.File) {
+function removeCraftJSVariables(ast) {
   traverse(ast, {
-    VariableDeclarator(path: any) {
+    VariableDeclarator(path) {
       const { node } = path;
 
       if (
@@ -364,22 +366,6 @@ function removeCraftJSVariables(ast: t.File) {
         return;
       }
 
-      // Remove CraftJS-specific useRef calls (but be careful not to remove legitimate ones)
-      if (
-        t.isIdentifier(node.id, { name: "ref" }) &&
-        t.isCallExpression(node.init) &&
-        t.isIdentifier(node.init.callee, { name: "useRef" })
-      ) {
-        // Only remove if it's likely a CraftJS ref (no initial value or null)
-        if (
-          !node.init.arguments.length ||
-          t.isNullLiteral(node.init.arguments[0])
-        ) {
-          path.parentPath.remove();
-          return;
-        }
-      }
-
       // Remove editor-specific state variables
       if (
         t.isArrayPattern(node.id) &&
@@ -411,9 +397,9 @@ function removeCraftJSVariables(ast: t.File) {
           "commonProps",
           "connectDrag",
           "connectDrop",
-          "connect", // Add these
-          "drag", // Add these
-          "drop", // Add these
+          "connect",
+          "drag",
+          "drop",
         ];
 
         if (craftjsFunctions.includes(node.id.name)) {
@@ -444,9 +430,95 @@ function removeCraftJSVariables(ast: t.File) {
         }
       }
     },
+    JSXAttribute(path: any) {
+      const { node } = path;
+
+      if (
+        t.isJSXIdentifier(node.name, { name: "ref" }) &&
+        t.isJSXExpressionContainer(node.value)
+      ) {
+        const expression = node.value.expression;
+
+        // Only modify refs that contain CraftJS connect(drag()) patterns
+        if (
+          (t.isArrowFunctionExpression(expression) ||
+            t.isFunctionExpression(expression)) &&
+          containsCraftJSRef(expression)
+        ) {
+          // Preserve the ref by replacing with a simple ref callback
+          const elParam = t.identifier("el");
+          const assignment = t.expressionStatement(
+            t.assignmentExpression(
+              "=",
+              t.memberExpression(
+                t.identifier("containerRef"),
+                t.identifier("current"),
+              ),
+              elParam,
+            ),
+          );
+          path.node.value.expression = t.arrowFunctionExpression(
+            [t.identifier("el")],
+            t.blockStatement([assignment]),
+          );
+
+          // Ensure containerRef is declared if needed
+          const componentScope = path.findParent(
+            (p) => p.isFunctionDeclaration() || p.isArrowFunctionExpression(),
+          );
+          if (componentScope) {
+            const useRefImportExists = ast.program.body.some(
+              (node) =>
+                t.isImportDeclaration(node) &&
+                node.source.value === "react" &&
+                node.specifiers.some(
+                  (spec) =>
+                    t.isImportSpecifier(spec) &&
+                    t.isIdentifier(spec.imported, { name: "useRef" }),
+                ),
+            );
+
+            if (!useRefImportExists) {
+              ast.program.body.unshift(
+                t.importDeclaration(
+                  [
+                    t.importSpecifier(
+                      t.identifier("useRef"),
+                      t.identifier("useRef"),
+                    ),
+                  ],
+                  t.stringLiteral("react"),
+                ),
+              );
+            }
+
+            const hasContainerRef = componentScope.node.body.body.some(
+              (node) =>
+                t.isVariableDeclaration(node) &&
+                node.declarations.some(
+                  (decl) =>
+                    t.isIdentifier(decl.id, { name: "containerRef" }) &&
+                    t.isCallExpression(decl.init) &&
+                    t.isIdentifier(decl.init.callee, { name: "useRef" }),
+                ),
+            );
+
+            if (!hasContainerRef) {
+              const useRefDeclaration = t.variableDeclaration("const", [
+                t.variableDeclarator(
+                  t.identifier("containerRef"),
+                  t.callExpression(t.identifier("useRef"), [t.nullLiteral()]),
+                ),
+              ]);
+              componentScope.node.body.body.unshift(useRefDeclaration);
+            }
+          }
+        }
+        // Non-CraftJS refs are preserved unchanged
+      }
+    },
   });
 }
-
 function removeCraftProperties(ast: t.File) {
   traverse(ast, {
     ExpressionStatement(path: any) {
@@ -1062,7 +1134,6 @@ function serializeProps(props: Record<string, any>, nodeId: string): string {
       "maxHeight",
       "margin",
       "padding",
-      "background",
       "borderColor",
       "borderWidth",
       "borderStyle",
@@ -1071,6 +1142,12 @@ function serializeProps(props: Record<string, any>, nodeId: string): string {
       "color",
       "fontFamily",
       "fontSize",
+      "position",
+      "top",
+      "right",
+      "bottom",
+      "left",
+      "zIndex",
     ]);
 
     const regularProps: string[] = [];
@@ -1080,10 +1157,12 @@ function serializeProps(props: Record<string, any>, nodeId: string): string {
       // Skip undefined props or internal craftjs props
       if (key === "canvas" || value === undefined) return;
 
-      if (stylePropKeys.has(key)) {
+      if (key === "id") {
+        regularProps.push(`id="ROOT"`);
+      } else if (stylePropKeys.has(key)) {
         styleObject[key] = value;
       } else {
-        // Use the updated helper for all other props
+        //All the other regular props
         regularProps.push(`${key}=${propValueToString(value)}`);
       }
     });
@@ -1093,9 +1172,6 @@ function serializeProps(props: Record<string, any>, nodeId: string): string {
       const styleString = `style={${JSON.stringify(styleObject)}}`;
       regularProps.push(styleString);
     }
-
-    // Add id="ROOT"
-    regularProps.push('id="ROOT"');
 
     return regularProps.join(" ");
   }
