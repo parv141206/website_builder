@@ -223,7 +223,7 @@ export const RotatingText: React.FC<RotatingTextProps> & { craft?: unknown } =
         >
           <Element
             is={Text}
-            id="rotating-text-content" // Unique ID for the editable element
+            id="rotating-text-content" 
             canvas
             key={currentTextIndex}
             className={cn(
@@ -232,7 +232,7 @@ export const RotatingText: React.FC<RotatingTextProps> & { craft?: unknown } =
                 : "relative flex flex-wrap whitespace-pre-wrap",
             )}
             aria-hidden="true"
-            {...textProps} // Apply editable text props
+            {...textProps} 
           >
             {elements.map((wordObj, wordIndex) => {
               const previousCharsCount = elements

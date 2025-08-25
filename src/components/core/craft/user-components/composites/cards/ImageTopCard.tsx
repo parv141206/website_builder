@@ -41,7 +41,7 @@ export const ImageTopCard: React.FC<ImageTopCardProps> & {
       <Element
         is={Image}
         id="ImageTopCard-image"
-        src="https://via.placeholder.com/400x200"
+        src="https://picsum.photos/200/300`"
         alt="Image Top Card"
         width="100%"
         height="200px"
@@ -76,7 +76,7 @@ ImageTopCard.craft = {
   displayName: "Image Top Card",
   props: {
     imageProps: {
-      src: "https://via.placeholder.com/400x200",
+      src: "https://picsum.photos/200/300",
       alt: "Image Top Card",
       width: "100%",
       height: "200px",

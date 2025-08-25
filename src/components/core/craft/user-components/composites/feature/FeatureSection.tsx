@@ -35,8 +35,7 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({
   const {
     connectors: { connect, drag },
   } = useNode();
-
-  // Add two extra features if less than 6
+  
   const extendedFeatures = [...features];
   if (features.length < 6) {
     extendedFeatures.push(

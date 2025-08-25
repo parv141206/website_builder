@@ -8,10 +8,6 @@ export type AnimatedProps = MotionProps & {
   children: ReactNode;
 };
 
-/**
- * Animated primitive for Craft.js
- * Wraps any content and adds motion/react animations
- */
 export const Animated: React.FC<AnimatedProps> & { craft?: unknown } = ({
   children,
   ...motionProps
@@ -33,7 +29,6 @@ export const Animated: React.FC<AnimatedProps> & { craft?: unknown } = ({
   );
 };
 
-// Craft.js editor configuration
 Animated.craft = {
   displayName: "Animated",
   props: {

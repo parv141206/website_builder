@@ -188,7 +188,7 @@
           "preview": {
             "is": "ImageTopCard",
             "props": {
-              "image": "https://randomuser.me/api/portraits/men/32.jpg",
+              "image": "https://images.unsplash.com/photo-1604908177524-5c7fa3e2d84f",
               "title": "Beautiful Scenery",
               "description": "An image on top with text below."
             }
@@ -199,7 +199,7 @@
           "preview": {
             "is": "ImageLeftCard",
             "props": {
-              "image": "https://randomuser.me/api/portraits/men/32.jpg",
+              "image": "https://picsum.photos/200/300",
               "title": "Side Image Card",
               "description": "An image on the left with text on the right."
             }

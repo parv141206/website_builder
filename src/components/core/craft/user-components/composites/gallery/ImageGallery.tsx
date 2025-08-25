@@ -36,7 +36,10 @@ export const ImageGallery: React.FC<ImageGalleryProps> & { craft?: any } = ({
           key={idx}
           is={Image}
           id={`ImageGallery-image-${idx}`}
-          src={imgProps.src ?? "https://via.placeholder.com/300x200"}
+          src={
+            imgProps.src ??
+            "/home/devansh/Documents/GitHub/website_builder/public/MainBefore.webp"
+          }
           alt={imgProps.alt ?? `Image ${idx + 1}`}
           width={imgProps.width}
           height={imgProps.height}

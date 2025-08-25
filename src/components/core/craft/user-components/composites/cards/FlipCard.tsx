@@ -96,7 +96,6 @@ export const FlipCard: React.FC<FlipCardProps> & { craft?: any } = ({
           />
         </Element>
 
-        {/* Back Side */}
         <Element
           is={Container}
           canvas

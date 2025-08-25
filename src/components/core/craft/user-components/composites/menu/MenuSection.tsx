@@ -56,11 +56,11 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
       alignItems="center"
       gap="32px"
       padding="64px"
-      background="rgba(255, 255, 255, 0.12)" // translucent base
-      border="1px solid rgba(255, 255, 255, 0.25)" // frosted edge
-      backdropFilter="blur(18px) saturate(180%)" // glass blur + saturation
+      background="rgba(255, 255, 255, 0.12)" 
+      border="1px solid rgba(255, 255, 255, 0.25)" 
+      backdropFilter="blur(18px) saturate(180%)" 
       borderRadius="24px"
-      boxShadow="0 8px 24px rgba(0,0,0,0.15)" // soft ambient shadow
+      boxShadow="0 8px 24px rgba(0,0,0,0.15)" 
       {...containerProps}
     >
       {heading && (
@@ -113,7 +113,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
             textAlign="center"
             padding="24px"
             borderRadius="20px"
-            background="rgba(255, 255, 255, 0.15)" // card translucency
+            background="rgba(255, 255, 255, 0.15)" 
             backdropFilter="blur(12px) saturate(160%)"
             border="1px solid rgba(255,255,255,0.25)"
             boxShadow="0 4px 12px rgba(0,0,0,0.1)"
@@ -121,7 +121,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
             _hover={{
               transform: "translateY(-4px)",
               boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
-              background: "rgba(255, 255, 255, 0.2)", // brighten a bit on hover
+              background: "rgba(255, 255, 255, 0.2)", 
             }}
             {...cardProps}
           >

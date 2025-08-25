@@ -27,7 +27,7 @@ export const ImageLeftCard: React.FC<ImageLeftCardProps> & { craft?: any } = ({
       <Element
         is={Image}
         id="ImageLeftCard-image"
-        src={imageProps?.src || "https://via.placeholder.com/150"}
+        src={imageProps?.src || "https://picsum.photos/200/300"}
         alt={imageProps?.alt || "Image Left Card"}
         className="w-1/3 object-cover"
         {...imageProps}
@@ -60,7 +60,7 @@ ImageLeftCard.craft = {
   displayName: "Image Left Card",
   props: {
     imageProps: {
-      src: "https://via.placeholder.com/150",
+      src: "https://picsum.photos/200/300",
       alt: "Image Left Card",
     },
     titleProps: { text: "Image Left Card" },

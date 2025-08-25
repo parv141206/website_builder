@@ -1,4 +1,3 @@
-// Container.tsx
 
 "use client";
 import React, { useMemo } from "react";
@@ -6,20 +5,15 @@ import { useNode } from "@craftjs/core";
 import { useTheme } from "~/themes";
 import { motion, type Variants } from "motion/react";
 
-// ==================================================================================
-// SECTION 1: SELF-CONTAINED STATIC BACKGROUND DEFINITIONS
-// ==================================================================================
 
-// Helper to convert hex to an "r, g, b" string for use in rgba().
 const hexToRgb = (hex: string): string => {
   if (!hex || typeof hex !== "string") return "255, 255, 255";
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "255, 255, 255"; // Default to white if parsing fails
+    : "255, 255, 255"; 
 };
 
-// The 'style' property is a function that accepts a base color, pattern color, opacity, and size.
 const FANCY_BACKGROUNDS: Record<
   string,
   {
@@ -91,9 +85,6 @@ const FANCY_BACKGROUNDS: Record<
   },
 };
 
-// ==================================================================================
-// SECTION 2: COMPONENT PROPS AND LOGIC
-// ==================================================================================
 
 export type AnimationProps = {
   animationEnabled?: boolean;
@@ -339,9 +330,6 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
   );
 };
 
-// ==================================================================================
-// SECTION 3: CRAFT.JS CONFIGURATION
-// ==================================================================================
 Container.craft = {
   displayName: "Container",
   props: {

@@ -24,7 +24,7 @@ export const CircularGallerySection: React.FC = () => {
     connectors: { connect, drag },
   } = useNode();
 
-  // Close modal with ESC
+  
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setSelected(null);
@@ -48,7 +48,7 @@ export const CircularGallerySection: React.FC = () => {
         padding: "40px",
       }}
     >
-      {/* Header */}
+    
       <Container style={{ textAlign: "center", marginBottom: "32px" }}>
         <Text
           as="h2"
@@ -73,7 +73,6 @@ export const CircularGallerySection: React.FC = () => {
         />
       </Container>
 
-      {/* Image Grid */}
       <Container
         style={{
           display: "grid",
@@ -111,7 +110,7 @@ export const CircularGallerySection: React.FC = () => {
         ))}
       </Container>
 
-      {/* Modal */}
+
       {selected && (
         <Container
           onClick={() => setSelected(null)}

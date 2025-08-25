@@ -22,7 +22,7 @@ export const FuturisticFooter: React.FC<FuturisticFooterProps> = ({
       is={Container}
       canvas
       ref={(ref: any) => connect(drag(ref))}
-      background="var(--theme-background-primary)" // theme-aware background
+      background="var(--theme-background-primary)" 
       color="var(--theme-text-body)"
       padding="24px"
       borderRadius="16px"
@@ -33,17 +33,16 @@ export const FuturisticFooter: React.FC<FuturisticFooterProps> = ({
       gap="16px"
       {...containerProps}
     >
-      {/* Heading with theme-based color */}
+    
       <Element
         id="FuturisticFooter-heading"
         is={Text}
         text="🚀 Futuristic Footer"
         fontSize="20px"
         fontWeight="700"
-        color="var(--theme-accent)" // dynamic heading color
+        color="var(--theme-accent)" 
       />
 
-      {/* Links row */}
       <Element
         id="FuturisticFooter-links-row"
         is={Container}
@@ -59,20 +58,19 @@ export const FuturisticFooter: React.FC<FuturisticFooterProps> = ({
             id={`FuturisticFooter-link-${idx}`}
             is={Text}
             text={link}
-            color="var(--theme-text-muted)" // default link color
+            color="var(--theme-text-muted)" 
             fontSize="14px"
-            hoverColor="var(--theme-accent)" // hover color from theme
+            hoverColor="var(--theme-accent)" 
             cursor="pointer"
           />
         ))}
       </Element>
 
-      {/* Copyright */}
       <Element
         id="FuturisticFooter-copyright"
         is={Text}
         text="© 2025 Futuristic Inc. All rights reserved."
-        color="var(--theme-text-muted)" // theme-aware muted text
+        color="var(--theme-text-muted)" 
         fontSize="12px"
       />
     </Element>

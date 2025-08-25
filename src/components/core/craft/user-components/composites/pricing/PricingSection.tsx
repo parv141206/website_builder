@@ -119,7 +119,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             }}
             {...cardProps}
           >
-            {/* Plan Title */}
+            
             <Element
               id={`PricingSection-title-${idx}`}
               is={Text}
@@ -131,7 +131,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
               {...plan.titleProps}
             />
 
-            {/* Plan Price */}
+            
             <Element
               id={`PricingSection-price-${idx}`}
               is={Text}
@@ -143,7 +143,6 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
               {...plan.priceProps}
             />
 
-            {/* Features List */}
             <Element
               id={`PricingSection-features-${idx}`}
               is={Container}
@@ -166,7 +165,6 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
               ))}
             </Element>
 
-            {/* Button */}
             {plan.buttonText && (
               <Element
                 id={`PricingSection-button-${idx}`}
