@@ -25,6 +25,7 @@ import { RotatingText } from "./composites/text/RotatingText";
 import { ScrollFloat } from "./composites/text/ScrollFloat";
 import { VideoSection } from "./composites/video/VideoSection";
 import { Animated } from "./primitives/Animated";
+import { GradientBlinds } from "./primitives/Backgrounds/GradientBlinds";
 import { LightRays } from "./primitives/Backgrounds/LightRays";
 import { Button } from "./primitives/Button";
 import { Container } from "./primitives/Container";
@@ -73,5 +74,6 @@ export const COMPONENT_RESOLVER = {
   MenuSection,
   ClosingSection,
   CircularGallerySection,
-  LightRays, // Add LightRays to the resolver
+  LightRays,
+  GradientBlinds,
 };

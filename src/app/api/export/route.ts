@@ -20,6 +20,7 @@ const primitives = [
   "TextTrail",
   // Backgrounds
   "LightRays",
+  "GradientBlinds",
 ];
 // ==================================================================================
 // SECTION 1: HELPER FUNCTIONS (Unchanged and Correct)

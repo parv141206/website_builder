@@ -17,7 +17,6 @@
             }
           }
         },
-
         {
           "name": "LightRays",
           "preview": {
@@ -27,6 +26,18 @@
               "raysSpeed": 1,
               "lightSpread": 1,
               "rayLength": 2
+            }
+          }
+        },
+        {
+          "name": "GradientBlinds",
+          "preview": {
+            "is": "GradientBlinds",
+            "props": {
+              "gradientColors": ["#FF9FFC", "#5227FF"],
+              "angle": 0,
+              "noise": 0.3,
+              "blindCount": 16
             }
           }
         }

@@ -1,17 +1,73 @@
 "use client";
 import React from "react";
 import { Container } from "./components/Container";
+import { GradientBlinds } from "./components/GradientBlinds";
 import { TextPressure } from "./components/TextPressure";
-import { LightRays } from "./components/LightRays";
 
 export default function Page() {
   return (
-    <div className="mx-auto h-screen max-w-7xl">
+    <Container
+      backgroundType="color"
+      patternOpacity={0.1}
+      patternSize={20}
+      animation={{
+        animationEnabled: false,
+        animationType: "fadeIn",
+        transitionDuration: 0.5,
+        transitionDelay: 0,
+        transitionEase: "easeInOut",
+        slideInOffset: 50,
+        slideInDirection: "up",
+        scaleUpAmount: 0.9,
+        animateOnce: true,
+      }}
+      id="ROOT"
+      background="#e9e4d9"
+      display="flex"
+      flexDirection="column"
+      gap="8px"
+      padding="24px"
+      width="100%"
+      position="relative"
+      top="auto"
+      right="auto"
+      bottom="auto"
+      left="auto"
+      zIndex="auto"
+      minHeight="100vh"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <GradientBlinds
+        className=""
+        dpr={2}
+        paused={false}
+        gradientColors={["#FF9FFC", "#5227FF"]}
+        angle={0}
+        noise={0.3}
+        blindCount={16}
+        blindMinWidth={60}
+        mouseDampening={0.15}
+        mirrorGradient={false}
+        spotlightRadius={0.5}
+        spotlightSoftness={1}
+        spotlightOpacity={1}
+        distortAmount={0}
+        shineDirection="left"
+        mixBlendMode="lighten"
+        height="100%"
+        width="100%"
+      />
       <Container
+        display="flex"
+        flexDirection="column"
+        gap="8px"
+        padding="16px"
+        width="50%"
         backgroundType="color"
+        backgroundColor="#00000000"
         patternOpacity={0.1}
         patternSize={20}
-        height="100%"
         animation={{
           animationEnabled: false,
           animationType: "fadeIn",
@@ -23,19 +79,16 @@ export default function Page() {
           scaleUpAmount: 0.9,
           animateOnce: true,
         }}
-        id="ROOT"
-        display="flex"
-        flexDirection="column"
-        gap="8px"
-        padding="24px"
-        width="100%"
         position="relative"
         top="auto"
         right="auto"
         bottom="auto"
         left="auto"
         zIndex="auto"
-        minHeight="100vh"
+        borderRadius="8px"
+        minHeight="80px"
+        alignItems="center"
+        justifyContent="center"
       >
         <TextPressure
           text="New Text"
@@ -48,31 +101,11 @@ export default function Page() {
           enableFlex={true}
           enableStroke={false}
           enableScale={false}
-          textColor="#ff0000"
+          textColor="#ffffff"
           strokeColor="#FFFFFF"
-          minFontSize={24}
-        />
-        <LightRays
-          raysOrigin="top-center"
-          raysColor="#0500ff"
-          raysSpeed={1}
-          lightSpread={1}
-          rayLength={2}
-          pulsating={false}
-          fadeDistance={1}
-          saturation={1}
-          followMouse={true}
-          mouseInfluence={0.1}
-          noiseAmount={0}
-          distortion={0}
-          className=""
-          position="absolute"
-          top="0"
-          left="0"
-          right="0"
-          bottom="0"
+          minFontSize={84}
         />
       </Container>
-    </div>
+    </Container>
   );
 }
