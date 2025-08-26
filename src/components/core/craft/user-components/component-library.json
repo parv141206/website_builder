@@ -308,75 +308,118 @@
       ]
     },
     {
-      "name": "Sections",
+      "name": "Hero Sections",
       "icon": "LayoutGrid",
       "components": [
         {
-          "name": "Menu Section",
+          "name": "Hero Banner",
           "preview": {
-            "is": "MenuSection",
+            "is": "HeroBanner",
             "props": {
-              "heading": "Our Menu",
-              "subheading": "Delicious items curated for you 🍽️",
-              "items": [
+              "heading": "Welcome to Our Website",
+              "subheading": "We build awesome experiences.",
+              "containerProps": {},
+              "headingProps": {},
+              "subheadingProps": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pricing Sections",
+      "icon": "LayoutGrid",
+      "components": [
+        {
+          "name": "Pricing Section",
+          "preview": {
+            "is": "PricingSection",
+            "props": {
+              "heading": "Choose Your Plan",
+              "subheading": "Simple pricing for your team 🚀",
+              "plans": [
                 {
-                  "name": "Spicy Ramen",
-                  "description": "A hot bowl of flavorful noodles",
-                  "price": "$12",
-                  "imageSrc": "https://images.unsplash.com/photo-1604908177524-5c7fa3e2d84f",
-                  "imageAlt": "Spicy Ramen"
+                  "title": "Basic",
+                  "price": "$19/mo",
+                  "features": ["Feature A", "Feature B", "Feature C"],
+                  "buttonText": "Get Started"
                 },
                 {
-                  "name": "Avocado Toast",
-                  "description": "Healthy breakfast option",
-                  "price": "$8",
-                  "imageSrc": "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
-                  "imageAlt": "Avocado Toast"
+                  "title": "Pro",
+                  "price": "$49/mo",
+                  "features": [
+                    "Feature A",
+                    "Feature B",
+                    "Feature C",
+                    "Feature D"
+                  ],
+                  "buttonText": "Upgrade"
                 },
                 {
-                  "name": "Chocolate Cake",
-                  "description": "Rich and moist dessert",
-                  "price": "$6",
-                  "imageSrc": "https://images.unsplash.com/photo-1563805042-7684c019e1cb",
-                  "imageAlt": "Chocolate Cake"
+                  "title": "Enterprise",
+                  "price": "$99/mo",
+                  "features": [
+                    "All Features Included",
+                    "Priority Support",
+                    "Custom Solutions"
+                  ],
+                  "buttonText": "Contact Sales"
                 }
               ],
               "containerProps": {},
-              "cardProps": {},
-              "headingProps": {},
-              "subheadingProps": {},
-              "nameProps": {},
-              "descriptionProps": {},
-              "priceProps": {}
+              "cardProps": {}
             }
           }
-        },
+        }
+      ]
+    },
+    {
+      "name": "Feature Sections",
+      "icon": "LayoutGrid",
+      "components": [
         {
-          "name": "Closing Section",
+          "name": "Features Section",
           "preview": {
-            "is": "ClosingSection",
+            "is": "FeaturesSection",
             "props": {
-              "heading": "Ready to Take Off?",
-              "subheading": "Join us today and explore the future of UI design 🚀",
-              "backgroundImageSrc": "https://images.unsplash.com/photo-1605902711622-cfb43c4431c6",
-              "buttonText": "Get Started",
-              "buttonLink": "#",
+              "heading": "Our Awesome Features",
+              "subheading": "Packed with tools to help you grow 🚀",
+              "features": [
+                {
+                  "icon": "⚡",
+                  "title": "Fast Performance",
+                  "description": "Experience blazing fast speeds optimized for modern web."
+                },
+                {
+                  "icon": "🔒",
+                  "title": "Secure by Default",
+                  "description": "Top-notch security features to keep your data safe."
+                },
+                {
+                  "icon": "🎨",
+                  "title": "Customizable Design",
+                  "description": "Easily style and configure to match your brand."
+                },
+                {
+                  "icon": "☁️",
+                  "title": "Cloud Powered",
+                  "description": "Always available, scalable, and reliable in the cloud."
+                }
+              ],
               "containerProps": {},
               "headingProps": {},
               "subheadingProps": {},
-              "buttonProps": {
-                "padding": "16px 32px",
-                "borderRadius": "12px",
-                "background": "linear-gradient(135deg, #ff00cc, #3333ff)",
-                "textProps": {
-                  "fontSize": "16px",
-                  "fontWeight": "700",
-                  "color": "#fff"
-                }
-              }
+              "featureTitleProps": {},
+              "featureDescriptionProps": {}
             }
           }
-        },
+        }
+      ]
+    },
+    {
+      "name": "Testimonial Sections",
+      "icon": "LayoutGrid",
+      "components": [
         {
           "name": "Testimonial Section",
           "preview": {
@@ -429,141 +472,90 @@
               "ratingProps": {}
             }
           }
-        },
+        }
+      ]
+    },
+    {
+      "name": "Menu Sections",
+      "icon": "LayoutGrid",
+      "components": [
         {
-          "name": "Features Section",
+          "name": "Menu Section",
           "preview": {
-            "is": "FeaturesSection",
+            "is": "MenuSection",
             "props": {
-              "heading": "Our Awesome Features",
-              "subheading": "Packed with tools to help you grow 🚀",
-              "features": [
+              "heading": "Our Menu",
+              "subheading": "Delicious items curated for you 🍽️",
+              "items": [
                 {
-                  "icon": "⚡",
-                  "title": "Fast Performance",
-                  "description": "Experience blazing fast speeds optimized for modern web."
+                  "name": "Spicy Ramen",
+                  "description": "A hot bowl of flavorful noodles",
+                  "price": "$12",
+                  "imageSrc": "https://images.unsplash.com/photo-1604908177524-5c7fa3e2d84f",
+                  "imageAlt": "Spicy Ramen"
                 },
                 {
-                  "icon": "🔒",
-                  "title": "Secure by Default",
-                  "description": "Top-notch security features to keep your data safe."
+                  "name": "Avocado Toast",
+                  "description": "Healthy breakfast option",
+                  "price": "$8",
+                  "imageSrc": "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+                  "imageAlt": "Avocado Toast"
                 },
                 {
-                  "icon": "🎨",
-                  "title": "Customizable Design",
-                  "description": "Easily style and configure to match your brand."
-                },
-                {
-                  "icon": "☁️",
-                  "title": "Cloud Powered",
-                  "description": "Always available, scalable, and reliable in the cloud."
+                  "name": "Chocolate Cake",
+                  "description": "Rich and moist dessert",
+                  "price": "$6",
+                  "imageSrc": "https://images.unsplash.com/photo-1563805042-7684c019e1cb",
+                  "imageAlt": "Chocolate Cake"
                 }
               ],
+              "containerProps": {},
+              "cardProps": {},
+              "headingProps": {},
+              "subheadingProps": {},
+              "nameProps": {},
+              "descriptionProps": {},
+              "priceProps": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Closing Sections",
+      "icon": "LayoutGrid",
+      "components": [
+        {
+          "name": "Closing Section",
+          "preview": {
+            "is": "ClosingSection",
+            "props": {
+              "heading": "Ready to Take Off?",
+              "subheading": "Join us today and explore the future of UI design 🚀",
+              "backgroundImageSrc": "https://images.unsplash.com/photo-1605902711622-cfb43c4431c6",
+              "buttonText": "Get Started",
+              "buttonLink": "#",
               "containerProps": {},
               "headingProps": {},
               "subheadingProps": {},
-              "featureTitleProps": {},
-              "featureDescriptionProps": {}
-            }
-          }
-        },
-        {
-          "name": "Pricing Section",
-          "preview": {
-            "is": "PricingSection",
-            "props": {
-              "heading": "Choose Your Plan",
-              "subheading": "Simple pricing for your team 🚀",
-              "plans": [
-                {
-                  "title": "Basic",
-                  "price": "$19/mo",
-                  "features": ["Feature A", "Feature B", "Feature C"],
-                  "buttonText": "Get Started"
-                },
-                {
-                  "title": "Pro",
-                  "price": "$49/mo",
-                  "features": [
-                    "Feature A",
-                    "Feature B",
-                    "Feature C",
-                    "Feature D"
-                  ],
-                  "buttonText": "Upgrade"
-                },
-                {
-                  "title": "Enterprise",
-                  "price": "$99/mo",
-                  "features": [
-                    "All Features Included",
-                    "Priority Support",
-                    "Custom Solutions"
-                  ],
-                  "buttonText": "Contact Sales"
+              "buttonProps": {
+                "padding": "16px 32px",
+                "borderRadius": "12px",
+                "background": "linear-gradient(135deg, #ff00cc, #3333ff)",
+                "textProps": {
+                  "fontSize": "16px",
+                  "fontWeight": "700",
+                  "color": "#fff"
                 }
-              ],
-              "containerProps": {},
-              "cardProps": {}
+              }
             }
           }
         }
       ]
     },
     {
-      "name": "Banners",
-      "icon": "Flag",
-      "components": [
-        {
-          "name": "Call To Action",
-          "preview": {
-            "is": "CallToAction",
-            "props": {
-              "heading": "Get Started Today!",
-              "buttonText": "Sign Up",
-              "containerProps": {},
-              "headingProps": {},
-              "buttonProps": {}
-            }
-          }
-        },
-        {
-          "name": "Hero Banner",
-          "preview": {
-            "is": "HeroBanner",
-            "props": {
-              "heading": "Welcome to Our Website",
-              "subheading": "We build awesome experiences.",
-              "containerProps": {},
-              "headingProps": {},
-              "subheadingProps": {}
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "FAQ",
-      "icon": "QuestionMarkCircle",
-      "components": [
-        {
-          "name": "FAQ Item",
-          "preview": {
-            "is": "FAQItem",
-            "props": {
-              "question": "What is your service about?",
-              "answer": "We provide high-quality web solutions.",
-              "containerProps": {},
-              "questionProps": {},
-              "answerProps": {}
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "Footers",
-      "icon": "RectangleStack",
+      "name": "Footer Sections",
+      "icon": "LayoutGrid",
       "components": [
         {
           "name": "Futuristic Footer",
@@ -586,6 +578,25 @@
               "containerProps": {},
               "titleProps": {},
               "subtitleProps": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Banners",
+      "icon": "LayoutGrid",
+      "components": [
+        {
+          "name": "Call To Action",
+          "preview": {
+            "is": "CallToAction",
+            "props": {
+              "heading": "Get Started Today!",
+              "buttonText": "Sign Up",
+              "containerProps": {},
+              "headingProps": {},
+              "buttonProps": {}
             }
           }
         }

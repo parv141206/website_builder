@@ -19,7 +19,7 @@ import { FuturisticFooter } from "./composites/footer/FuturisticFooter";
 import { CircularGallerySection } from "./composites/gallery/CircularGallery";
 import { ImageGallery } from "./composites/gallery/ImageGallery";
 import { MenuSection } from "./composites/menu/MenuSection";
-import { PricingSection } from "./composites/pricing/PricingSection";
+import { PricingSection } from "./composites/sections/pricing/PricingSection";
 import { TestimonialSection } from "./composites/testimonial/TestimonialSection";
 import { RotatingText } from "./composites/text/RotatingText";
 import { ScrollFloat } from "./composites/text/ScrollFloat";

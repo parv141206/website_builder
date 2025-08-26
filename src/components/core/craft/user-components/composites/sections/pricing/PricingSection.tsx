@@ -2,8 +2,8 @@
 
 import React from "react";
 import { useNode, Element } from "@craftjs/core";
-import { Container, type ContainerProps } from "../../primitives/Container";
-import { Text, type TextProps } from "../../primitives/Typography/Text";
+import { Container, type ContainerProps } from "../../../primitives/Container";
+import { Text, type TextProps } from "../../../primitives/Typography/Text";
 
 type SinglePricing = {
   title: string;
@@ -119,7 +119,6 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             }}
             {...cardProps}
           >
-            
             <Element
               id={`PricingSection-title-${idx}`}
               is={Text}
@@ -131,7 +130,6 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
               {...plan.titleProps}
             />
 
-            
             <Element
               id={`PricingSection-price-${idx}`}
               is={Text}

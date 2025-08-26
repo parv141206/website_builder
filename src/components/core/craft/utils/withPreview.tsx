@@ -17,7 +17,7 @@ type MiniCraftPreviewProps = {
 
 export const MiniCraftPreview: React.FC<MiniCraftPreviewProps> = ({
   componentConfig,
-  scale = 0.8,
+  scale = 1,
   className = "",
   style = {},
 }) => {

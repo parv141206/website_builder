@@ -11,10 +11,13 @@ import {
   Contact,
   Image,
   Joystick,
+  Flag,
+  RectangleStack,
+  QuestionMarkCircle,
 } from "lucide-react";
-import libraryData from "../craft/user-components/component-library.json";
+import libraryData from "./user-components/component-library.json";
 
-import { SafePreview } from "./utils/withPreview";
+import { SafePreview } from "~/components/core/craft/utils/withPreview";
 import { COMPONENT_RESOLVER } from "./user-components/componentResolver";
 
 // ==================================================================================
@@ -31,7 +34,36 @@ const ICON_MAP: Record<string, React.ElementType> = {
   Image,
   Joystick,
   Contact,
+  Flag,
+  RectangleStack,
+  QuestionMarkCircle,
 };
+
+// ==================================================================================
+// TABS
+// ==================================================================================
+type Tab = "components" | "sections";
+
+type SectionCategory =
+  | "Hero Sections"
+  | "Pricing Sections"
+  | "Feature Sections"
+  | "Testimonial Sections"
+  | "Menu Sections"
+  | "Closing Sections"
+  | "Footer Sections"
+  | "Banners";
+
+const SECTION_CATEGORIES: SectionCategory[] = [
+  "Hero Sections",
+  "Pricing Sections",
+  "Feature Sections",
+  "Testimonial Sections",
+  "Menu Sections",
+  "Closing Sections",
+  "Footer Sections",
+  "Banners",
+];
 
 // ==================================================================================
 // MAIN MODAL COMPONENT
@@ -47,6 +79,7 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
   onClose,
 }) => {
   const { actions, query } = useEditor();
+  const [activeTab, setActiveTab] = useState<Tab>("components");
   const [activeCategory, setActiveCategory] = useState(
     libraryData.categories[0].name,
   );
@@ -81,6 +114,19 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
     );
   }, [activeCategory, searchTerm]);
 
+  //Categories depending on the active tab
+  const categories = useMemo(() => {
+    if (activeTab === "components") {
+      return libraryData.categories.filter(
+        (c) => !SECTION_CATEGORIES.includes(c.name as SectionCategory),
+      );
+    } else {
+      return libraryData.categories.filter((c) =>
+        SECTION_CATEGORIES.includes(c.name as SectionCategory),
+      );
+    }
+  }, [activeTab]);
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -96,33 +142,58 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.95, y: 20, opacity: 0 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="flex h-[70vh] w-full max-w-4xl overflow-hidden rounded-xl border border-white/20 bg-white/80 shadow-2xl"
+            className="flex h-[70vh] w-full max-w-5xl overflow-hidden rounded-xl border border-white/20 bg-white/80 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <aside className="w-56 flex-shrink-0 border-r border-gray-200/80 bg-white/60 p-4">
-              <h2 className="mb-4 text-lg font-semibold text-gray-800">
-                Components
-              </h2>
-              <nav className="flex flex-col gap-1">
-                {libraryData.categories.map((category) => {
-                  const Icon = ICON_MAP[category.icon];
-                  const isActive = activeCategory === category.name;
-                  return (
-                    <button
-                      key={category.name}
-                      onClick={() => setActiveCategory(category.name)}
-                      className={`flex items-center gap-3 rounded-md px-3 py-2 text-left text-sm font-medium transition-colors ${
-                        isActive
-                          ? "bg-gray-500 text-white"
-                          : "text-gray-600 hover:bg-gray-200/70"
-                      }`}
-                    >
-                      {Icon && <Icon className="h-4 w-4" />}
-                      {category.name}
-                    </button>
-                  );
-                })}
+            <aside className="w-56 flex-shrink-0 border-r border-gray-200/80 bg-white/60">
+              {/* Tab Navigation */}
+              <nav className="flex justify-between p-2">
+                <button
+                  onClick={() => setActiveTab("components")}
+                  className={`w-1/2 rounded-md px-3 py-2 text-left text-sm font-medium transition-colors ${
+                    activeTab === "components"
+                      ? "bg-gray-500 text-white"
+                      : "text-gray-600 hover:bg-gray-200/70"
+                  }`}
+                >
+                  Components
+                </button>
+                <button
+                  onClick={() => setActiveTab("sections")}
+                  className={`w-1/2 rounded-md px-3 py-2 text-left text-sm font-medium transition-colors ${
+                    activeTab === "sections"
+                      ? "bg-gray-500 text-white"
+                      : "text-gray-600 hover:bg-gray-200/70"
+                  }`}
+                >
+                  Sections
+                </button>
               </nav>
+              <div className="p-4">
+                <h2 className="mb-4 text-lg font-semibold text-gray-800">
+                  {activeTab === "components" ? "Components" : "Sections"}
+                </h2>
+                <nav className="flex flex-col gap-1">
+                  {categories.map((category) => {
+                    const Icon = ICON_MAP[category.icon];
+                    const isActive = activeCategory === category.name;
+                    return (
+                      <button
+                        key={category.name}
+                        onClick={() => setActiveCategory(category.name)}
+                        className={`flex items-center gap-3 rounded-md px-3 py-2 text-left text-sm font-medium transition-colors ${
+                          isActive
+                            ? "bg-gray-500 text-white"
+                            : "text-gray-600 hover:bg-gray-200/70"
+                        }`}
+                      >
+                        {Icon && <Icon className="h-4 w-4" />}
+                        {category.name}
+                      </button>
+                    );
+                  })}
+                </nav>
+              </div>
             </aside>
 
             <main className="flex flex-1 flex-col overflow-hidden">
@@ -140,7 +211,9 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
               </div>
 
               <div className="flex-1 overflow-y-auto p-6">
-                <div className="grid grid-cols-2 gap-4">
+                <div
+                  className={`grid ${activeTab === "sections" ? "grid-cols-1" : "grid-cols-2"} gap-4`}
+                >
                   {filteredComponents.map((comp) => (
                     <div
                       key={comp.name}
@@ -152,10 +225,7 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
                       </h4>
 
                       <div className="min-h-[100px] overflow-hidden rounded border border-gray-100 bg-white">
-                        <SafePreview
-                          componentConfig={comp.preview}
-                          scale={0.8}
-                        />
+                        <SafePreview componentConfig={comp.preview} scale={1} />
                       </div>
                     </div>
                   ))}
