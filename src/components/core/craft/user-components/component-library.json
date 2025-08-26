@@ -60,6 +60,19 @@
               "className": "w-full h-96"
             }
           }
+        },
+        {
+          "name": "Loader",
+          "preview": {
+            "is": "Loader",
+            "props": {
+              "containerProps": {
+                "padding": "16px",
+                "justifyContent": "center",
+                "alignItems": "center"
+              }
+            }
+          }
         }
       ]
     },
@@ -302,6 +315,27 @@
               "plan": "Basic Plan",
               "price": "$19/mo",
               "features": ["Feature 1", "Feature 2", "Feature 3"]
+            }
+          }
+        },
+        {
+          "name": "Social Card",
+          "preview": {
+            "is": "SocialCard",
+            "props": {
+              "containerProps": {},
+              "textProps": {}
+            }
+          }
+        },
+                {
+          "name": "Rotate Card",
+          "preview": {
+            "is": "RotateCard",
+            "props": {
+              "title": "Card Title",
+              "description": "Hover to reveal content with smooth rotation.",
+              "icon": "📩"
             }
           }
         }

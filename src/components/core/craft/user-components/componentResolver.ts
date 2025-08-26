@@ -39,6 +39,9 @@ import { TextPressure } from "./primitives/Typography/TextPressure";
 import { TextTrail } from "./primitives/Typography/TextTrail";
 import { TextType } from "./primitives/Typography/TextType";
 import { SpotlightContainer } from "./primitives/SpotlightContainer";
+import { Loader } from "./composites/loader/Loader";
+import { SocialCard } from "./composites/cards/SocialCard";
+import { RotateCard } from "./composites/cards/RotateCard";
 
 export const COMPONENT_RESOLVER = {
   Container,
@@ -80,4 +83,7 @@ export const COMPONENT_RESOLVER = {
   LightRays,
   GradientBlinds,
   Orb,
+  Loader,
+  SocialCard,
+  RotateCard,
 };
