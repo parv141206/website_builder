@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { useNode } from "@craftjs/core";
 import { useTheme } from "~/themes";
 import { motion, type Variants } from "motion/react";
@@ -95,7 +95,16 @@ export type AnimationProps = {
   animateOnce?: boolean;
 };
 
-export type ContainerProps = {
+export type SpotlightProps = {
+  spotlightEnabled?: boolean;
+  spotlightColor?: string;
+  spotlightOpacity?: number;
+  spotlightSize?: number;
+  spotlightTransitionDuration?: number;
+  spotlightBlur?: number;
+};
+
+export type SpotlightContainerProps = {
   as?: React.ElementType;
   display?:
     | "block"
@@ -150,18 +159,28 @@ export type ContainerProps = {
   fontSize?: string;
   children?: React.ReactNode;
   animation?: AnimationProps;
+  spotlight?: SpotlightProps;
   position?: "static" | "relative" | "absolute" | "fixed" | "sticky";
   top?: string;
   right?: string;
   bottom?: string;
   left?: string;
   zIndex?: string;
+  overflow?: "visible" | "hidden" | "scroll" | "auto";
 };
 
-export const Container: React.FC<ContainerProps> & { craft?: any } = ({
+interface Position {
+  x: number;
+  y: number;
+}
+
+export const SpotlightContainer: React.FC<SpotlightContainerProps> & {
+  craft?: any;
+} = ({
   as: Tag = "div",
   children,
   animation,
+  spotlight,
   backgroundType = "color",
   backgroundColor,
   patternColor,
@@ -173,6 +192,7 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
   bottom,
   left,
   zIndex,
+  overflow = "hidden",
   ...props
 }) => {
   const {
@@ -183,6 +203,19 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
   }));
 
   const theme = useTheme();
+  const containerRef = useRef<HTMLElement>(null);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [mousePosition, setMousePosition] = useState<Position>({ x: 0, y: 0 });
+  const [spotlightOpacity, setSpotlightOpacity] = useState<number>(0);
+
+  const {
+    spotlightEnabled = true,
+    spotlightColor = "#ffffff",
+    spotlightOpacity: maxSpotlightOpacity = 0.25,
+    spotlightSize = 80,
+    spotlightTransitionDuration = 500,
+    spotlightBlur = 0,
+  } = spotlight || {};
 
   const style: React.CSSProperties = useMemo(() => {
     const baseStyle: React.CSSProperties = {
@@ -215,14 +248,16 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
       outline: selected ? "2px dashed #4c8bf5" : undefined,
       outlineOffset: "2px",
       transition: "outline 120ms ease",
-      position: position,
+      position: position || "relative",
       top: top,
       right: right,
       bottom: bottom,
       left: left,
+      overflow: overflow,
     };
-
+    console.log("Base Style:", backgroundColor);
     const baseColor = backgroundColor || theme.colors.background.secondary;
+    console.log("Base Style 2:", baseColor);
     const finalPatternColor = patternColor || theme.colors.text.muted;
     const finalPatternOpacity = patternOpacity ?? 0.1;
     const finalPatternSize = patternSize ?? 20;
@@ -240,7 +275,8 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
         ),
       );
     } else {
-      baseStyle.background = backgroundColor || theme.colors.background.primary;
+      baseStyle.background =
+        backgroundColor || theme.colors.background.secondary;
     }
 
     if (props.gap) {
@@ -266,7 +302,58 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
     bottom,
     left,
     zIndex,
+    overflow,
   ]);
+
+  const spotlightStyle: React.CSSProperties = useMemo(() => {
+    const spotlightRgba = `rgba(${hexToRgb(spotlightColor)}, ${maxSpotlightOpacity})`;
+
+    return {
+      position: "absolute",
+      inset: 0,
+      opacity: spotlightOpacity,
+      background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, ${spotlightRgba}, transparent ${spotlightSize}%)`,
+      pointerEvents: "none",
+      transition: `opacity ${spotlightTransitionDuration}ms ease-in-out`,
+      filter: spotlightBlur > 0 ? `blur(${spotlightBlur}px)` : undefined,
+    };
+  }, [
+    mousePosition,
+    spotlightOpacity,
+    spotlightColor,
+    maxSpotlightOpacity,
+    spotlightSize,
+    spotlightTransitionDuration,
+    spotlightBlur,
+  ]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (!containerRef.current || isFocused || !spotlightEnabled) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    setMousePosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  const handleFocus = () => {
+    if (!spotlightEnabled) return;
+    setIsFocused(true);
+    setSpotlightOpacity(1);
+  };
+
+  const handleBlur = () => {
+    if (!spotlightEnabled) return;
+    setIsFocused(false);
+    setSpotlightOpacity(0);
+  };
+
+  const handleMouseEnter = () => {
+    if (!spotlightEnabled) return;
+    setSpotlightOpacity(1);
+  };
+
+  const handleMouseLeave = () => {
+    if (!spotlightEnabled) return;
+    setSpotlightOpacity(0);
+  };
 
   const animationVariants: Variants = useMemo(() => {
     const {
@@ -300,11 +387,30 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
 
   const MotionTag = motion(Tag as React.ElementType);
 
+  const commonProps = {
+    ref: (ref: any) => {
+      connect(drag(ref));
+      containerRef.current = ref;
+    },
+    style: style,
+    onMouseMove: handleMouseMove,
+    onFocus: handleFocus,
+    onBlur: handleBlur,
+    onMouseEnter: handleMouseEnter,
+    onMouseLeave: handleMouseLeave,
+  };
+
+  const content = (
+    <>
+      {spotlightEnabled && <div style={spotlightStyle} />}
+      {children}
+    </>
+  );
+
   if (animation?.animationEnabled) {
     return (
       <MotionTag
-        ref={(ref: any) => connect(drag(ref))}
-        style={style}
+        {...commonProps}
         variants={animationVariants}
         initial="hidden"
         whileInView="visible"
@@ -315,20 +421,16 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
           ease: animation.transitionEase ?? "easeInOut",
         }}
       >
-        {children}
+        {content}
       </MotionTag>
     );
   }
-
-  return (
-    <Tag ref={(ref: any) => connect(drag(ref))} style={style}>
-      {children}
-    </Tag>
-  );
+  console.log(style);
+  return <Tag {...commonProps}>{content}</Tag>;
 };
 
-Container.craft = {
-  displayName: "Container",
+SpotlightContainer.craft = {
+  displayName: "SpotlightContainer",
   props: {
     display: "flex",
     flexDirection: "column",
@@ -351,18 +453,84 @@ Container.craft = {
       scaleUpAmount: 0.9,
       animateOnce: true,
     },
+    spotlight: {
+      spotlightEnabled: true,
+      spotlightColor: "#ffffff",
+      spotlightOpacity: 0.25,
+      spotlightSize: 80,
+      spotlightTransitionDuration: 500,
+      spotlightBlur: 0,
+    },
     position: "relative",
     top: "auto",
     right: "auto",
     bottom: "auto",
     left: "auto",
     zIndex: "auto",
-  } satisfies Partial<ContainerProps>,
+    overflow: "hidden",
+  } satisfies Partial<SpotlightContainerProps>,
   rules: { canDrag: () => true, canMoveIn: () => true },
   isCanvas: true,
   related: {
     settingsSchema: {
       groups: [
+        {
+          label: "Spotlight Effect",
+          fields: [
+            {
+              key: "spotlight.spotlightEnabled",
+              type: "boolean",
+              label: "Enable Spotlight",
+            },
+            {
+              key: "spotlight.spotlightColor",
+              type: "color",
+              label: "Spotlight Color",
+              if: (props: SpotlightContainerProps) =>
+                props.spotlight?.spotlightEnabled,
+            },
+            {
+              key: "spotlight.spotlightOpacity",
+              type: "number",
+              label: "Spotlight Opacity",
+              min: 0,
+              max: 1,
+              step: 0.01,
+              if: (props: SpotlightContainerProps) =>
+                props.spotlight?.spotlightEnabled,
+            },
+            {
+              key: "spotlight.spotlightSize",
+              type: "number",
+              label: "Spotlight Size (%)",
+              min: 10,
+              max: 200,
+              step: 5,
+              if: (props: SpotlightContainerProps) =>
+                props.spotlight?.spotlightEnabled,
+            },
+            {
+              key: "spotlight.spotlightTransitionDuration",
+              type: "number",
+              label: "Transition Duration (ms)",
+              min: 0,
+              max: 2000,
+              step: 50,
+              if: (props: SpotlightContainerProps) =>
+                props.spotlight?.spotlightEnabled,
+            },
+            {
+              key: "spotlight.spotlightBlur",
+              type: "number",
+              label: "Spotlight Blur (px)",
+              min: 0,
+              max: 20,
+              step: 1,
+              if: (props: SpotlightContainerProps) =>
+                props.spotlight?.spotlightEnabled,
+            },
+          ],
+        },
         {
           label: "Position",
           fields: [
@@ -376,34 +544,40 @@ Container.craft = {
               key: "top",
               type: "text",
               label: "Top",
-              if: (props: ContainerProps) =>
+              if: (props: SpotlightContainerProps) =>
                 props.position === "absolute" || props.position === "fixed",
             },
             {
               key: "right",
               type: "text",
               label: "Right",
-              if: (props: ContainerProps) =>
+              if: (props: SpotlightContainerProps) =>
                 props.position === "absolute" || props.position === "fixed",
             },
             {
               key: "bottom",
               type: "text",
               label: "Bottom",
-              if: (props: ContainerProps) =>
+              if: (props: SpotlightContainerProps) =>
                 props.position === "absolute" || props.position === "fixed",
             },
             {
               key: "left",
               type: "text",
               label: "Left",
-              if: (props: ContainerProps) =>
+              if: (props: SpotlightContainerProps) =>
                 props.position === "absolute" || props.position === "fixed",
             },
             {
               key: "zIndex",
               type: "text",
               label: "Z-Index",
+            },
+            {
+              key: "overflow",
+              type: "select",
+              label: "Overflow",
+              options: ["visible", "hidden", "scroll", "auto"],
             },
           ],
         },
@@ -517,7 +691,7 @@ Container.craft = {
             {
               key: "backgroundColor",
               type: "color",
-              label: (props: ContainerProps) =>
+              label: (props: SpotlightContainerProps) =>
                 props.backgroundType && props.backgroundType !== "color"
                   ? "Base Color"
                   : "Background Color",
@@ -526,7 +700,7 @@ Container.craft = {
               key: "patternColor",
               type: "color",
               label: "Pattern Color",
-              if: (props: ContainerProps) =>
+              if: (props: SpotlightContainerProps) =>
                 props.backgroundType && props.backgroundType !== "color",
             },
             {
@@ -536,7 +710,7 @@ Container.craft = {
               min: 0,
               max: 1,
               step: 0.01,
-              if: (props: ContainerProps) =>
+              if: (props: SpotlightContainerProps) =>
                 props.backgroundType && props.backgroundType !== "color",
             },
             {
@@ -545,7 +719,7 @@ Container.craft = {
               label: "Pattern Size (px)",
               min: 1,
               step: 1,
-              if: (props: ContainerProps) =>
+              if: (props: SpotlightContainerProps) =>
                 props.backgroundType && props.backgroundType !== "color",
             },
             { key: "borderColor", type: "color", label: "Border Color" },
@@ -573,34 +747,38 @@ Container.craft = {
               type: "select",
               label: "Animation Type",
               options: ["fadeIn", "slideIn", "scaleUp"],
-              if: (props: ContainerProps) => props.animation?.animationEnabled,
+              if: (props: SpotlightContainerProps) =>
+                props.animation?.animationEnabled,
             },
             {
               key: "animation.transitionDuration",
               type: "number",
               label: "Duration (s)",
               step: 0.1,
-              if: (props: ContainerProps) => props.animation?.animationEnabled,
+              if: (props: SpotlightContainerProps) =>
+                props.animation?.animationEnabled,
             },
             {
               key: "animation.transitionDelay",
               type: "number",
               label: "Delay (s)",
               step: 0.1,
-              if: (props: ContainerProps) => props.animation?.animationEnabled,
+              if: (props: SpotlightContainerProps) =>
+                props.animation?.animationEnabled,
             },
             {
               key: "animation.transitionEase",
               type: "select",
               label: "Easing",
               options: ["linear", "easeIn", "easeOut", "easeInOut"],
-              if: (props: ContainerProps) => props.animation?.animationEnabled,
+              if: (props: SpotlightContainerProps) =>
+                props.animation?.animationEnabled,
             },
             {
               key: "animation.slideInOffset",
               type: "number",
               label: "Slide Offset (px)",
-              if: (props: ContainerProps) =>
+              if: (props: SpotlightContainerProps) =>
                 props.animation?.animationEnabled &&
                 props.animation?.animationType === "slideIn",
             },
@@ -609,7 +787,7 @@ Container.craft = {
               type: "select",
               label: "Slide Direction",
               options: ["up", "down", "left", "right"],
-              if: (props: ContainerProps) =>
+              if: (props: SpotlightContainerProps) =>
                 props.animation?.animationEnabled &&
                 props.animation?.animationType === "slideIn",
             },
@@ -618,7 +796,7 @@ Container.craft = {
               type: "number",
               label: "Initial Scale",
               step: 0.1,
-              if: (props: ContainerProps) =>
+              if: (props: SpotlightContainerProps) =>
                 props.animation?.animationEnabled &&
                 props.animation?.animationType === "scaleUp",
             },
@@ -626,7 +804,8 @@ Container.craft = {
               key: "animation.animateOnce",
               type: "boolean",
               label: "Animate Only Once",
-              if: (props: ContainerProps) => props.animation?.animationEnabled,
+              if: (props: SpotlightContainerProps) =>
+                props.animation?.animationEnabled,
             },
           ],
         },

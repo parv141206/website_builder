@@ -18,6 +18,13 @@
           }
         },
         {
+          "name": "SpotlightContainer",
+          "preview": {
+            "is": "SpotlightContainer",
+            "props": {}
+          }
+        },
+        {
           "name": "LightRays",
           "preview": {
             "is": "LightRays",
@@ -304,20 +311,6 @@
       "name": "Sections",
       "icon": "LayoutGrid",
       "components": [
-        {
-          "name": "ChromaGrid",
-          "preview": {
-            "is": "ChromaGrid",
-            "props": {
-              "items": [],
-              "className": "",
-              "radius": 300,
-              "damping": 0.45,
-              "fadeOut": 0.6,
-              "ease": "power3.out"
-            }
-          }
-        },
         {
           "name": "Menu Section",
           "preview": {

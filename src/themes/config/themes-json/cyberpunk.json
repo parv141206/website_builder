@@ -2,32 +2,41 @@
   "name": "cyberpunk",
   "colors": {
     "background": {
-      "primary": "#0d0221",
-      "secondary": "#1a0933",
-      "tertiary": "#2e1745",
-      "quaternary": "#3e255f",
-      "quinary": "#512b81"
+      "primary": "#0D0221",
+      "secondary": "#1A0B3D",
+      "tertiary": "#2E1555",
+      "quaternary": "#3E1F6E",
+      "quinary": "#512A8A"
     },
     "text": {
-      "heading": "#ff00ff",
-      "subheading": "#00ffff",
-      "body": "#e0e0e0",
-      "muted": "#8a8a8a",
-      "onPrimary": "#0d0221",
-      "onSecondary": "#0d0221",
-      "onBackground": "#e0e0e0",
-      "inverse": "#0d0221"
+      "heading": "#00FFFF",
+      "subheading": "#FF00FF",
+      "body": "#FFFFFF",
+      "muted": "#A855F7",
+      "onPrimary": "#0D0221",
+      "onSecondary": "#0D0221",
+      "onBackground": "#FFFFFF",
+      "inverse": "#0D0221"
     },
-    "primary": "#ff00ff",
-    "secondary": "#00ffff",
+    "primary": "#00FFFF",
+    "secondary": "#FF3131",
     "roles": {
-      "success": "#39ff14",
-      "danger": "#ff3131",
-      "warning": "#ffea00",
-      "info": "#00ffff"
+      "success": "#39FF14",
+      "danger": "#FF3131",
+      "warning": "#FFEA00",
+      "info": "#00FFFF"
     },
-    "border": "#512b81",
-    "shadow": "rgba(255, 0, 255, 0.25)"
+    "border": "#7C3AED",
+    "card": {
+      "background": "#1A0B3D",
+      "foreground": "#FFFFFF",
+      "border": "#3E1F6E"
+    },
+    "hover": {
+      "primary": "#00E5E5",
+      "secondary": "#E62E2E"
+    },
+    "shadow": "rgba(0, 255, 255, 0.25)"
   },
   "fonts": {
     "heading": "Orbitron, sans-serif",

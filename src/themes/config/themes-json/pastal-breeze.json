@@ -2,32 +2,41 @@
   "name": "pastel-breeze",
   "colors": {
     "background": {
-      "primary": "#fdfdf6",
-      "secondary": "#faf5f0",
-      "tertiary": "#f7efe8",
-      "quaternary": "#f2e9e4",
-      "quinary": "#eae4da"
+      "primary": "#FEFEFE",
+      "secondary": "#FAF5F0",
+      "tertiary": "#F3E8E0",
+      "quaternary": "#E8D5CC",
+      "quinary": "#DCC2B8"
     },
     "text": {
-      "heading": "#403d39",
-      "subheading": "#5c534a",
-      "body": "#6d645c",
-      "muted": "#a39b91",
-      "onPrimary": "#fdfdf6",
-      "onSecondary": "#faf5f0",
-      "onBackground": "#403d39",
-      "inverse": "#ffffff"
+      "heading": "#4A3728",
+      "subheading": "#6B4E3D",
+      "body": "#8B6914",
+      "muted": "#A68A5B",
+      "onPrimary": "#FEFEFE",
+      "onSecondary": "#FAF5F0",
+      "onBackground": "#4A3728",
+      "inverse": "#FFFFFF"
     },
-    "primary": "#c9ada7",
-    "secondary": "#9a8c98",
+    "primary": "#C9ADA7",
+    "secondary": "#6A994E",
     "roles": {
-      "success": "#a8dadc",
-      "danger": "#e5989b",
-      "warning": "#ffd6a5",
-      "info": "#90e0ef"
+      "success": "#A8DADC",
+      "danger": "#E5989B",
+      "warning": "#FFD6A5",
+      "info": "#90E0EF"
     },
-    "border": "#dcd2cc",
-    "shadow": "rgba(90, 80, 70, 0.15)"
+    "border": "#E8D5CC",
+    "card": {
+      "background": "#FAF5F0",
+      "foreground": "#4A3728",
+      "border": "#E8D5CC"
+    },
+    "hover": {
+      "primary": "#B59B94",
+      "secondary": "#5A8741"
+    },
+    "shadow": "rgba(201, 173, 167, 0.15)"
   },
   "fonts": {
     "heading": "Playfair Display, serif",

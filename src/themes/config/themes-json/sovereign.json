@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "sovereign",
   "colors": {
     "background": {
       "primary": "#FCFAF5",
@@ -19,14 +19,23 @@
       "inverse": "#FCFAF5"
     },
     "primary": "#722f37",
-    "secondary": "#3A506B",
+    "secondary": "#D4A574",
     "roles": {
-      "success": "#4F6F52",
+      "success": "#7A8471",
       "danger": "#9A3B3B",
-      "warning": "#EFDFBB",
-      "info": "#3A506B"
+      "warning": "#C4976C",
+      "info": "#5B7C8D"
     },
     "border": "#EFE3C7",
+    "card": {
+      "background": "#F5EAD6",
+      "foreground": "#2A1D1F",
+      "border": "#E8D9B9"
+    },
+    "hover": {
+      "primary": "#5F252B",
+      "secondary": "#C1935F"
+    },
     "shadow": "rgba(42, 29, 31, 0.1)"
   },
   "fonts": {

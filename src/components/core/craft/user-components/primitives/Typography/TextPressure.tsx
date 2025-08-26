@@ -195,7 +195,7 @@ export const TextPressure: React.FC<TextPressureProps> & { craft?: any } = ({
       style={{
         position: "relative",
         width: "100%",
-        height: "100%",
+        // height: "100%",
         // Add editor-specific outline for better UX
         outline: selected ? "2px dashed #4c8bf5" : "none",
         outlineOffset: "2px",

@@ -28,7 +28,6 @@ import { Animated } from "./primitives/Animated";
 import { GradientBlinds } from "./primitives/Backgrounds/GradientBlinds";
 import { LightRays } from "./primitives/Backgrounds/LightRays";
 import { Button } from "./primitives/Button";
-import ChromaGrid from "./primitives/ChromaGrid";
 import { Container } from "./primitives/Container";
 import { Image } from "./primitives/Image";
 import { Link } from "./primitives/Link";
@@ -39,9 +38,11 @@ import { Text } from "./primitives/Typography/Text";
 import { TextPressure } from "./primitives/Typography/TextPressure";
 import { TextTrail } from "./primitives/Typography/TextTrail";
 import { TextType } from "./primitives/Typography/TextType";
+import { SpotlightContainer } from "./primitives/SpotlightContainer";
 
 export const COMPONENT_RESOLVER = {
   Container,
+  SpotlightContainer,
   Text,
   TextPressure,
   SplitText,
@@ -53,7 +54,6 @@ export const COMPONENT_RESOLVER = {
   Link,
   Animated,
   Card1,
-  ChromaGrid,
   ImageTopCard,
   ImageLeftCard,
   GradientTextCard,

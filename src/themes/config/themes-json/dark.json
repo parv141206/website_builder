@@ -14,15 +14,17 @@
       "body": "#D1D5DB",
       "muted": "#9CA3AF",
       "onPrimary": "#FFFFFF",
-      "onSecondary": "#FFFFFF"
+      "onSecondary": "#FFFFFF",
+      "onBackground": "#F9FAFB",
+      "inverse": "#111827"
     },
-    "primary": "#3B82F6",
-    "secondary": "#8B5CF6",
+    "primary": "#6366F1",
+    "secondary": "#EC4899",
     "roles": {
-      "success": "#22C55E",
+      "success": "#10B981",
       "danger": "#EF4444",
       "warning": "#F59E0B",
-      "info": "#0EA5E9"
+      "info": "#3B82F6"
     },
     "border": "#374151",
     "card": {
@@ -31,9 +33,10 @@
       "border": "#4B5563"
     },
     "hover": {
-      "primary": "#2563EB",
-      "secondary": "#7C3AED"
-    }
+      "primary": "#4F46E5",
+      "secondary": "#DB2777"
+    },
+    "shadow": "rgba(99, 102, 241, 0.15)"
   },
   "fonts": {
     "heading": "Space Grotesk",

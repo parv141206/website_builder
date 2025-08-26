@@ -13,44 +13,43 @@ import { Sidebar } from "~/components/core/craft/Sidebar";
 import { OutlinePanel } from "~/components/core/craft/OutlinePanel";
 import { Toaster } from "sonner";
 
-const ThemeUpdater = () => {
-  const { actions } = useEditor();
-  const theme = useTheme();
-
-  useEffect(() => {
-    actions.setProp("ROOT", (props) => {
-      props.background = theme.colors.background.secondary;
-    });
-  }, [theme, actions]);
-
-  return null;
-};
-
-const EXTENDED_COMPONENT_RESOLVER = {
-  ...COMPONENT_RESOLVER,
-  ThemeUpdater,
-};
+// Remove the ThemeUpdater component entirely
 
 const { Container, Text } = COMPONENT_RESOLVER;
 
 const EditorUI = ({ savedJson }: { savedJson: string | null }) => {
   const theme = useTheme();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { actions, query } = useEditor();
+
   useEditorHotkeys();
+
+  // Update ROOT element's backgroundColor when theme changes
+  useEffect(() => {
+    const rootNode = query.node("ROOT").get();
+    if (rootNode) {
+      actions.setProp("ROOT", (props) => {
+        props.backgroundColor = theme.colors.background.primary;
+      });
+    }
+  }, [theme.colors.background.primary, actions, query]);
 
   console.log(
     "EditorUI rendering with savedJson:",
     savedJson ? "JSON present" : "No JSON",
   );
+
   const { activePanel, setActivePanel } = useAppStateStore();
   const { selected } = useEditor((state) => ({
     selected: state.events.selected.size > 0,
   }));
+
   useEffect(() => {
     if (selected) {
       setActivePanel("settings");
     }
   }, [selected, setActivePanel]);
+
   return (
     <div className="flex h-screen w-full flex-col">
       <TopBar />
@@ -63,12 +62,10 @@ const EditorUI = ({ savedJson }: { savedJson: string | null }) => {
               is={Container}
               canvas
               id="ROOT"
-              // background={theme.colors.background.secondary}
+              backgroundColor={theme.colors.background.primary}
               minHeight="100%"
               padding="24px"
             >
-              <Element is={ThemeUpdater} />
-
               <Text
                 text="Welcome to your new page!"
                 as="h1"
@@ -77,13 +74,7 @@ const EditorUI = ({ savedJson }: { savedJson: string | null }) => {
                 textAlign="center"
                 margin="0 0 24px 0"
               />
-              <Element
-                is={Container}
-                canvas
-                padding="16px"
-                // background={theme.colors.background.tertiary}
-                borderRadius="8px"
-              >
+              <Element is={Container} canvas padding="16px" borderRadius="8px">
                 <Text text="This is an inner container." />
               </Element>
             </Element>
@@ -125,7 +116,7 @@ const App = () => {
 export default function EditorPage() {
   return (
     <ThemeProvider>
-      <Editor resolver={EXTENDED_COMPONENT_RESOLVER}>
+      <Editor resolver={COMPONENT_RESOLVER}>
         <App />
       </Editor>
       <Toaster />

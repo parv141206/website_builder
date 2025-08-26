@@ -4,6 +4,7 @@ import React from "react";
 import { useNode, Element } from "@craftjs/core";
 import { Container, type ContainerProps } from "../../primitives/Container";
 import { Text, type TextProps } from "../../primitives/Typography/Text";
+import { SpotlightContainer } from "../../primitives/SpotlightContainer";
 
 type SingleFeature = {
   title: string;
@@ -35,7 +36,7 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({
   const {
     connectors: { connect, drag },
   } = useNode();
-  
+
   const extendedFeatures = [...features];
   if (features.length < 6) {
     extendedFeatures.push(
@@ -111,13 +112,12 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({
         {extendedFeatures.map((f, idx) => (
           <Element
             key={idx}
-            is={Container}
+            is={SpotlightContainer}
             id={`FeaturesSection-card-${idx}`}
             canvas
             display="flex"
             flexDirection="column"
             alignItems="center"
-            textAlign="center"
             padding="28px"
             borderRadius="18px"
             background="rgba(255, 255, 255, 0.15)"

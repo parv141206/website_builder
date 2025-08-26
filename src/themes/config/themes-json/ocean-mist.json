@@ -2,32 +2,41 @@
   "name": "ocean-mist",
   "colors": {
     "background": {
-      "primary": "#f0f9ff",
-      "secondary": "#e0f2fe",
-      "tertiary": "#bae6fd",
-      "quaternary": "#7dd3fc",
-      "quinary": "#38bdf8"
+      "primary": "#F0F9FF",
+      "secondary": "#E0F2FE",
+      "tertiary": "#BAE6FD",
+      "quaternary": "#7DD3FC",
+      "quinary": "#38BDF8"
     },
     "text": {
-      "heading": "#082f49",
-      "subheading": "#0c4a6e",
-      "body": "#075985",
-      "muted": "#38bdf8",
-      "onPrimary": "#f0f9ff",
-      "onSecondary": "#e0f2fe",
-      "onBackground": "#082f49",
-      "inverse": "#ffffff"
+      "heading": "#0C4A6E",
+      "subheading": "#075985",
+      "body": "#0369A1",
+      "muted": "#0284C7",
+      "onPrimary": "#F0F9FF",
+      "onSecondary": "#E0F2FE",
+      "onBackground": "#0C4A6E",
+      "inverse": "#FFFFFF"
     },
-    "primary": "#0284c7",
-    "secondary": "#38bdf8",
+    "primary": "#0EA5E9",
+    "secondary": "#F97316",
     "roles": {
-      "success": "#34d399",
-      "danger": "#ef4444",
-      "warning": "#fbbf24",
-      "info": "#3b82f6"
+      "success": "#22C55E",
+      "danger": "#EF4444",
+      "warning": "#F59E0B",
+      "info": "#3B82F6"
     },
-    "border": "#7dd3fc",
-    "shadow": "rgba(2, 132, 199, 0.25)"
+    "border": "#7DD3FC",
+    "card": {
+      "background": "#E0F2FE",
+      "foreground": "#0C4A6E",
+      "border": "#BAE6FD"
+    },
+    "hover": {
+      "primary": "#0284C7",
+      "secondary": "#EA580C"
+    },
+    "shadow": "rgba(14, 165, 233, 0.15)"
   },
   "fonts": {
     "heading": "Poppins, sans-serif",
