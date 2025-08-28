@@ -45,6 +45,7 @@ import { RotateCard } from "./composites/cards/RotateCard";
 import { HeroSection1 } from "./composites/sections/hero-sections/HeroSection1";
 import { CardSpread } from "./composites/cards/CardSpread";
 import { CommentCard } from "./composites/cards/CardComment";
+import { FormCard } from "./composites/form/BoarderForm";
 
 export const COMPONENT_RESOLVER = {
   Container,
@@ -92,5 +93,6 @@ export const COMPONENT_RESOLVER = {
   HeroSection1,
   CardSpread,
   CommentCard,
+  FormCard,
 
 };

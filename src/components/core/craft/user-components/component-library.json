@@ -356,6 +356,31 @@
     ]
   }
 },
+{
+  "name": "Form",
+  "preview": {
+    "is": "FormCard",
+    "props": {
+      "title": "Welcome",
+      "subtitle": "Sign in to continue",
+      "theme": "light",
+      "containerProps": {
+        "padding": "2rem",
+        "maxWidth": "400px",
+        "margin": "0 auto",
+        "style": {
+          "border": "1px solid #d1d5db",
+          "borderRadius": "12px",
+          "background": "#ffffff"
+        }
+      },
+      "textProps": {
+        "color": "#111827",
+        "fontSize": "1rem"
+      }
+    }
+  }
+},
          {
           "name": "Card Spread",
           "preview": {
