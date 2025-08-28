@@ -43,8 +43,8 @@ import { Loader } from "./composites/loader/Loader";
 import { SocialCard } from "./composites/cards/SocialCard";
 import { RotateCard } from "./composites/cards/RotateCard";
 import { HeroSection1 } from "./composites/sections/hero-sections/HeroSection1";
-import { CardComment } from "./composites/cards/CardComment";
 import { CardSpread } from "./composites/cards/CardSpread";
+import { CommentCard } from "./composites/cards/CardComment";
 
 export const COMPONENT_RESOLVER = {
   Container,
@@ -90,7 +90,7 @@ export const COMPONENT_RESOLVER = {
   SocialCard,
   RotateCard,
   HeroSection1,
-  CardComment,
   CardSpread,
+  CommentCard,
 
 };
