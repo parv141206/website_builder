@@ -87,6 +87,6 @@ export const COMPONENT_RESOLVER = {
   Loader,
   SocialCard,
   RotateCard,
-  //Hero Sections
   HeroSection1,
+
 };
