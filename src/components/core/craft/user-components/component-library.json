@@ -319,6 +319,34 @@
           }
         },
         {
+          "name": "Card Comment",
+          "preview": {
+            "is": "CardComment",
+             "props": {
+                "commenter": "Someone",
+                "replier": "Someone else",
+                "theme": "light",
+                "containerProps": {},
+                "commenterTextProps": {},
+                "replierTextProps": {},
+                "commentContentProps": {},
+                "replyContentProps": {}
+            }         
+          }
+        },
+         {
+          "name": "Card Spread",
+          "preview": {
+            "is": "CardSpread",
+             "props": {
+                "title": "My Card Spread",
+                "theme": "light",
+                "containerProps": {},
+                "textProps": {}
+            }         
+          }
+        },
+        {
           "name": "Social Card",
           "preview": {
             "is": "SocialCard",
