@@ -328,7 +328,7 @@
             }
           }
         },
-                {
+        {
           "name": "Rotate Card",
           "preview": {
             "is": "RotateCard",
@@ -346,9 +346,9 @@
       "icon": "LayoutGrid",
       "components": [
         {
-          "name": "Hero Banner",
+          "name": "HeroSection1",
           "preview": {
-            "is": "HeroBanner",
+            "is": "HeroSection1",
             "props": {
               "heading": "Welcome to Our Website",
               "subheading": "We build awesome experiences.",

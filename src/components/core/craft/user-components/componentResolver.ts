@@ -42,6 +42,7 @@ import { SpotlightContainer } from "./primitives/SpotlightContainer";
 import { Loader } from "./composites/loader/Loader";
 import { SocialCard } from "./composites/cards/SocialCard";
 import { RotateCard } from "./composites/cards/RotateCard";
+import { HeroSection1 } from "./composites/sections/hero-sections/HeroSection1";
 
 export const COMPONENT_RESOLVER = {
   Container,
@@ -86,4 +87,6 @@ export const COMPONENT_RESOLVER = {
   Loader,
   SocialCard,
   RotateCard,
+  //Hero Sections
+  HeroSection1,
 };

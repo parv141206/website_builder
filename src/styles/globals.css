@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@source inline("{hover:,focus:,active:,disabled:,}{bg,text,border}-{slate,gray,zinc,neutral,stone,red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose}-{50,{100..900..100},950} flex-{row,col} flex-{1,auto,initial,none} {items,justify,content}-{start,center,end,between,around,evenly,stretch} gap-{0,{1..12}} {m,mt,mr,mb,ml,mx,my,p,pt,pr,pb,pl,px,py}-{0,{1..12},auto} w-{0,full,screen,auto} h-{0,full,screen,auto} min-w-{0,full} min-h-{0,full} max-w-{xs,sm,md,lg,xl,2xl,3xl,4xl,5xl,6xl,full} max-h-{full,screen} text-{xs,sm,base,lg,xl,2xl,3xl,4xl,5xl} font-{thin,light,normal,medium,semibold,bold,extrabold,black} text-{left,center,right,justify} border-{0,2,4,8} rounded-{none,sm,md,lg,full} shadow-{sm,md,lg,xl,2xl,inner,none} block inline-block inline hidden flex inline-flex grid inline-grid absolute relative fixed sticky inset-{0} top-{0} right-{0} bottom-{0} left-{0} overflow-{auto,hidden,scroll,visible} overflow-x-{auto,hidden,scroll} overflow-y-{auto,hidden,scroll} transition-{none,all,colors,opacity,shadow,transform} duration-{75,100,150,200,300,500,700,1000} ease-{linear,in,out,in-out}");
+
 @custom-variant dark (&:is(.dark *));
 
 @theme {

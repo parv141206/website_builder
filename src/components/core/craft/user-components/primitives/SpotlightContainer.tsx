@@ -1,3 +1,4 @@
+// src/components/core/craft/primitives/SpotlightContainer.tsx
 "use client";
 import React, { useMemo, useRef, useState } from "react";
 import { useNode } from "@craftjs/core";
@@ -167,6 +168,7 @@ export type SpotlightContainerProps = {
   left?: string;
   zIndex?: string;
   overflow?: "visible" | "hidden" | "scroll" | "auto";
+  className?: string; // ADDED: className prop
 };
 
 interface Position {
@@ -193,6 +195,7 @@ export const SpotlightContainer: React.FC<SpotlightContainerProps> & {
   left,
   zIndex,
   overflow = "hidden",
+  className, // DESTRUCTURED: className prop
   ...props
 }) => {
   const {
@@ -245,8 +248,7 @@ export const SpotlightContainer: React.FC<SpotlightContainerProps> & {
       zIndex: zIndex || "auto",
       color: props.color || theme.colors.text.body,
       fontFamily: props.fontFamily || theme.fonts.body,
-      outline: selected ? "2px dashed #4c8bf5" : undefined,
-      outlineOffset: "2px",
+      // REMOVED: outline and outlineOffset from inline style
       transition: "outline 120ms ease",
       position: position || "relative",
       top: top,
@@ -255,9 +257,9 @@ export const SpotlightContainer: React.FC<SpotlightContainerProps> & {
       left: left,
       overflow: overflow,
     };
-    console.log("Base Style:", backgroundColor);
+    // console.log("Base Style:", backgroundColor); // Removed console logs
     const baseColor = backgroundColor || theme.colors.background.secondary;
-    console.log("Base Style 2:", baseColor);
+    // console.log("Base Style 2:", baseColor); // Removed console logs
     const finalPatternColor = patternColor || theme.colors.text.muted;
     const finalPatternOpacity = patternOpacity ?? 0.1;
     const finalPatternSize = patternSize ?? 20;
@@ -294,7 +296,7 @@ export const SpotlightContainer: React.FC<SpotlightContainerProps> & {
     patternColor,
     patternOpacity,
     patternSize,
-    selected,
+    // selected, // Removed from here as outline is now handled by className
     theme,
     position,
     top,
@@ -387,12 +389,27 @@ export const SpotlightContainer: React.FC<SpotlightContainerProps> & {
 
   const MotionTag = motion(Tag as React.ElementType);
 
+  // Combine external and internal class names, adding selected state outline
+  const finalClassNames = useMemo(() => {
+    const classes = [className];
+    if (selected) {
+      classes.push(
+        "outline-2",
+        "outline-dashed",
+        "outline-blue-500",
+        "outline-offset-2",
+      );
+    }
+    return classes.filter(Boolean).join(" ");
+  }, [className, selected]);
+
   const commonProps = {
     ref: (ref: any) => {
       connect(drag(ref));
       containerRef.current = ref;
     },
     style: style,
+    className: finalClassNames, // ADDED: className prop
     onMouseMove: handleMouseMove,
     onFocus: handleFocus,
     onBlur: handleBlur,
@@ -425,7 +442,7 @@ export const SpotlightContainer: React.FC<SpotlightContainerProps> & {
       </MotionTag>
     );
   }
-  console.log(style);
+  // console.log(style); // Removed console log
   return <Tag {...commonProps}>{content}</Tag>;
 };
 
@@ -468,6 +485,7 @@ SpotlightContainer.craft = {
     left: "auto",
     zIndex: "auto",
     overflow: "hidden",
+    className: "", // ADDED: Default empty string for className
   } satisfies Partial<SpotlightContainerProps>,
   rules: { canDrag: () => true, canMoveIn: () => true },
   isCanvas: true,

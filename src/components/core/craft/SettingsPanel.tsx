@@ -51,8 +51,100 @@ const loadGoogleFont = (fontName: string) => {
 // ==================================================================================
 // SECTION 2: UI COMPONENTS (UNCHANGED)
 // ==================================================================================
-// No changes are needed for FontPicker, ButtonGroup, or IconToggleButton.
-// They are self-contained and will work with the updated logic.
+
+// NEW: ClassNameEditor Component
+const ClassNameEditor = memo(
+  ({
+    value,
+    onChange,
+  }: {
+    value: string;
+    onChange: (classNames: string) => void;
+  }) => {
+    const [inputValue, setInputValue] = useState("");
+    const [currentClasses, setCurrentClasses] = useState<string[]>([]);
+
+    useEffect(() => {
+      // Split the incoming className string into an array of individual classes
+      // Filter out empty strings that might result from multiple spaces
+      setCurrentClasses(value ? value.split(" ").filter(Boolean) : []);
+    }, [value]);
+
+    const handleAddClass = (e: React.FormEvent) => {
+      e.preventDefault();
+      const newClass = inputValue.trim();
+      if (newClass && !currentClasses.includes(newClass)) {
+        const updatedClasses = [...currentClasses, newClass];
+        setCurrentClasses(updatedClasses);
+        onChange(updatedClasses.join(" ")); // Update Craft.js prop
+        setInputValue(""); // Clear input
+      }
+    };
+
+    const handleRemoveClass = (classToRemove: string) => {
+      const updatedClasses = currentClasses.filter(
+        (cls) => cls !== classToRemove,
+      );
+      setCurrentClasses(updatedClasses);
+      onChange(updatedClasses.join(" ")); // Update Craft.js prop
+    };
+
+    return (
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-700">Class Names</label>
+        <form onSubmit={handleAddClass} className="flex gap-2">
+          <input
+            type="text"
+            placeholder="Add new class (e.g., p-4, bg-blue-500)"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            className="flex-grow rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-sm focus:ring-2 focus:ring-gray-500 focus:outline-none"
+          />
+          <button
+            type="submit"
+            className="rounded-md bg-blue-500 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          >
+            Add
+          </button>
+        </form>
+
+        <div className="flex flex-wrap gap-2 pt-2">
+          {currentClasses.length === 0 ? (
+            <span className="text-sm text-gray-500">No classes added yet.</span>
+          ) : (
+            currentClasses.map((cls) => (
+              <div
+                key={cls}
+                className="flex items-center gap-1 rounded-full bg-gray-200 px-3 py-1 text-xs text-gray-700"
+              >
+                <span>{cls}</span>
+                <button
+                  type="button"
+                  onClick={() => handleRemoveClass(cls)}
+                  className="rounded-full p-0.5 hover:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:outline-none"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-3 w-3"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    );
+  },
+);
+ClassNameEditor.displayName = "ClassNameEditor";
 
 export const FontPicker = memo(
   ({
@@ -572,6 +664,20 @@ export const SettingsPanel = () => {
     return (
       <aside className="overflow-y-auto border-l border-gray-200 bg-white p-4">
         <SettingsComponent />
+        {/* NEW: Add ClassNameEditor here for components that have `className` prop */}
+        {selected && selected.props && (
+          <div className="mt-6 border-t border-gray-200 pt-4">
+            <h4 className="text-md mb-2 font-medium text-gray-600">
+              Tailwind Classes
+            </h4>
+            <ClassNameEditor
+              value={selected.props.className || ""} // Pass empty string if undefined/null
+              onChange={(newClassString) =>
+                setProp("className", newClassString)
+              }
+            />
+          </div>
+        )}
       </aside>
     );
   }
@@ -646,6 +752,20 @@ export const SettingsPanel = () => {
                   </div>
                 </div>
               ),
+          )}
+          {/* NEW: Add ClassNameEditor here when using static schema */}
+          {selected && selected.props && (
+            <div className="mt-6 border-t border-gray-200 pt-4">
+              <h4 className="text-md mb-2 font-medium text-gray-600">
+                Tailwind Classes
+              </h4>
+              <ClassNameEditor
+                value={selected.props.className || ""} // Pass empty string if undefined/null
+                onChange={(newClassString) =>
+                  setProp("className", newClassString)
+                }
+              />
+            </div>
           )}
         </div>
       ) : (

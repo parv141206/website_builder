@@ -1,5 +1,6 @@
+// src/components/core/craft/primitives/Orb.tsx
 "use client";
-import React, { useEffect, useRef, useMemo } from "react";
+import React, { useEffect, useRef, useMemo, useState } from "react"; // Added useState
 import { Renderer, Program, Mesh, Triangle, Vec3 } from "ogl";
 import { useNode } from "@craftjs/core";
 
@@ -16,6 +17,9 @@ export interface OrbProps {
   bottom?: string;
   left?: string;
   right?: string;
+  className?: string; // ADDED: className prop
+  position?: "absolute" | "relative" | "fixed" | "static"; // ADDED: position prop
+  zIndex?: string; // ADDED: zIndex prop
 }
 
 export const Orb: React.FC<OrbProps> & { craft?: any } = ({
@@ -31,6 +35,9 @@ export const Orb: React.FC<OrbProps> & { craft?: any } = ({
   bottom = "auto",
   left = "auto",
   right = "auto",
+  className, // DESTRUCTURED: className
+  position = "absolute", // DESTRUCTURED: position
+  zIndex = "auto", // DESTRUCTURED: zIndex
 }) => {
   const {
     connectors: { connect, drag },
@@ -187,9 +194,9 @@ export const Orb: React.FC<OrbProps> & { craft?: any } = ({
       gl = renderer.gl;
       gl.clearColor(0, 0, 0, 0);
       container.appendChild(gl.canvas as any);
-      //@ts-ignore
+      // @ts-ignore
       const geometry = new Triangle(gl);
-      //@ts-ignore
+      // @ts-ignore
       program = new Program(gl, {
         vertex: vert,
         fragment: frag,
@@ -206,7 +213,7 @@ export const Orb: React.FC<OrbProps> & { craft?: any } = ({
           uColor3: { value: hexToRgb(color3) },
         },
       });
-      //@ts-ignore
+      // @ts-ignore
       mesh = new Mesh(gl, { geometry, program });
     } catch (e) {
       console.error("Failed to initialize OGL context:", e);
@@ -221,9 +228,9 @@ export const Orb: React.FC<OrbProps> & { craft?: any } = ({
       const width = container.clientWidth;
       const height = container.clientHeight;
       renderer.setSize(width * dpr, height * dpr);
-      //@ts-ignore
+      // @ts-ignore
       gl!.canvas.style.width = width + "px";
-      //@ts-ignore
+      // @ts-ignore
       gl!.canvas.style.height = height + "px";
       uniforms.iResolution.value.set(
         gl!.canvas.width,
@@ -297,24 +304,40 @@ export const Orb: React.FC<OrbProps> & { craft?: any } = ({
       window.removeEventListener("resize", resize);
       container.removeEventListener("mousemove", handleMouseMove);
       container.removeEventListener("mouseleave", handleMouseLeave);
-      container.removeChild(gl.canvas as any);
-      gl.getExtension("WEBGL_lose_context")?.loseContext();
+      if (gl && gl.canvas && gl.canvas.parentNode === container) {
+        container.removeChild(gl.canvas as any);
+      }
+      gl?.getExtension("WEBGL_lose_context")?.loseContext();
     };
   }, [color1, color2, color3, hoverIntensity, rotateOnHover, forceHoverState]);
 
+  // Combined class names
+  const finalClassNames = useMemo(() => {
+    const classes = [className];
+    if (selected) {
+      classes.push(
+        "outline-2",
+        "outline-dashed",
+        "outline-blue-500",
+        "outline-offset-2",
+      );
+    }
+    return classes.filter(Boolean).join(" ");
+  }, [className, selected]);
+
   const style: React.CSSProperties = useMemo(
     () => ({
-      position: "absolute",
+      position: position, // Use the new position prop
       width: width,
       height: height,
       top: top,
       bottom: bottom,
       left: left,
       right: right,
-      outline: selected ? "2px dashed #4c8bf5" : "none",
-      outlineOffset: "2px",
+      zIndex: zIndex, // Use the new zIndex prop
+      // Outline moved to className
     }),
-    [selected, width, height, top, bottom, left, right],
+    [width, height, top, bottom, left, right, position, zIndex],
   );
 
   return (
@@ -325,6 +348,7 @@ export const Orb: React.FC<OrbProps> & { craft?: any } = ({
           ctnDom.current = el;
         }
       }}
+      className={finalClassNames} // Apply combined classes
       style={style}
     />
   );
@@ -338,7 +362,7 @@ function hexToRgb(hex: string): Vec3 {
         parseInt(result[2]!, 16) / 255,
         parseInt(result[3]!, 16) / 255,
       )
-    : new Vec3(1, 0, 0);
+    : new Vec3(1, 0, 0); // Default to red if invalid
 }
 
 Orb.craft = {
@@ -356,6 +380,9 @@ Orb.craft = {
     bottom: "auto",
     left: "auto",
     right: "auto",
+    className: "", // ADDED: Default empty string
+    position: "absolute", // ADDED: Default position
+    zIndex: "auto", // ADDED: Default zIndex
   },
   rules: {
     canDrag: () => true,
@@ -415,6 +442,13 @@ Orb.craft = {
             { key: "bottom", type: "text", label: "Bottom" },
             { key: "left", type: "text", label: "Left" },
             { key: "right", type: "text", label: "Right" },
+            {
+              key: "position",
+              type: "select",
+              label: "Position",
+              options: ["absolute", "relative", "fixed", "static"],
+            },
+            { key: "zIndex", type: "text", label: "Z-Index" },
           ],
         },
       ],

@@ -1,3 +1,4 @@
+// src/components/core/craft/Container.tsx
 "use client";
 import React, { useMemo } from "react";
 import { useNode } from "@craftjs/core";
@@ -156,6 +157,7 @@ export type ContainerProps = {
   bottom?: string;
   left?: string;
   zIndex?: string;
+  className?: string; // ADDED: className prop
 };
 
 export const Container: React.FC<ContainerProps> & { craft?: any } = ({
@@ -173,6 +175,7 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
   bottom,
   left,
   zIndex,
+  className, // DESTRUCTURED: className prop
   ...props
 }) => {
   const {
@@ -212,8 +215,7 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
       zIndex: zIndex || "auto",
       color: props.color || theme.colors.text.body,
       fontFamily: props.fontFamily || theme.fonts.body,
-      outline: selected ? "2px dashed #4c8bf5" : undefined,
-      outlineOffset: "2px",
+      // REMOVED: outline and outlineOffset from inline style
       transition: "outline 120ms ease",
       position: position,
       top: top,
@@ -258,7 +260,6 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
     patternColor,
     patternOpacity,
     patternSize,
-    selected,
     theme,
     position,
     top,
@@ -300,11 +301,26 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
 
   const MotionTag = motion(Tag as React.ElementType);
 
+  // Combine external and internal class names, adding selected state outline
+  const finalClassNames = useMemo(() => {
+    const classes = [className];
+    if (selected) {
+      classes.push(
+        "outline-2",
+        "outline-dashed",
+        "outline-blue-500",
+        "outline-offset-2",
+      );
+    }
+    return classes.filter(Boolean).join(" ");
+  }, [className, selected]);
+
   if (animation?.animationEnabled) {
     return (
       <MotionTag
         ref={(ref: any) => connect(drag(ref))}
         style={style}
+        className={finalClassNames} // ADDED: className prop
         variants={animationVariants}
         initial="hidden"
         whileInView="visible"
@@ -321,7 +337,11 @@ export const Container: React.FC<ContainerProps> & { craft?: any } = ({
   }
 
   return (
-    <Tag ref={(ref: any) => connect(drag(ref))} style={style}>
+    <Tag
+      ref={(ref: any) => connect(drag(ref))}
+      style={style}
+      className={finalClassNames} // ADDED: className prop
+    >
       {children}
     </Tag>
   );
@@ -357,6 +377,7 @@ Container.craft = {
     bottom: "auto",
     left: "auto",
     zIndex: "auto",
+    className: "", // ADDED: Default empty string for className
   } satisfies Partial<ContainerProps>,
   rules: { canDrag: () => true, canMoveIn: () => true },
   isCanvas: true,

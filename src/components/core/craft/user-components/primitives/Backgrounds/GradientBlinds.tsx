@@ -429,7 +429,7 @@ void main() {
           containerRef.current = el;
         }
       }}
-      className={`absolute top-0 left-0 overflow-hidden ${className}`.trim()}
+      className={`absolute top-0 left-0 z-[5] overflow-hidden ${className}`.trim()}
       style={{
         height,
         width,

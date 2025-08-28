@@ -13,7 +13,7 @@ export type TextAlign =
 export type TextTransform = "none" | "uppercase" | "lowercase" | "capitalize";
 export type TextProps = {
   text: string;
-  as?: keyof JSX.ElementType;
+  as?: keyof JSX.IntrinsicElements; // Changed to IntrinsicElements for more accurate typing
   color?: string;
   fontSize?: string;
   fontWeight?: number | "normal" | "bold" | "lighter" | "bolder";
@@ -36,6 +36,7 @@ export type TextProps = {
   borderRadius?: string;
   boxShadow?: string;
   display?: string;
+  className?: string; // ADDED: className prop
 };
 
 export const Text: React.FC<TextProps> & {
@@ -65,6 +66,7 @@ export const Text: React.FC<TextProps> & {
   borderRadius,
   boxShadow,
   display,
+  className, // DESTRUCTURED: className prop
 }) => {
   const {
     connectors: { connect, drag },
@@ -109,13 +111,13 @@ export const Text: React.FC<TextProps> & {
       borderRadius,
       boxShadow,
       display,
-      // Editor-specific styles
-      outline: selected && !editing ? "2px dashed #4c8bf5" : undefined,
-      outlineOffset: "2px",
+      // Editor-specific styles (outline moved to className for Tailwind consistency)
+      // outline: selected && !editing ? "2px dashed #4c8bf5" : undefined,
+      // outlineOffset: "2px",
       cursor: "text",
     }),
     [
-      theme, // Add theme to dependency array
+      theme,
       color,
       fontSize,
       fontWeight,
@@ -138,7 +140,7 @@ export const Text: React.FC<TextProps> & {
       borderRadius,
       boxShadow,
       display,
-      selected,
+      // selected, // Removed from here as outline is now handled by className
       editing,
     ],
   );
@@ -157,6 +159,20 @@ export const Text: React.FC<TextProps> & {
     }
   };
 
+  // Combine external and internal class names, adding selected state outline
+  const finalClassNames = useMemo(() => {
+    const classes = [className];
+    if (selected && !editing) {
+      classes.push(
+        "outline-2",
+        "outline-dashed",
+        "outline-blue-500",
+        "outline-offset-2",
+      );
+    }
+    return classes.filter(Boolean).join(" ");
+  }, [className, selected, editing]);
+
   const commonProps = {
     ref: (el: HTMLElement | null) => {
       if (el) {
@@ -166,11 +182,12 @@ export const Text: React.FC<TextProps> & {
     },
     style,
     onDoubleClick,
+    className: finalClassNames, // ADDED: className prop
   };
 
   return editing ? (
     <Tag
-      {...(commonProps as any)}
+      {...(commonProps as any)} // Type assertion for commonProps is necessary because Tag type is broad
       contentEditable
       suppressContentEditableWarning
       onBlur={handleBlur}
@@ -178,7 +195,7 @@ export const Text: React.FC<TextProps> & {
       dangerouslySetInnerHTML={{ __html: text }}
     />
   ) : (
-    <Tag {...(commonProps as any)}>{text}</Tag>
+    <Tag {...(commonProps as any)}>{text}</Tag> // Type assertion for commonProps is necessary
   );
 };
 
@@ -191,6 +208,7 @@ Text.craft = {
     fontWeight: 400,
     lineHeight: "1.5",
     textAlign: "left",
+    className: "", // ADDED: Default empty string for className
   } satisfies TextProps,
   rules: {
     canDrag: () => true,
@@ -223,11 +241,13 @@ Text.craft = {
               key: "textAlign",
               type: "select",
               label: "Text Align",
+              options: ["left", "center", "right", "justify", "start", "end"], // Added options for TextAlign
             },
             {
               key: "textTransform",
               type: "select",
               label: "Transform",
+              options: ["none", "uppercase", "lowercase", "capitalize"], // Added options for TextTransform
             },
 
             {
