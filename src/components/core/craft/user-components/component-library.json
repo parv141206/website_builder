@@ -29,7 +29,6 @@
           "preview": {
             "is": "LightRays",
             "props": {
-              "raysColor": "#ffffff",
               "raysSpeed": 1,
               "lightSpread": 1,
               "rayLength": 2
@@ -41,7 +40,6 @@
           "preview": {
             "is": "GradientBlinds",
             "props": {
-              "gradientColors": ["#FF9FFC", "#5227FF"],
               "angle": 0,
               "noise": 0.3,
               "blindCount": 16
@@ -318,79 +316,79 @@
             }
           }
         },
-{
-  "name": "Card Comment",
-  "preview": {
-    "is": "Container",
-    "props": {
-      "padding": "2rem",
-      "justifyContent": "center",
-      "alignItems": "center",
-      "display": "flex",
-      "background": "transparent"
-    },
-    "children": [
-      {
-        "is": "CommentCard",
-        "props": {
-          "defaultText": "View Comment",
-          "hoverText": "This is the actual hidden comment that appears on hover.",
-          "background": "white",
-          "padding": "2rem",
-          "borderRadius": "1rem",
-          "border": "1px solid #e5e7eb",
-          "textColor": "black",
-          "fontSize": "1rem",
-          "fontWeight": "600",
-          "transition": "all 0.45s ease-in-out",
-          "backdropFilter": "blur(10px)",
-          "boxShadow": "0 10px 25px rgba(0, 0, 0, 0.12)",
-          "width": "250px",
-          "height": "250px",
-          "display": "flex",
-          "alignItems": "center",
-          "justifyContent": "center",
-          "textAlign": "center"
-        }
-      }
-    ]
-  }
-},
-{
-  "name": "Form",
-  "preview": {
-    "is": "FormCard",
-    "props": {
-      "title": "Welcome",
-      "subtitle": "Sign in to continue",
-      "theme": "light",
-      "containerProps": {
-        "padding": "2rem",
-        "maxWidth": "400px",
-        "margin": "0 auto",
-        "style": {
-          "border": "1px solid #d1d5db",
-          "borderRadius": "12px",
-          "background": "#ffffff"
-        }
-      },
-      "textProps": {
-        "color": "#111827",
-        "fontSize": "1rem"
-      }
-    }
-  }
-},
-         {
+        {
+          "name": "Card Comment",
+          "preview": {
+            "is": "Container",
+            "props": {
+              "padding": "2rem",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "display": "flex",
+              "background": "transparent"
+            },
+            "children": [
+              {
+                "is": "CommentCard",
+                "props": {
+                  "defaultText": "View Comment",
+                  "hoverText": "This is the actual hidden comment that appears on hover.",
+                  "background": "white",
+                  "padding": "2rem",
+                  "borderRadius": "1rem",
+                  "border": "1px solid #e5e7eb",
+                  "textColor": "black",
+                  "fontSize": "1rem",
+                  "fontWeight": "600",
+                  "transition": "all 0.45s ease-in-out",
+                  "backdropFilter": "blur(10px)",
+                  "boxShadow": "0 10px 25px rgba(0, 0, 0, 0.12)",
+                  "width": "250px",
+                  "height": "250px",
+                  "display": "flex",
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "textAlign": "center"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Form",
+          "preview": {
+            "is": "FormCard",
+            "props": {
+              "title": "Welcome",
+              "subtitle": "Sign in to continue",
+              "theme": "light",
+              "containerProps": {
+                "padding": "2rem",
+                "maxWidth": "400px",
+                "margin": "0 auto",
+                "style": {
+                  "border": "1px solid #d1d5db",
+                  "borderRadius": "12px",
+                  "background": "#ffffff"
+                }
+              },
+              "textProps": {
+                "color": "#111827",
+                "fontSize": "1rem"
+              }
+            }
+          }
+        },
+        {
           "name": "Card Spread",
           "preview": {
             "is": "CardSpread",
-             "props": {
-                "title": "My Card Spread",
-                "theme": "light",
-                "containerProps": {},
-                "textProps": {}
-            }         
+            "props": {
+              "title": "My Card Spread",
+              "theme": "light",
+              "containerProps": {},
+              "textProps": {}
+            }
           }
         },
         {
