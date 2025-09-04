@@ -16,7 +16,7 @@ import {
 
 import { Orb, type OrbProps } from "../../../primitives/Orb";
 
-export type HeroSection1Props = {
+export type HeroSection1Props = {2
   mainTitle: string;
   subTitle: string;
   buttonText: string;

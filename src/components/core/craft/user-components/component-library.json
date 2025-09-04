@@ -411,6 +411,29 @@
               "icon": "📩"
             }
           }
+        },
+        {
+          "name": "Bento Card",
+          "preview": {
+            "is": "Eight",
+            "props": {
+              "theme": "light",
+              "containerProps": {
+                "padding": "1.5rem",
+                "style": {
+                  "backdropFilter": "blur(12px)",
+                  "background": "rgba(255, 255, 255, 0.1)",
+                  "border": "1px solid rgba(255, 255, 255, 0.3)",
+                  "borderRadius": "16px"
+                }
+              },
+              "textProps": {
+                "content": "This is a Bento Card",
+                "fontSize": "1rem",
+                "color": "#ffffff"
+              }
+            }
+          }
         }
       ]
     },
@@ -430,31 +453,31 @@
               "subheadingProps": {}
             }
           }
-        }
-      ]
-    },
-    {
+        },
+        {
           "name": "HeroSection2",
           "preview": {
             "is": "HeroSection2",
             "props": {
-    "mainTitle": "Build Without Limits",
-    "subTitle":
-      "Create sleek, modern hero sections with bold editable headings and immersive futuristic design.",
-    "buttonText": "Get Started",
-    "buttonLink": "#start",
-    "wrapperProps": {},
-    "mainTitleProps": {},
-    "subTitleProps": {},
-    "buttonProps": {},
-    "titleAnimProps": {},
-    "subtitleAnimProps": {},
-    "buttonAnimProps": {},
-    "bgShape1AnimProps": {},
-    "bgShape2AnimProps": {}
+              "mainTitle": "Build Without Limits",
+              "subTitle": "Create sleek, modern hero sections with bold editable headings and immersive futuristic design.",
+              "buttonText": "Get Started",
+              "buttonLink": "#start",
+              "wrapperProps": {},
+              "mainTitleProps": {},
+              "subTitleProps": {},
+              "buttonProps": {},
+              "titleAnimProps": {},
+              "subtitleAnimProps": {},
+              "buttonAnimProps": {},
+              "bgShape1AnimProps": {},
+              "bgShape2AnimProps": {}
             }
           }
-        },
+        }
+      ]
+    },
+
     {
       "name": "Pricing Sections",
       "icon": "LayoutGrid",
@@ -709,6 +732,42 @@
               "subtitleProps": {}
             }
           }
+        },
+        {
+          "name": "Logo Loop",
+          "preview": {
+            "is": "LogoLoop",
+            "props": {
+              "logos": [
+                {
+                  "src": "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg",
+                  "alt": "React"
+                },
+                {
+                  "src": "https://upload.wikimedia.org/wikipedia/commons/4/47/React.svg",
+                  "alt": "React Logo 2"
+                },
+                {
+                  "src": "https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg",
+                  "alt": "TailwindCSS"
+                },
+                {
+                  "src": "https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg",
+                  "alt": "HTML5"
+                }
+              ],
+              "speed": 120,
+              "direction": "left",
+              "width": "100%",
+              "logoHeight": 28,
+              "gap": 32,
+              "pauseOnHover": true,
+              "fadeOut": false,
+              "fadeOutColor": "#ffffff",
+              "scaleOnHover": false,
+              "ariaLabel": "Partner logos"
+            }
+          }
         }
       ]
     },
@@ -732,34 +791,34 @@
       ]
     },
     {
-  "name": "About Sections",
-  "icon": "LayoutGrid",
-  "components": [
-    {
-      "name": "AboutSection1",
-      "preview": {
-        "is": "AboutSection1",
-        "props": {
-          "title": "About Our Mission",
-          "description": "We are building the future of design systems: sleek, modern, and infinitely customizable components that adapt to any workflow.",
-          "features": [
-            "🚀 Built with motion-first architecture.",
-            "🎨 Futuristic design with glowing shapes & gradients.",
-            "🔧 Fully editable with drag-and-drop builder support."
-          ],
-          "wrapperProps": {},
-          "titleProps": {},
-          "descriptionProps": {},
-          "featureProps": {},
-          "titleAnimProps": {},
-          "descriptionAnimProps": {},
-          "featureAnimProps": {},
-          "bgShape1AnimProps": {},
-          "bgShape2AnimProps": {}
+      "name": "About Sections",
+      "icon": "LayoutGrid",
+      "components": [
+        {
+          "name": "AboutSection1",
+          "preview": {
+            "is": "AboutSection1",
+            "props": {
+              "title": "About Our Mission",
+              "description": "We are building the future of design systems: sleek, modern, and infinitely customizable components that adapt to any workflow.",
+              "features": [
+                "🚀 Built with motion-first architecture.",
+                "🎨 Futuristic design with glowing shapes & gradients.",
+                "🔧 Fully editable with drag-and-drop builder support."
+              ],
+              "wrapperProps": {},
+              "titleProps": {},
+              "descriptionProps": {},
+              "featureProps": {},
+              "titleAnimProps": {},
+              "descriptionAnimProps": {},
+              "featureAnimProps": {},
+              "bgShape1AnimProps": {},
+              "bgShape2AnimProps": {}
+            }
+          }
         }
-      }
+      ]
     }
-  ]
-}
   ]
 }

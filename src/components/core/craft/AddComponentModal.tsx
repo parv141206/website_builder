@@ -79,19 +79,23 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
   onClose,
 }) => {
   const { actions, query } = useEditor();
+
+  // ✅ safe categories fallback
+  const categoriesData = libraryData?.categories ?? [];
+
   const [activeTab, setActiveTab] = useState<Tab>("components");
   const [activeCategory, setActiveCategory] = useState(
-    libraryData.categories[0].name,
+    categoriesData.length > 0 ? categoriesData[0].name : "",
   );
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleAddComponent = useCallback(
     (componentConfig: any) => {
+      if (!componentConfig) return;
       const Component = COMPONENT_MAP[componentConfig.is];
       if (!Component) return;
 
       const element = <Element is={Component} {...componentConfig.props} />;
-
       const node = query.createNode(element);
       actions.add(node, "ROOT");
       onClose();
@@ -100,32 +104,32 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
   );
 
   const filteredComponents = useMemo(() => {
-    const category = libraryData.categories.find(
-      (c) => c.name === activeCategory,
-    );
+    if (!activeCategory) return [];
+
+    const category = categoriesData.find((c) => c.name === activeCategory);
     if (!category) return [];
 
     if (!searchTerm) {
-      return category.components;
+      return category.components ?? [];
     }
 
-    return category.components.filter((c) =>
+    return (category.components ?? []).filter((c) =>
       c.name.toLowerCase().includes(searchTerm.toLowerCase()),
     );
-  }, [activeCategory, searchTerm]);
+  }, [activeCategory, searchTerm, categoriesData]);
 
-  //Categories depending on the active tab
+  // Categories depending on the active tab
   const categories = useMemo(() => {
     if (activeTab === "components") {
-      return libraryData.categories.filter(
+      return categoriesData.filter(
         (c) => !SECTION_CATEGORIES.includes(c.name as SectionCategory),
       );
     } else {
-      return libraryData.categories.filter((c) =>
+      return categoriesData.filter((c) =>
         SECTION_CATEGORIES.includes(c.name as SectionCategory),
       );
     }
-  }, [activeTab]);
+  }, [activeTab, categoriesData]);
 
   return (
     <AnimatePresence>
@@ -145,6 +149,7 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
             className="flex h-[70vh] w-full max-w-5xl overflow-hidden rounded-xl border border-white/20 bg-white/80 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Sidebar */}
             <aside className="w-56 flex-shrink-0 border-r border-gray-200/80 bg-white/60">
               {/* Tab Navigation */}
               <nav className="flex justify-between p-2">
@@ -169,34 +174,44 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
                   Sections
                 </button>
               </nav>
+
               <div className="p-4">
                 <h2 className="mb-4 text-lg font-semibold text-gray-800">
                   {activeTab === "components" ? "Components" : "Sections"}
                 </h2>
+
                 <nav className="flex flex-col gap-1">
-                  {categories.map((category) => {
-                    const Icon = ICON_MAP[category.icon];
-                    const isActive = activeCategory === category.name;
-                    return (
-                      <button
-                        key={category.name}
-                        onClick={() => setActiveCategory(category.name)}
-                        className={`flex items-center gap-3 rounded-md px-3 py-2 text-left text-sm font-medium transition-colors ${
-                          isActive
-                            ? "bg-gray-500 text-white"
-                            : "text-gray-600 hover:bg-gray-200/70"
-                        }`}
-                      >
-                        {Icon && <Icon className="h-4 w-4" />}
-                        {category.name}
-                      </button>
-                    );
-                  })}
+                  {categories.length > 0 ? (
+                    categories.map((category) => {
+                      const Icon = ICON_MAP[category.icon];
+                      const isActive = activeCategory === category.name;
+                      return (
+                        <button
+                          key={category.name}
+                          onClick={() => setActiveCategory(category.name)}
+                          className={`flex items-center gap-3 rounded-md px-3 py-2 text-left text-sm font-medium transition-colors ${
+                            isActive
+                              ? "bg-gray-500 text-white"
+                              : "text-gray-600 hover:bg-gray-200/70"
+                          }`}
+                        >
+                          {Icon && <Icon className="h-4 w-4" />}
+                          {category.name}
+                        </button>
+                      );
+                    })
+                  ) : (
+                    <p className="text-sm text-gray-400">
+                      No categories available
+                    </p>
+                  )}
                 </nav>
               </div>
             </aside>
 
+            {/* Main */}
             <main className="flex flex-1 flex-col overflow-hidden">
+              {/* Search */}
               <div className="flex-shrink-0 border-b border-gray-200/80 p-4">
                 <div className="relative">
                   <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
@@ -210,9 +225,12 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
                 </div>
               </div>
 
+              {/* Components */}
               <div className="flex-1 overflow-y-auto p-6">
                 <div
-                  className={`grid ${activeTab === "sections" ? "grid-cols-1" : "grid-cols-2"} gap-4`}
+                  className={`grid ${
+                    activeTab === "sections" ? "grid-cols-1" : "grid-cols-2"
+                  } gap-4`}
                 >
                   {filteredComponents.map((comp) => (
                     <div
@@ -239,6 +257,7 @@ export const AddComponentModal: React.FC<AddComponentModalProps> = ({
               </div>
             </main>
 
+            {/* Close button */}
             <button
               onClick={onClose}
               className="absolute top-4 right-4 rounded-full p-1 text-gray-400 transition-colors hover:bg-gray-200/80 hover:text-gray-700"

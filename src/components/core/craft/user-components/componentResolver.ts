@@ -48,6 +48,8 @@ import { CommentCard } from "./composites/cards/CardComment";
 import { FormCard } from "./composites/form/BoarderForm";
 import { HeroSection2 } from "./composites/sections/hero-sections/HeroSection2";
 import { AboutSection1 } from "./composites/sections/about-sections/AboutSection1";
+import { LogoLoop } from "./composites/footer/LoopLoop";
+import Eight from "./composites/cards/BentoCard";
 
 export const COMPONENT_RESOLVER = {
   Container,
@@ -97,6 +99,8 @@ export const COMPONENT_RESOLVER = {
   CommentCard,
   FormCard,
   HeroSection2,
-  AboutSection1
+  AboutSection1,
+  LogoLoop,
+  Eight,
 
 };
